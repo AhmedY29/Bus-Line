@@ -12,9 +12,9 @@ import Trips from "../page/adminPages/Trips";
 function Layout() {
   return (
     <>
-      <div className="flex ">
+      <div className="flex md:flex-row flex-col ">
         <SideBar />
-        <div>
+        <div className="w-full">
           <Nav />
           <Outlet />
         </div>
