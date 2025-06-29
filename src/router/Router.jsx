@@ -12,6 +12,7 @@ function Layout() {
       <Footer />
     </>
   );
+  
 }
 
 const router = createBrowserRouter([
