@@ -29,7 +29,7 @@ function SideBar() {
   ];
 
   return (
-    <div className="flex flex-col w-full md:w-72 bg-white text-neutral-900 border-r border-gray-200">
+    <div className="flex flex-col w-full md:w-64 lg:w-72 bg-white text-neutral-900 border-r border-gray-200">
       <div className="flex items-center h-[10vh] px-4 ">
         {/* Header */}
         <div className="flex items-center">

@@ -15,7 +15,7 @@ function Nav() {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 w-full px-4 h-16 flex items-center  ">
+    <nav className="bg-white border-b border-gray-200 w-full px-4 h-[10vh] flex items-center  ">
       <h1 className="text-xl font-semibold text-gray-800">{getPageName()}</h1>
     </nav>
   );
