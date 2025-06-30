@@ -1,15 +1,25 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
-import Nav from "../componetn/Nav";
-import Footer from "../componetn/Footer";
-import Home from "../page/Home";
+import Nav from "../components/Nav";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
+import SideBar from "../components/SideBar";
+import Users from "../page/adminPages/Users";
+import Drivers from "../page/adminPages/Drivers";
+import Buses from "../page/adminPages/Buses";
+import Tracking from "../page/adminPages/Tracking";
+import Trips from "../page/adminPages/Trips";
+import DriversChat from "../container/adminContainerPages/DriversContainerPage/DriversChat";
+
 function Layout() {
   return (
     <>
-      <Nav />
-      <Outlet />
-      <Footer />
+      <div className="flex md:flex-row flex-col ">
+        <SideBar />
+        <div className="w-full">
+          <Nav />
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 }
@@ -23,11 +33,18 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
-
   {
-    path: "/home",
+    path: "/admin",
     element: <Layout />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Users /> },
+      { path: "users", element: <Users /> },
+      { path: "drivers", element: <Drivers /> },
+      { path: "drivers/chat", element: <DriversChat /> },
+      { path: "buses", element: <Buses /> },
+      { path: "tracking", element: <Tracking /> },
+      { path: "trips", element: <Trips /> },
+    ],
   },
 ]);
 function Router() {
