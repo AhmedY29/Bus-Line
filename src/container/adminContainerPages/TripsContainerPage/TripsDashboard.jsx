@@ -1,32 +1,30 @@
 import React from "react";
-import { IoSearchOutline } from "react-icons/io5";
-import { IoChatboxOutline } from "react-icons/io5";
-import { FaUserPen } from "react-icons/fa6";
-import { HiX } from "react-icons/hi";
 import { useState } from "react";
-import { useNavigate } from "react-router";
-function DriversDashboard() {
+import { FaRegEdit } from "react-icons/fa";
+import { IoSearchOutline } from "react-icons/io5";
+import { HiX } from "react-icons/hi";
+import { MdOutlineDelete } from "react-icons/md";
+
+function TripsDashboard() {
+  const [EditUser, setEditUser] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [EditUser, setEditUser] = useState(false);
-
-  const navigate = useNavigate();
-  const Drivers = [
-    { id: 1, name: "Driver 1" },
-    { id: 2, name: "Driver 2" },
-    { id: 3, name: "Driver 3" },
-    { id: 4, name: "Driver 4" },
-    { id: 5, name: "Driver 5" },
-    { id: 6, name: "Driver 6" },
-    { id: 7, name: "Driver 7" },
-    { id: 8, name: "Driver 8" },
-    { id: 9, name: "Driver 9" },
-    { id: 10, name: "Driver 10" },
-    { id: 11, name: "Driver 11" },
-    { id: 12, name: "Driver 12" },
-    { id: 13, name: "Driver 13" },
-    { id: 14, name: "Driver 14" },
-    { id: 15, name: "Driver 15" },
+  const trips = [
+    { id: 1, name: "Trip 1", role: "Location 1" },
+    { id: 2, name: "Trip 2", role: "Location 2" },
+    { id: 3, name: "Trip 3", role: "Location 3" },
+    { id: 4, name: "Trip 4", role: "Location 4" },
+    { id: 5, name: "Trip 5", role: "Location 5" },
+    { id: 6, name: "Trip 6", role: "Location 6" },
+    { id: 7, name: "Trip 7", role: "Location 7" },
+    { id: 8, name: "Trip 8", role: "Location 8" },
+    { id: 9, name: "Trip 9", role: "Location 9" },
+    { id: 10, name: "Trip 10", role: "Location 10" },
+    { id: 11, name: "Trip 11", role: "Location 11" },
+    { id: 12, name: "Trip 12", role: "Location 12" },
+    { id: 13, name: "Trip 13", role: "Location 13" },
+    { id: 14, name: "Trip 14", role: "Location 14" },
+    { id: 15, name: "Trip 15", role: "Location 15" },
   ];
   const sortOptions = [
     { value: "", label: "Sort by..." },
@@ -34,12 +32,15 @@ function DriversDashboard() {
     { value: "alphabetical", label: "Alphabetical" },
     { value: "oldest", label: "Oldest to Newest" },
   ];
-
-  const filteredData = Drivers.filter((item) =>
+  const filteredData = trips.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const handleEditUser = () => {
     setEditUser(!EditUser);
+  };
+  const handleDeleteUser = (user) => {
+    console.log("Delete user:", user);
+    // Add delete logic here
   };
   return (
     <div
@@ -88,13 +89,13 @@ function DriversDashboard() {
               <h2 className="text-xs text-gray-500">{item.role}</h2>
             </div>
             <div className="flex items-center gap-4 border-l-2 border-gray-200 pl-4 h-full">
-              <FaUserPen
+              <FaRegEdit
                 className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors"
                 onClick={() => handleEditUser()}
               />
-              <IoChatboxOutline
-                className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors"
-                onClick={() => navigate(`chat`)}
+              <MdOutlineDelete
+                className="text-gray-400 cursor-pointer text-2xl hover:text-red-600 transition-colors"
+                onClick={() => handleDeleteUser()}
               />
             </div>
           </div>
@@ -119,31 +120,57 @@ function DriversDashboard() {
             </button>
 
             <div className="flex flex-col items-center justify-center gap-5">
-              <h2 className="text-2xl font-semibold mb-4">Edit Driver</h2>
+              <h2 className="text-2xl font-semibold mb-4">Edit Trip</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
-                <div className="flex flex-col gap-4">
-                  <label className="flex flex-col gap-1">
-                    Driver Name
-                    <input
-                      type="text"
-                      placeholder="License Number"
-                      className="border border-gray-300 rounded-md p-2"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-1">
-                    Expiration Date
-                    <input
-                      type="date"
-                      className="border border-gray-300 rounded-md p-2"
-                    />
-                  </label>
-                </div>
                 <div className="flex flex-col gap-4">
                   <label className="flex flex-col gap-1">
                     License Number
                     <input
                       type="text"
                       placeholder="License Number"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Trip Date
+                    <input
+                      type="date"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Arivel Time
+                    <input
+                      type="time"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <label className="flex flex-col gap-1">
+                    <span>Select Destination</span>
+                    <select className="border border-gray-300 rounded-md p-2">
+                      <option value=""></option>
+                      <option value="uptown">Uptown</option>
+                      <option value="suburbs">Suburbs</option>
+                      <option value="rural">Rural</option>
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Select Neighborhood</span>
+                    <select className="border border-gray-300 rounded-md p-2">
+                      <option value=""></option>
+                      <option value="downtown">Downtown</option>
+                      <option value="uptown">Uptown</option>
+                      <option value="suburbs">Suburbs</option>
+                      <option value="rural">Rural</option>
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Price
+                    <input
+                      type="text"
+                      placeholder="Price"
                       className="border border-gray-300 rounded-md p-2"
                     />
                   </label>
@@ -163,4 +190,4 @@ function DriversDashboard() {
   );
 }
 
-export default DriversDashboard;
+export default TripsDashboard;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaUserFriends } from "react-icons/fa";
-
 import { HiX } from "react-icons/hi";
 import AdminCard from "../../../components/AdminCard";
 import AdminTable from "../../../components/AdminTable";
@@ -57,30 +56,42 @@ function UsersDashboard() {
               <h2 className="text-2xl font-semibold mb-4">Edit User</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
                 <div className="flex flex-col gap-4">
-                  <input
-                    type="text"
-                    placeholder="User Name"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Password"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
+                  <label className="flex flex-col gap-1">
+                    User Name
+                    <input
+                      type="text"
+                      placeholder="User Name"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Password
+                    <input
+                      type="text"
+                      placeholder="Password"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <input
-                    type="text"
-                    placeholder="email"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
-                  <select className="border border-gray-300 rounded-md p-2">
-                    <option value="">Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="driver">Driver</option>
-                    <option value="student">Student</option>
-                    <option value="parent">Parent</option>
-                  </select>
+                  <label className="flex flex-col gap-1">
+                    Email
+                    <input
+                      type="text"
+                      placeholder="email"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span>Select Role</span>
+                    <select className="border border-gray-300 rounded-md p-2">
+                      <option value=""></option>
+                      <option value="admin">Admin</option>
+                      <option value="driver">Driver</option>
+                      <option value="student">Student</option>
+                      <option value="parent">Parent</option>
+                    </select>
+                  </label>
                 </div>
               </div>
               <button

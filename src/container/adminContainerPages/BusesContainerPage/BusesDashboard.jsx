@@ -49,38 +49,56 @@ function BusesDashboard() {
               <h2 className="text-2xl font-semibold mb-4">Edit Bus</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
                 <div className="flex flex-col gap-4">
-                  <input
-                    type="text"
-                    placeholder="Driver Name"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Plate Number"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Capacity"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
+                  <label className="flex flex-col gap-1">
+                    Driver Name
+                    <input
+                      type="text"
+                      placeholder="Driver Name"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Plate Number
+                    <input
+                      type="text"
+                      placeholder="Plate Number"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Capacity
+                    <input
+                      type="number"
+                      placeholder="Capacity"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <input
-                    type="text"
-                    placeholder="Bus Name"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Color"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Model"
-                    className="border border-gray-300 rounded-md p-2"
-                  />
+                  <label className="flex flex-col gap-1">
+                    Bus Name
+                    <input
+                      type="text"
+                      placeholder="Bus Name"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Color
+                    <input
+                      type="text"
+                      placeholder="Color"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Model
+                    <input
+                      type="text"
+                      placeholder="Model"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
                 </div>
               </div>
               <button
