@@ -34,12 +34,12 @@ const TripPassenger = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-
+  // Filter
   const filteredPassengers = passengers.filter((passenger) =>
     passenger.destination.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
+  // Handle Status Change
   const handleStatusChange = (id, newStatus) => {
     setPassengers((prevPassengers) =>
       prevPassengers.map((passenger) =>
@@ -50,7 +50,7 @@ const TripPassenger = () => {
 
   return (
     <div className="bg-white shadow-md m-6 rounded-lg p-4 md:p-6">
-    
+      {/* Header */}
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <h1 className="text-xl font-bold">Trip Passenger</h1>
@@ -66,7 +66,7 @@ const TripPassenger = () => {
     className="focus:outline-none bg-gray-100 rounded-md p-1 w-full"
   />
 </div>
-        <button className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto">
           Filters
         </button>
       </div>

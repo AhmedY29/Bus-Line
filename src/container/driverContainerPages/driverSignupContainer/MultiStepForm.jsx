@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Stepper from './Stepper';
-import DriverForm from './DriverForm';
-import VehicleForm from './VehicleForm';
-import PaymentForm from './PaymentForm';
+import DriverForm from '../pages/DriverForm';
+import VehicleForm from '../pages/VehicleForm';
+import PaymentForm from '../pages/PaymentForm';
 const steps = [
     { title: 'Personal info', component: DriverForm },
     { title: 'Vehicle Details', component: VehicleForm },
@@ -56,7 +56,7 @@ const steps = [
               currentStep === steps.length - 1 ? handleFinish : goToNextStep
             }
             disabled={currentStep === steps.length - 1 && showConfirmation}
-            className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
             {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
           </button>
@@ -67,7 +67,7 @@ const steps = [
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-50-50 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md w-96">
               <div className="flex items-center mb-4">
-                <div className="bg-blue-700 text-white rounded-full p-2 mr-2">
+                <div className="bg-blue-500 text-white rounded-full p-2 mr-2">
                  
                 </div>
                 <h3 className="text-lg font-medium">Your Req under review</h3>

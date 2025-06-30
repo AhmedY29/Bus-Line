@@ -22,6 +22,10 @@ import MultiStepForm from "../container/driverContainerPages/driverSignupContain
 
 import StudentLayout from "./layouts/StudentLayout";
 import studentRoutes from "./studentRoutes";
+import DriverDashboardPage from "../pages/driverPages/DriverDashboard";
+import DriverTrips from "../pages/driverPages/DriverTrips";
+import Passengers from "../pages/driverPages/Passengers";
+import Report from "../pages/driverPages/Report";
 
 function Layout({ role }) {
   return (
@@ -116,7 +120,20 @@ const router = createBrowserRouter([
     path: "/student",
     element: <StudentLayout />,
     children: studentRoutes
-  }
+  },
+  {
+
+    path: "/driver",
+    element: <Layout />,
+    children: [
+      { index: true, element: <DriverDashboardPage /> },
+      { path: "driverTrips", element: <DriverTrips /> },
+      { path: "driversPassenger", element: <Passengers /> },
+      { path: "driverReport", element: <Report /> },
+     
+    ],
+  },
+
 
   
 
