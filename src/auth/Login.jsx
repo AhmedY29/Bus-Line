@@ -24,12 +24,11 @@ function Login() {
               Bus Line
             </h1>
             <p className="text-neutral-700 text-lg">
-              If you don’t have an account register <br />
+              If you don’t have an account <br />
               You can{" "}
               <Link to="/register" className="text-blue-500">
-                Register here
+                Register here !
               </Link>
-              .
             </p>
           </div>
         </div>
@@ -53,9 +52,9 @@ function Login() {
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700 transition-colors"
               >
                 {showPassword ? (
-                  <HiEyeOff className="text-xl" />
+                  <HiEyeOff className="text-xl cursor-pointer" />
                 ) : (
-                  <HiEye className="text-xl" />
+                  <HiEye className="text-xl cursor-pointer" />
                 )}
               </button>
             </div>
