@@ -1,47 +1,39 @@
-import React, { useState } from "react";
-import { FaUserFriends } from "react-icons/fa";
-
-import { HiX } from "react-icons/hi";
-import AdminCard from "../../../components/AdminCard";
+import React from "react";
 import AdminTable from "../../../components/AdminTable";
-function UsersDashboard() {
+import { useState } from "react";
+import { HiX } from "react-icons/hi";
+function BusesDashboard() {
   const [EditUser, setEditUser] = useState(false);
 
-  const users = [
-    { id: 1, name: "User 1", role: "Role" },
-    { id: 2, name: "Ahmed", role: "Driver" },
-    { id: 3, name: "Khaled" },
-    { id: 4, name: "Fhaed", role: "Parent" },
-    { id: 5, name: "h", role: "Driver" },
-    { id: 6, name: "Ahmed", role: "Driver" },
-    { id: 7, name: "Ahmed", role: "Driver" },
+  const Buses = [
+    { id: 1, name: "Bus 1", role: "Driver name" },
+    { id: 2, name: "Bus 2", role: "Driver name" },
+    { id: 3, name: "Bus 3", role: "Driver name" },
+    { id: 4, name: "Bus 4", role: "Driver name" },
+    { id: 5, name: "Bus 5", role: "Driver name" },
+    { id: 6, name: "Bus 6", role: "Driver name" },
+    { id: 7, name: "Bus 7", role: "Driver name" },
+    { id: 8, name: "Bus 8", role: "Driver name" },
+    { id: 9, name: "Bus 9", role: "Driver name" },
+    { id: 10, name: "Bus 10", role: "Driver name" },
+    { id: 11, name: "Bus 11", role: "Driver name" },
+    { id: 12, name: "Bus 12", role: "Driver name" },
+    { id: 13, name: "Bus 13", role: "Driver name" },
+    { id: 14, name: "Bus 14", role: "Driver name" },
+    { id: 15, name: "Bus 15", role: "Driver name" },
   ];
-
   const handleEditUser = () => {
     setEditUser(!EditUser);
   };
-
-  const handleDeleteUser = (user) => {
-    console.log("Delete user:", user);
-    // Add delete logic here
-  };
   return (
     <div className="flex flex-col items-center justify-center h-full w-full  md:px-5 p-2 ">
-      {/* Header Section Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-5 lg:gap-10 py-4 w-full ">
-        <AdminCard icon={FaUserFriends} title="Drivers" count="24" />
-        <AdminCard icon={FaUserFriends} title="Student" count="120" />
-        <AdminCard icon={FaUserFriends} title="Parent" count="30" />
-      </div>
-      {/* Users Table */}
       <AdminTable
-        title="Users"
-        data={users}
-        searchPlaceholder="Search users..."
+        title="Buses"
+        data={Buses}
+        searchPlaceholder="Search buses..."
         onEdit={handleEditUser}
-        onDelete={handleDeleteUser}
+        height="h-[80vh]"
       />
-      {/* Edit User Modal popup */}
       {EditUser && (
         <div className="fixed inset-0 bg-black/15 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-2xl shadow-lg w-4/5 md:w-3/5 max-h-4/5 flex flex-col gap-5 relative">
@@ -54,33 +46,41 @@ function UsersDashboard() {
             </button>
 
             <div className="flex flex-col items-center justify-center gap-5">
-              <h2 className="text-2xl font-semibold mb-4">Edit User</h2>
+              <h2 className="text-2xl font-semibold mb-4">Edit Bus</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
                 <div className="flex flex-col gap-4">
                   <input
                     type="text"
-                    placeholder="User Name"
+                    placeholder="Driver Name"
                     className="border border-gray-300 rounded-md p-2"
                   />
                   <input
                     type="text"
-                    placeholder="Password"
+                    placeholder="Plate Number"
+                    className="border border-gray-300 rounded-md p-2"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Capacity"
                     className="border border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div className="flex flex-col gap-4">
                   <input
                     type="text"
-                    placeholder="email"
+                    placeholder="Bus Name"
                     className="border border-gray-300 rounded-md p-2"
                   />
-                  <select className="border border-gray-300 rounded-md p-2">
-                    <option value="">Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="driver">Driver</option>
-                    <option value="student">Student</option>
-                    <option value="parent">Parent</option>
-                  </select>
+                  <input
+                    type="text"
+                    placeholder="Color"
+                    className="border border-gray-300 rounded-md p-2"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Model"
+                    className="border border-gray-300 rounded-md p-2"
+                  />
                 </div>
               </div>
               <button
@@ -97,4 +97,4 @@ function UsersDashboard() {
   );
 }
 
-export default UsersDashboard;
+export default BusesDashboard;
