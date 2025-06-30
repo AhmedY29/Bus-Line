@@ -4,6 +4,7 @@ import { useLocation } from "react-router";
 function Nav() {
 
 
+
   const location = useLocation();
 
   const getPageName = () => {
@@ -21,8 +22,6 @@ function Nav() {
       <h1 className="text-xl font-semibold text-gray-800">{getPageName()}</h1>
     </nav>
   );
-
-
 }
 
 export default Nav;

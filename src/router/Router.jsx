@@ -22,18 +22,19 @@ function Layout() {
       </div>
     </>
   );
-  
 }
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
+    
     element: <Login />,
   },
   {
     path: "/register",
     element: <Register />,
   },
+
   {
     path: "/admin",
     element: <Layout />,
@@ -47,6 +48,9 @@ const router = createBrowserRouter([
       { path: "trips", element: <Trips /> },
     ],
   },
+
+
+
 ]);
 function Router() {
   return <RouterProvider router={router} />;
