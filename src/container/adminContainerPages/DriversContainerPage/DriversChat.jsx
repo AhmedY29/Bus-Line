@@ -102,9 +102,9 @@ function DriversChat() {
                       : "bg-gray-100 text-gray-900"
                   }`}
                 >
-                  <p className="break-all">{msg.text}</p>
+                  <p className="text-xs md:text-sm break-all">{msg.text}</p>
                   <p
-                    className={`text-xs break-all mt-1 ${
+                    className={`text-xs md:text-sm break-all mt-1 ${
                       msg.sender === "admin" ? "text-blue-100" : "text-gray-500"
                     }`}
                   >
@@ -128,7 +128,7 @@ function DriversChat() {
               />
               <button
                 onClick={handleSendMessage}
-                className="w-1/12 flex justify-center items-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="w-2/12 md:w-1/12 flex justify-center items-center md:px-2 lg:px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
                 <HiPaperAirplane className="text-lg" />
               </button>
