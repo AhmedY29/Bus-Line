@@ -8,6 +8,7 @@ import Drivers from "../page/adminPages/Drivers";
 import Buses from "../page/adminPages/Buses";
 import Tracking from "../page/adminPages/Tracking";
 import Trips from "../page/adminPages/Trips";
+import DriversChat from "../container/adminContainerPages/DriversContainerPage/DriversChat";
 
 function Layout() {
   return (
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
       { path: "drivers", element: <Drivers /> },
+      { path: "drivers/chat", element: <DriversChat /> },
       { path: "buses", element: <Buses /> },
       { path: "tracking", element: <Tracking /> },
       { path: "trips", element: <Trips /> },
