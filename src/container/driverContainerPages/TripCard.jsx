@@ -9,7 +9,7 @@ const TripCard = () => {
   const destinations = ['destinations1', 'destinations2', 'destinations3', 'destinations4', 'destinations5'];
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-4">
+    <div className="bg-white m-4 shadow-md rounded-lg p-6 mb-4 ">
  
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -21,19 +21,14 @@ const TripCard = () => {
             <span>Today</span>
           </small>
         </div>
-        <button
-          type="button"
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Start
-        </button>
+      
       </div>
 
 
-      <div className="flex justify-between mb-4">
+      <div className="flex gap-4  justify-between mb-4">
         <div className="w-1/2">
           <label htmlFor="from" className="block text-gray-700 font-medium mb-2">
-            From:
+            From
           </label>
           <input
             type="text"
@@ -44,9 +39,9 @@ const TripCard = () => {
             className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div className="w-1/2">
+        <div className="sm:w-1/2">
           <label htmlFor="destination" className="block text-gray-700 font-medium mb-2">
-            Destination:
+            Destination
           </label>
           <select
             id="destination"
@@ -62,6 +57,13 @@ const TripCard = () => {
             ))}
           </select>
         </div>
+        
+        <button
+          type="button"
+          className="bg-[#00B087] hover:bg-green-700 text-white font-bold py-4 px-6 rounded focus:outline-none focus:shadow-outline"
+        >
+          Start
+        </button>
       </div>
 
  

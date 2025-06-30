@@ -50,8 +50,10 @@ function Layout() {
         </div>
       </div>
     </>
-  );
-}
+
+
+
+  )}
 
 const router = createBrowserRouter([
   {
@@ -64,12 +66,19 @@ const router = createBrowserRouter([
 
     
     element: <Login />,
+
+    element: <Layout />, 
+    children: [
+      { index: true, element: <DriverDashboardPage /> },
+    ],
+
   },
   {
     path: "/register",
     element: <Register />,
   },
   { path: "driver-register", element: <MultiStepForm /> },
+
 
 
   {
@@ -108,6 +117,8 @@ const router = createBrowserRouter([
     element: <StudentLayout />,
     children: studentRoutes
   }
+
+  
 
 ]);
 

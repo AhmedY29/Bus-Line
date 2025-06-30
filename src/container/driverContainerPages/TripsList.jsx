@@ -39,7 +39,7 @@ const TripsList = () => {
   };
 
   return (
-    <div className="bg-white shadow-md m-5 rounded-lg p-6">
+    <div className="bg-white m-4 shadow-md rounded-lg p-6 mb-4 ">
 
 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
   <h1 className="text-xl font-bold">Trips</h1>
