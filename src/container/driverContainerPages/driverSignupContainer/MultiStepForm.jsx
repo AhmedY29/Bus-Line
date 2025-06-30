@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Stepper from './Stepper';
-import DriverForm from '../pages/DriverForm';
-import VehicleForm from '../pages/VehicleForm';
-import PaymentForm from '../pages/PaymentForm';
+import DriverForm from './DriverForm';
+import VehicleForm from './VehicleForm';
+import PaymentForm from './PaymentForm';
 const steps = [
     { title: 'Personal info', component: DriverForm },
     { title: 'Vehicle Details', component: VehicleForm },

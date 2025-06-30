@@ -10,6 +10,10 @@ import Buses from "../page/adminPages/Buses";
 import Tracking from "../page/adminPages/Tracking";
 import Trips from "../page/adminPages/Trips";
 import DriversChat from "../container/adminContainerPages/DriversContainerPage/DriversChat";
+import DriverDashboardPage from "../pages/driverPages/DriverDashboard";
+import DriverTrips from "../pages/driverPages/DriverTrips";
+import Passengers from "../pages/driverPages/Passengers";
+import Report from "../pages/driverPages/Report";
 
 function Layout() {
   return (
@@ -52,6 +56,18 @@ const router = createBrowserRouter([
       { path: "buses", element: <Buses /> },
       { path: "tracking", element: <Tracking /> },
       { path: "trips", element: <Trips /> },
+    ],
+  },
+
+  {
+    path: "/driver",
+    element: <Layout />,
+    children: [
+      { index: true, element: <DriverDashboardPage /> },
+      { path: "driverTrips", element: <DriverTrips /> },
+      { path: "driversPassenger", element: <Passengers /> },
+      { path: "driverReport", element: <Report /> },
+     
     ],
   },
 

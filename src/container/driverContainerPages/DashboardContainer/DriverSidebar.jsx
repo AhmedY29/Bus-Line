@@ -16,11 +16,11 @@ function DriverSidebar() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   const adminMenuItems = [
-    { icon: FaUserFriends, label: "Users" },
-    { icon: MdOutlineDirectionsBusFilled, label: "Drivers" },
-    { icon: LuBus, label: "Buses" },
-    { icon: IoLocationOutline, label: "Tracking" },
-    { icon: HiMap, label: "Trips" },
+    { icon: FaUserFriends, label: "Dashboard" },
+    { icon: MdOutlineDirectionsBusFilled, label: "Trips" },
+    { icon: LuBus, label: "Passengers" },
+    { icon: IoLocationOutline, label: "Requests" },
+    { icon: HiMap, label: "Reports" },
   ];
 
   const adminBottomItems = [
