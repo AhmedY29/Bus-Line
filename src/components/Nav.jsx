@@ -2,8 +2,8 @@ import React from "react";
 
 function Nav() {
   return <div>
-
-    <ul></ul>
+<ul></ul>
+    
   </div>;
 }
 

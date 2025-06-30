@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
-import Nav from "../componetn/Nav";
-import Footer from "../componetn/Footer";
-import Home from "../page/Home";
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 function Layout() {
@@ -12,12 +12,12 @@ function Layout() {
       <Footer />
     </>
   );
-  
 }
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
+    
     element: <Login />,
   },
   {
@@ -25,11 +25,7 @@ const router = createBrowserRouter([
     element: <Register />,
   },
 
-  {
-    path: "/home",
-    element: <Layout />,
-    children: [{ index: true, element: <Home /> }],
-  },
+ 
 ]);
 function Router() {
   return <RouterProvider router={router} />;
