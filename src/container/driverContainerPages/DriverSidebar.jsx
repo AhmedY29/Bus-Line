@@ -29,9 +29,9 @@ function DriverSidebar() {
   ];
 
   return (
-    <div className="flex flex-col w-full md:w-64 lg:w-72 bg-white text-neutral-900 border-r border-gray-200">
+    <div className="flex flex-col w-full md:w-50 lg:w-60 bg-white text-neutral-900 border-r border-gray-200">
       <div className="flex items-center h-[10vh] px-4 ">
-        {/* Header */}
+    
         <div className="flex items-center">
           <button
             className="md:hidden"
@@ -54,16 +54,16 @@ function DriverSidebar() {
           isMobileMenuOpen ? "flex" : "hidden"
         }`}
       >
-        {/* Navigation Menu */}
+
         <ul className={`flex flex-col gap-2 px-3 py-4`}>
           {adminMenuItems.map((item, index) => {
             const IconComponent = item.icon;
             const isActive =
-              location.pathname === `/admin/${item.label.toLowerCase()}`;
+              location.pathname === `/driver/${item.label.toLowerCase()}`;
             return (
               <li key={index}>
                 <Link
-                  to={`/admin/${item.label.toLowerCase()}`}
+                  to={`/driver/${item.label.toLowerCase()}`}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors  gap-2 pr-6 ${
                     isActive
                       ? "bg-blue-50 text-blue-700 "
@@ -86,7 +86,7 @@ function DriverSidebar() {
             return (
               <li key={index}>
                 <Link
-                  to={`/admin/${item.label.toLowerCase()}`}
+                  to={`/driver/${item.label.toLowerCase()}`}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors  gap-2 pr-6 ${"text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`}
                 >
                   <IconComponent className="text-xl" />

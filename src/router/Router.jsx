@@ -1,3 +1,4 @@
+
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
 import Nav from "../components/Nav";
 import Login from "../auth/Login";
@@ -21,19 +22,24 @@ function Layout() {
         </div>
       </div>
     </>
-  );
-}
+
+
+
+  )}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    
-    element: <Login />,
+    element: <Layout />, 
+    children: [
+      { index: true, element: <DriverDashboardPage /> },
+    ],
   },
   {
     path: "/register",
     element: <Register />,
   },
+
 
   {
     path: "/admin",
@@ -51,9 +57,12 @@ const router = createBrowserRouter([
 
 
 
+  
+
 ]);
-function Router() {
+
+function AppRouter() {
   return <RouterProvider router={router} />;
 }
 
-export default Router;
+export default AppRouter;
