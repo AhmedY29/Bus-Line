@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaUserFriends } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaUserPen } from "react-icons/fa6";
 import { MdOutlineDelete } from "react-icons/md";
-
+import { ToggleButton } from "@mui/material";
+import AdminCard from "../../../components/AdminCard";
 function UsersDashboard() {
+  const [EditUser, setEditUser] = useState(false);
   const users = [
     { id: 1, name: "User 1", role: "Role" },
     { id: 2, name: "Ahmed", role: "Driver" },
@@ -14,41 +16,16 @@ function UsersDashboard() {
     { id: 6, name: "Ahmed", role: "Driver" },
     { id: 7, name: "Ahmed", role: "Driver" },
   ];
+  const toggle = () => {
+    setEditUser(!EditUser);
+  };
   return (
     <div className="flex flex-col items-center justify-center h-full w-full  md:px-5 p-2">
       {/* Header Section Cards */}
-
-      <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-10 py-4 w-full ">
-        {/* Card 1 */}
-        <div className="flex  items-center bg-white rounded-lg shadow-md gap-4  pl-4 h-35 w-70 md:h-40 md:w-75  lg:w-80">
-          <div className="flex justify-center items-center bg-blue-50 h-15 w-15 rounded-2xl">
-            <FaUserFriends className="text-blue-500 text-4xl" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <h1 className=" text-2xl text-neutral-500">Drivers</h1>
-            <h1 className="text-neutral-900 text-3xl font-bold">24</h1>
-          </div>
-        </div>
-        {/* Card 2 */}
-        <div className="flex  items-center bg-white rounded-lg shadow-md gap-4 pl-4 h-35 w-70 md:h-40 md:w-75 lg:w-80">
-          <div className="flex justify-center items-center bg-blue-50 h-15 w-15 rounded-2xl">
-            <FaUserFriends className="text-blue-500 text-4xl" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <h1 className=" text-2xl text-neutral-500">Student</h1>
-            <h1 className="text-neutral-900 text-3xl font-bold">24</h1>
-          </div>
-        </div>
-        {/* Card 3 */}
-        <div className="flex  items-center bg-white rounded-lg shadow-md gap-4 pl-4 h-35 w-70 md:h-40 md:w-75 lg:w-80">
-          <div className="flex justify-center items-center bg-blue-50 h-15 w-15 rounded-2xl">
-            <FaUserFriends className="text-blue-500 text-4xl" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <h1 className=" text-2xl text-neutral-500">Parent</h1>
-            <h1 className="text-neutral-900 text-3xl font-bold">24</h1>
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-5 lg:gap-10 py-4 w-full ">
+        <AdminCard icon={FaUserFriends} title="Drivers" count="24" />
+        <AdminCard icon={FaUserFriends} title="Student" count="120" />
+        <AdminCard icon={FaUserFriends} title="Parent" count="30" />
       </div>
       {/* Users Table */}
       <div className="flex flex-col gap-2 p-2 bg-white shadow-md rounded-lg w-full h-[60vh] ">
@@ -88,13 +65,42 @@ function UsersDashboard() {
                 <h2 className="text-xs text-gray-500">{user.role}</h2>
               </div>
               <div className="flex items-center gap-4 border-l-2 border-gray-200 pl-4 h-full ">
-                <FaUserPen className="text-gray-400 cursor-pointer text-2xl" />
+                <FaUserPen
+                  className="text-gray-400 cursor-pointer text-2xl"
+                  onClick={() => toggle()}
+                />
                 <MdOutlineDelete className="text-gray-400 cursor-pointer text-2xl" />
               </div>
             </div>
           ))}
         </div>
       </div>
+      {/* Edit User Modal bobup */}
+      {EditUser && (
+        <div className="fixed w-full flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/3">
+            <h2 className="text-xl font-semibold mb-4">Edit User</h2>
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="User Name"
+                className="border border-gray-300 rounded-md p-2"
+              />
+              <input
+                type="text"
+                placeholder="Role"
+                className="border border-gray-300 rounded-md p-2"
+              />
+              <button
+                onClick={() => toggle()}
+                className="bg-blue-500 text-white rounded-md p-2"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

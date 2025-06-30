@@ -50,8 +50,8 @@ function SideBar() {
       </div>
 
       <div
-        className={`flex flex-col  justify-between h-[90vh] ${
-          isMobileMenuOpen ? "block" : "hidden"
+        className={`md:flex flex-col  justify-between h-[90vh] ${
+          isMobileMenuOpen ? "flex" : "hidden"
         }`}
       >
         {/* Navigation Menu */}
