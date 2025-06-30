@@ -23,8 +23,6 @@ import MultiStepForm from "../container/driverContainerPages/driverSignupContain
 import StudentLayout from "./layouts/StudentLayout";
 import studentRoutes from "./studentRoutes";
 
-
-
 function Layout({ role }) {
   return (
     
@@ -40,22 +38,40 @@ function Layout({ role }) {
         <Outlet />
       </main>
     </div>
+  )}
+function Layout() {
+  return (
+    <>
+      <div className="flex md:flex-row flex-col ">
+        <SideBar />
+        <div className="w-full">
+          <Nav />
+          <Outlet />
+        </div>
+      </div>
+    </>
   );
 }
 
 const router = createBrowserRouter([
   {
     path: "/",
+
     element: <Layout role="driver" />, 
     children: [
       { index: true, element: <DriverDashboardPage /> },
     ],
+
+    
+    element: <Login />,
   },
   {
     path: "/register",
     element: <Register />,
   },
   { path: "driver-register", element: <MultiStepForm /> },
+
+
   {
     path: "/admin",
     element: <Layout role="admin" />, 
@@ -69,6 +85,7 @@ const router = createBrowserRouter([
       { path: "trips", element: <Trips /> },
     ],
   },
+
   {
     path: "/driver",
     element: <Layout role="driver" />, 
@@ -91,6 +108,7 @@ const router = createBrowserRouter([
     element: <StudentLayout />,
     children: studentRoutes
   }
+
 ]);
 
 function AppRouter() {

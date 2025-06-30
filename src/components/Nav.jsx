@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation } from "react-router";
 
 function Nav() {
-
   const location = useLocation();
 
   const getPageName = () => {
