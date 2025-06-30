@@ -75,11 +75,11 @@ function UsersDashboard() {
           ))}
         </div>
       </div>
-      {/* Edit User Modal bobup */}
+      {/* Edit User Modal popup */}
       {EditUser && (
-        <div className="fixed w-full flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/3">
-            <h2 className="text-xl font-semibold mb-4">Edit User</h2>
+        <div className="fixed inset-10 md:inset-auto w-4/5 md:w-3/5 h-4/5 flex flex-col bg-white rounded-2xl items-center justify-center py-4 gap-5 z-50">
+          <h2 className="text-2xl font-semibold mb-4">Edit User</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
             <div className="flex flex-col gap-4">
               <input
                 type="text"
@@ -91,14 +91,26 @@ function UsersDashboard() {
                 placeholder="Role"
                 className="border border-gray-300 rounded-md p-2"
               />
-              <button
-                onClick={() => toggle()}
-                className="bg-blue-500 text-white rounded-md p-2"
-              >
-                Save Changes
-              </button>
+            </div>
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="User Name"
+                className="border border-gray-300 rounded-md p-2"
+              />
+              <input
+                type="text"
+                placeholder="Role"
+                className="border border-gray-300 rounded-md p-2"
+              />
             </div>
           </div>
+          <button
+            onClick={() => toggle()}
+            className="bg-blue-500 text-white rounded-md p-2 w-2/3 cursor-pointer hover:bg-blue-600 transition-colors duration-200"
+          >
+            Save Changes
+          </button>
         </div>
       )}
     </div>
