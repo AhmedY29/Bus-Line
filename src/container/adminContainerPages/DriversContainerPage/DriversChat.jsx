@@ -5,7 +5,6 @@ import {
   HiVideoCamera,
   HiDotsVertical,
 } from "react-icons/hi";
-import { FaUserCircle } from "react-icons/fa";
 
 function DriversChat() {
   const [message, setMessage] = useState("");
@@ -71,7 +70,6 @@ function DriversChat() {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      // Add logic to send message
       console.log("Sending message:", message);
       setMessage("");
     }
@@ -87,14 +85,10 @@ function DriversChat() {
     <div className="bg-[#F5F7FA] w-full h-[90vh] p-4">
       <div className="bg-white rounded-lg shadow-md h-full flex">
         {/* Chat Area */}
-        <div className="flex-1 flex flex-col">
+        <div className=" flex w-full flex-col">
           {/* Chat Header */}
           <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="ml-3">
-                <h3 className="font-medium text-gray-900">Driver name</h3>
-              </div>
-            </div>
+            <h1 className="font-medium text-gray-900">Driver name</h1>
           </div>
 
           {/* Messages Area */}
@@ -135,11 +129,11 @@ function DriversChat() {
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type a message..."
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-11/12 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
               />
               <button
                 onClick={handleSendMessage}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="w-1/12 flex justify-center items-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
                 <HiPaperAirplane className="text-lg" />
               </button>
