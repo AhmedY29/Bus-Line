@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  HiPaperAirplane,
-  HiPhone,
-  HiVideoCamera,
-  HiDotsVertical,
-} from "react-icons/hi";
+import { HiPaperAirplane } from "react-icons/hi";
 
 function DriversChat() {
   const [message, setMessage] = useState("");
