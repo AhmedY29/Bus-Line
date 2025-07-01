@@ -52,6 +52,7 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+  { path: "driver-register", element: <MultiStepForm /> },
   {
     path: "/admin",
     element: <Layout role="admin" />, 
@@ -78,7 +79,7 @@ const router = createBrowserRouter([
       { path: "reports", element: <Profile /> },
       { path: "messages", element: <StudentChat /> },
       { path: "settings", element: <Profile /> },
-      { path: "addcar", element: <MultiStepForm /> },
+     
     ],
   },
 ]);

@@ -21,7 +21,6 @@ function DriverSidebar() {
     { icon: LuBus, label: "Passengers" },
     { icon: IoLocationOutline, label: "Requests" },
     { icon: HiMap, label: "Reports" },
-    { icon: LuBus, label: "AddCar" },
   ];
 
   const adminBottomItems = [
