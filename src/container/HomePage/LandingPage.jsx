@@ -93,12 +93,12 @@ function LandingPage() {
           <div className="flex w-full gap-5 justify-start items-center">
             <button
               onClick={() => navigate("/")}
-              className="bg-blue-700 text-white px-12 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-base cursor-pointer"
+              className="bg-blue-700 text-white px-5 md:px-7 lg:px-10 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-base cursor-pointer"
             >
               Book a Trip
             </button>
             <button
-              className="bg-blue-700 text-white px-10 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-base cursor-pointer"
+              className="bg-blue-700 text-white px-5 md:px-7 lg:px-10 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-base cursor-pointer"
               onClick={() => navigate("/driver-register")}
             >
               Join as a Driver
