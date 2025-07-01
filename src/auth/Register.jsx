@@ -51,6 +51,13 @@ function Register() {
               placeholder="Enter Username"
               className="bg-blue-50 p-4 rounded-md h-12 placeholder:text-blue-500 focus:outline-none focus:shadow-md focus:shadow-blue-50  text-blue-500"
             />
+            <select className="bg-blue-50 px-4 py-1 rounded-md h-12 placeholder:text-blue-500 focus:outline-none focus:shadow-md focus:shadow-blue-50  text-blue-500">
+              <option value="" disabled selected>
+                Select Role
+              </option>
+              <option value="user">Student</option>
+              <option value="admin">Parent</option>
+            </select>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
