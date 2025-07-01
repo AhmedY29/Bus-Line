@@ -9,7 +9,7 @@ import Buses from "../page/adminPages/Buses";
 import Tracking from "../page/adminPages/Tracking";
 import Trips from "../page/adminPages/Trips";
 import DriversChat from "../container/adminContainerPages/DriversContainerPage/DriversChat";
-
+import Home from "../page/Home";
 function Layout() {
   return (
     <>
@@ -45,6 +45,10 @@ const router = createBrowserRouter([
       { path: "tracking", element: <Tracking /> },
       { path: "trips", element: <Trips /> },
     ],
+  },
+  {
+    path: "/",
+    element: <Home />,
   },
 ]);
 function Router() {
