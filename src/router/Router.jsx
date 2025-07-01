@@ -9,6 +9,8 @@ import Buses from "../page/adminPages/Buses";
 import Tracking from "../page/adminPages/Tracking";
 import Trips from "../page/adminPages/Trips";
 import DriversChat from "../container/adminContainerPages/DriversContainerPage/DriversChat";
+import StudentLayout from "@/layouts/StudentLayout";
+import studentRoutes from "./studentRoutes";
 
 function Layout() {
   return (
@@ -22,7 +24,7 @@ function Layout() {
       </div>
     </>
   );
-  
+
 }
 
 const router = createBrowserRouter([
@@ -47,6 +49,11 @@ const router = createBrowserRouter([
       { path: "trips", element: <Trips /> },
     ],
   },
+  {
+    path: "/student",
+    element: <StudentLayout />,
+    children: studentRoutes
+  }
 ]);
 function Router() {
   return <RouterProvider router={router} />;
