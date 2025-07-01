@@ -26,8 +26,14 @@ import DriverDashboardPage from "../pages/driverPages/DriverDashboard";
 import DriverTrips from "../pages/driverPages/DriverTrips";
 import Passengers from "../pages/driverPages/Passengers";
 import Report from "../pages/driverPages/Report";
+import DriverSidebar from "../container/driverContainerPages/DashboardContainer/DriverSidebar";
+import Request from "../pages/driverPages/Request";
+import Profile from "../auth/Profile";
+import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
+import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 
 function Layout({ role }) {
+
   return (
     
     <div className="  bg-[#F5F7FA]" >
@@ -42,22 +48,8 @@ function Layout({ role }) {
         <Outlet />
       </main>
     </div>
-  )}
-function Layout() {
-  return (
-    <>
-      <div className="flex md:flex-row flex-col ">
-        <SideBar />
-        <div className="w-full">
-          <Nav />
-          <Outlet />
-        </div>
-      </div>
-    </>
-
-
-
-  )}
+  );
+}
 
 const router = createBrowserRouter([
   {
@@ -71,7 +63,7 @@ const router = createBrowserRouter([
     
     element: <Login />,
 
-    element: <Layout />, 
+    element: <Layout role="driver" />, 
     children: [
       { index: true, element: <DriverDashboardPage /> },
     ],
@@ -81,9 +73,8 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+
   { path: "driver-register", element: <MultiStepForm /> },
-
-
 
   {
     path: "/admin",
@@ -98,7 +89,6 @@ const router = createBrowserRouter([
       { path: "trips", element: <Trips /> },
     ],
   },
-
   {
     path: "/driver",
     element: <Layout role="driver" />, 
@@ -121,22 +111,7 @@ const router = createBrowserRouter([
     element: <StudentLayout />,
     children: studentRoutes
   },
-  {
-
-    path: "/driver",
-    element: <Layout />,
-    children: [
-      { index: true, element: <DriverDashboardPage /> },
-      { path: "driverTrips", element: <DriverTrips /> },
-      { path: "driversPassenger", element: <Passengers /> },
-      { path: "driverReport", element: <Report /> },
-     
-    ],
-  },
-
-
   
-
 ]);
 
 function AppRouter() {
