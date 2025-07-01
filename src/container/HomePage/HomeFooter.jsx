@@ -29,7 +29,7 @@ function HomeFooter() {
               to="/book"
               className="text-gray-200 hover:text-white transition-colors"
             >
-              Book a Ride
+              Book a Trip
             </Link>
           </li>
           <li>
