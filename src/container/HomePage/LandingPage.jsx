@@ -11,7 +11,7 @@ function LandingPage() {
   };
 
   return (
-    <div className="h-screen bg-[#f2fafa] py-5 px-7">
+    <div className="h-fit md:h-screen bg-[#f2fafa] py-5 px-7">
       <nav className="flex justify-between items-center py-3 px-10 bg-white shadow-md shadow-black/5 rounded-full">
         <div className="flex items-center gap-2">
           <img src="./public/logo.png" alt="Logo" className="h-10 w-10" />
