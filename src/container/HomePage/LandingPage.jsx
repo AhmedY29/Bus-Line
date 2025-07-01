@@ -53,7 +53,7 @@ function LandingPage() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white fixed w-9/12 shadow-md rounded-lg mt-2 mx-7 overflow-hidden">
+        <div className="md:hidden bg-white absolute w-8/12 shadow-md rounded-lg mt-2 mx-7 overflow-hidden">
           <div className="flex flex-col">
             <Link
               to="/"
@@ -80,7 +80,7 @@ function LandingPage() {
         </div>
       )}
       {/* Main Content */}
-      <div className="flex flex-col-reverse md:flex-row  items-center justify-center h-10/12 gap-5 ">
+      <div className="flex flex-col-reverse md:flex-row  items-center justify-center h-full md:h-10/12 gap-5 ">
         <div className=" flex flex-col justify-center rounded-lg p-3 gap-10 h-full w-full md:w-1/2">
           <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-[#152C5B]">
             Public transport made <br /> easy!
