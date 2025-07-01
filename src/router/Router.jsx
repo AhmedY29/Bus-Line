@@ -14,27 +14,36 @@ import DriverDashboardPage from "../pages/driverPages/DriverDashboard";
 import DriverTrips from "../pages/driverPages/DriverTrips";
 import Passengers from "../pages/driverPages/Passengers";
 import Report from "../pages/driverPages/Report";
+import DriverSidebar from "../container/driverContainerPages/DashboardContainer/DriverSidebar";
+import Request from "../pages/driverPages/Request";
+import Profile from "../auth/Profile";
+import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
+import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 
-function Layout() {
+
+
+function Layout({ role }) {
   return (
-    <>
-      <div className="flex md:flex-row flex-col ">
-        <SideBar />
-        <div className="w-full">
-          <Nav />
-          <Outlet />
-        </div>
-      </div>
-    </>
+    
+    <div className="  bg-[#F5F7FA]" >
+    <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
+{role === 'admin' && <SideBar />}
+{role === 'driver' && <DriverSidebar />}
+</div>
+    
 
-
-
-  )}
+<main className="bg-[#F5F7FA]  overflow-auto h-screen md:ml-60 ">
+        <Nav  />
+        <Outlet />
+      </main>
+    </div>
+  );
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />, 
+    element: <Layout role="driver" />, 
     children: [
       { index: true, element: <DriverDashboardPage /> },
     ],
@@ -43,11 +52,9 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
-
-
   {
     path: "/admin",
-    element: <Layout />,
+    element: <Layout role="admin" />, 
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -58,23 +65,22 @@ const router = createBrowserRouter([
       { path: "trips", element: <Trips /> },
     ],
   },
-
   {
     path: "/driver",
-    element: <Layout />,
+    element: <Layout role="driver" />, 
     children: [
       { index: true, element: <DriverDashboardPage /> },
-      { path: "driverTrips", element: <DriverTrips /> },
-      { path: "driversPassenger", element: <Passengers /> },
-      { path: "driverReport", element: <Report /> },
-     
+      { path: "dashboard", element: <DriverDashboardPage /> },
+      { path: "trips", element: <DriverTrips /> },
+      { path: "passengers", element: <Passengers /> },
+      { path: "requests", element: <Request /> },
+      { path: "reports", element: <Report /> },
+      { path: "reports", element: <Profile /> },
+      { path: "messages", element: <StudentChat /> },
+      { path: "settings", element: <Profile /> },
+      { path: "addcar", element: <MultiStepForm /> },
     ],
   },
-
-
-
-  
-
 ]);
 
 function AppRouter() {
