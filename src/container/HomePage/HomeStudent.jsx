@@ -5,14 +5,14 @@ import { FaHandHoldingUsd } from "react-icons/fa";
 
 function HomeStudent() {
   return (
-    <div className="bg-[rgb(255,255,255)] flex flex-wrap justify-center gap-8 items-center w-full h-full  pt-10 pb-5">
+    <div className="bg-[rgb(255,255,255)] flex flex-wrap justify-center gap-8 items-center w-full h-full  py-10">
       <p className="w-full text-lg md:text-xl lg:text-3xl text-center text-gray-900 font-semibold ">
         Seamless and Comfortable Travel with <br /> Our Bus Booking System
       </p>
       {/* Feature Cards */}
       {/* Card 1 */}
       <div className="flex flex-col items-center justify-center gap-4 bg-white p-4 rounded-xl shadow-lg w-72 h-52">
-        <div className="h-12 w-12 bg-blue-700 rounded-br-2xl rounded-tl-2xl flex items-center justify-center">
+        <div className="h-12 w-12 bg-[#0165AD] rounded-br-2xl rounded-tl-2xl flex items-center justify-center">
           <FaUsers className="text-white text-3xl" />
         </div>
         <h1 className="text-gray-900 font-semibold text-base md:text-lg lg:text-xl text-center">
@@ -24,7 +24,7 @@ function HomeStudent() {
       </div>
       {/* Card 2 */}
       <div className="flex flex-col items-center justify-center gap-4 bg-white p-4 rounded-xl shadow-lg w-72 h-52">
-        <div className="h-12 w-12 bg-blue-700 rounded-br-2xl rounded-tl-2xl flex items-center justify-center">
+        <div className="h-12 w-12 bg-[#0165AD] rounded-br-2xl rounded-tl-2xl flex items-center justify-center">
           <LuBusFront className="text-white text-3xl" />
         </div>
         <h1 className="text-gray-900 font-semibold text-base md:text-lg lg:text-xl text-center">
@@ -36,7 +36,7 @@ function HomeStudent() {
       </div>
       {/* Card 3 */}
       <div className="flex flex-col items-center justify-center gap-4 bg-white p-4 rounded-xl shadow-lg w-72 h-52">
-        <div className="h-12 w-12 bg-blue-700 rounded-br-2xl rounded-tl-2xl flex items-center justify-center">
+        <div className="h-12 w-12 bg-[#0165AD] rounded-br-2xl rounded-tl-2xl flex items-center justify-center">
           <FaHandHoldingUsd className="text-white text-3xl" />
         </div>
         <h1 className="text-gray-900 font-semibold text-base md:text-lg lg:text-xl text-center">
