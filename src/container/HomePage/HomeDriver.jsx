@@ -30,7 +30,7 @@ function HomeDriver() {
             </p>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center space-x-3">
                 <div className="flex justify-center items-center h-8 w-8 rounded-lg bg-green-100">
                   <MdOutlineAttachMoney className="text-lg text-green-600" />
