@@ -90,12 +90,18 @@ function LandingPage() {
             day. You can view the subscription plans below and see what works
             best for you.
           </p>
-          <div className="flex w-full  ">
+          <div className="flex w-full gap-5 justify-start items-center">
             <button
               onClick={() => navigate("/")}
-              className="bg-blue-700 text-white px-12 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-sm cursor-pointer"
+              className="bg-blue-700 text-white px-12 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-base cursor-pointer"
             >
-              Book
+              Book a Trip
+            </button>
+            <button
+              className="bg-blue-700 text-white px-10 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-blue-800 transition-colors text-base cursor-pointer"
+              onClick={() => navigate("/driver-register")}
+            >
+              Join as a Driver
             </button>
           </div>
         </div>
