@@ -1,4 +1,3 @@
-
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
 import Nav from "../components/Nav";
 import Login from "../auth/Login";
@@ -17,18 +16,8 @@ import Report from "../pages/driverPages/Report";
 import DriverSidebar from "../container/driverContainerPages/DashboardContainer/DriverSidebar";
 import Request from "../pages/driverPages/Request";
 import Profile from "../auth/Profile";
-import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
-import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
-
-import StudentLayout from "./layouts/StudentLayout";
 import studentRoutes from "./studentRoutes";
-import DriverDashboardPage from "../pages/driverPages/DriverDashboard";
-import DriverTrips from "../pages/driverPages/DriverTrips";
-import Passengers from "../pages/driverPages/Passengers";
-import Report from "../pages/driverPages/Report";
-import DriverSidebar from "../container/driverContainerPages/DashboardContainer/DriverSidebar";
-import Request from "../pages/driverPages/Request";
-import Profile from "../auth/Profile";
+import StudentLayout from "../layouts/StudentLayout";
 import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 
@@ -53,21 +42,8 @@ function Layout({ role }) {
 
 const router = createBrowserRouter([
   {
-    path: "/",
-
-    element: <Layout role="driver" />, 
-    children: [
-      { index: true, element: <DriverDashboardPage /> },
-    ],
-
-    
+    path: "/login",
     element: <Login />,
-
-    element: <Layout role="driver" />, 
-    children: [
-      { index: true, element: <DriverDashboardPage /> },
-    ],
-
   },
   {
     path: "/register",
@@ -75,6 +51,16 @@ const router = createBrowserRouter([
   },
 
   { path: "driver-register", element: <MultiStepForm /> },
+
+  {
+    path: "/",
+
+    element: <Layout role="driver" />, 
+    children: [
+      { index: true, element: <DriverDashboardPage /> },
+    ],
+
+  },
 
   {
     path: "/admin",

@@ -1,4 +1,4 @@
-// src/routes/studentRoutes.jsx
+
 
 import Dashboard from "@/page/studentPages/StudentDashboard";
 import BookingHistory from "@/page/studentPages/booking/BookingHistory";
