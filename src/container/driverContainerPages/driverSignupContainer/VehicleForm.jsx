@@ -50,7 +50,7 @@ const VehicleForm = () => {
             value={formData.vehicleType}
             onChange={handleChange}
             placeholder="Vehicle name "
-            className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+            className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
           />
         </div>
 
@@ -67,8 +67,8 @@ const VehicleForm = () => {
               value={formData.color}
               onChange={handleChange}
               placeholder=" color"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
+              />
           </div>
 
           {/* Model */}
@@ -83,8 +83,8 @@ const VehicleForm = () => {
               value={formData.model}
               onChange={handleChange}
               placeholder=" model"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
+              />
           </div>
         </div>
 
@@ -101,8 +101,8 @@ const VehicleForm = () => {
               value={formData.plateNumber}
               onChange={handleChange}
               placeholder="plate Number"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
+              />
           </div>
 
           {/* Capacity */}
@@ -116,8 +116,8 @@ const VehicleForm = () => {
               value={formData.capacity}
               onChange={handleChange}
               placeholder="Number"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
+              />
           </div>
         </div>
 
@@ -135,8 +135,8 @@ const VehicleForm = () => {
               value={formData.vehicleLicense}
               onChange={handleChange}
               placeholder="Maybe add file"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
+              />
           </div>
 
           {/* Periodic Inspection */}
@@ -149,8 +149,8 @@ const VehicleForm = () => {
               name="periodicInspection"
               value={formData.periodicInspection}
               onChange={handleChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            >
+              className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
+              >
               <option value="">Select...</option>
               <option value="true">True</option>
               <option value="false">False</option>

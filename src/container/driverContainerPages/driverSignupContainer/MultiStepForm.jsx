@@ -47,7 +47,7 @@ const steps = [
           <button
             onClick={goToPrevStep}
             disabled={currentStep === 0}
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded disabled:opacity-50"
+            className="bg-transparent hover:bg-blue-500  text-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500  hover:border-transparent rounded disabled:opacity-50"
           >
             Back
           </button>
@@ -56,7 +56,7 @@ const steps = [
               currentStep === steps.length - 1 ? handleFinish : goToNextStep
             }
             disabled={currentStep === steps.length - 1 && showConfirmation}
-            className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="bg-blue-500  hover:bg-blue-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
             {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
           </button>
@@ -67,7 +67,7 @@ const steps = [
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-50-50 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md w-96">
               <div className="flex items-center mb-4">
-                <div className="bg-blue-700 text-white rounded-full p-2 mr-2">
+                <div className="bg-blue-500  text-white rounded-full p-2 mr-2">
                  
                 </div>
                 <h3 className="text-lg font-medium">Your Req under review</h3>
@@ -82,7 +82,7 @@ const steps = [
                 </button>
                 <button
                   onClick={() => setShowConfirmation(false)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                  className="bg-blue-500  hover:bg-blue-700  text-white font-semibold py-2 px-4 rounded"
                 >
                   Close
                 </button>

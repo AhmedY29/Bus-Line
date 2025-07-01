@@ -28,7 +28,7 @@ const DriverForm = () => {
     <div className="bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto">
 
       <div className="flex justify-between mb-4">
-      <h2 className="text-xl font-bold">Driver</h2>
+      <h2 className="text-xl font-bold">Driver Signup</h2>
       </div>
       
 
@@ -44,7 +44,7 @@ const DriverForm = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder=" name"
-            className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
           />
         </div>
 
@@ -61,7 +61,7 @@ const DriverForm = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder=" email"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+              className=" rounded   w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
             />
           </div>
           <div>
@@ -75,8 +75,7 @@ const DriverForm = () => {
               value={formData.phone}
               onChange={handleChange}
               placeholder=" no handphone"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded   w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "            />
           </div>
         </div>
 
@@ -93,8 +92,7 @@ const DriverForm = () => {
               value={formData.licenseNumber}
               onChange={handleChange}
               placeholder="Total License Number"
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded   w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "            />
           </div>
           <div>
             <label className="block text-gray-700 font-medium mb-2">
@@ -106,8 +104,7 @@ const DriverForm = () => {
               name="licenseExpireDate"
               value={formData.licenseExpireDate}
               onChange={handleChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            />
+              className=" rounded   w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"            />
           </div>
         </div>
 
@@ -123,7 +120,7 @@ const DriverForm = () => {
             onChange={handleChange}
             placeholder=" address"
             rows="4"
-            className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+            className=" rounded w-full border border-gray-300 px-4 py-2  bg-blue-50 p-4 h-12 placeholder:text-blue-500   focus:shadow-md focus:shadow-blue-50  text-blue-500  focus:outline-none focus:border-blue-500 "
           ></textarea>
         </div>
 

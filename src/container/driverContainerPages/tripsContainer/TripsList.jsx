@@ -59,7 +59,7 @@ const TripsList = () => {
           {/* Add Trip Button */}
           <button
             onClick={handleOpenModal}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap"
+            className="bg-blue-500 hover:bg-[#3b586cf3] text-white font-bold py-2 px-4 rounded whitespace-nowrap"
           >
             Add Trip +
           </button>

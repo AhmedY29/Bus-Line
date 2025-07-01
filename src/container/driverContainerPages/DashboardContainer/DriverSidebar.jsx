@@ -45,7 +45,7 @@ function DriverSidebar() {
               <HiMenu className="text-xl" />
             )}
           </button>
-          <img src="/Logo.png" alt="Logo" className="w-10 h-10 mr-2" />
+          <img src="/Logo.png" alt="Logo" className="w-15 h-15 mr-2" />
           <h1 className="text-lg font-semibold text-gray-800">Bus Line</h1>
         </div>
       </div>
@@ -67,7 +67,7 @@ function DriverSidebar() {
                   to={`/driver/${item.label.toLowerCase()}`}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors  gap-2 pr-6 ${
                     isActive
-                      ? "bg-blue-50 text-blue-700 "
+                      ? "bg-blue-50 text-blue-500] "
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }`}
                 >

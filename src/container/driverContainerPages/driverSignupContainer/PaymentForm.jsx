@@ -40,7 +40,7 @@ const PaymentForm = () => {
             value={formData.creditCardType}
             onChange={handleChange}
             placeholder="Credit card ....."
-            className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500 "
           />
         </div>
 

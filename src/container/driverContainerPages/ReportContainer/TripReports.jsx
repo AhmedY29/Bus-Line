@@ -133,7 +133,7 @@ const TripReports = () => {
                 <td className="px-4 py-3 text-right">
                   <button
                     onClick={() => handleMoreDetails(report)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
                   >
                     More Details
                   </button>
@@ -161,7 +161,7 @@ const TripReports = () => {
             <p className="text-sm text-gray-600 mt-1">📧 {report.email}</p>
             <button
               onClick={() => handleMoreDetails(report)}
-              className="mt-3 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded"
+              className="mt-3 w-full bg-blue-500 hover:bg- text-white text-sm px-3 py-1 rounded"
             >
               More Details
             </button>
