@@ -20,11 +20,11 @@ import studentRoutes from "./studentRoutes";
 import StudentLayout from "../layouts/StudentLayout";
 import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
+import Home from "../page/Home";
+
 
 function Layout({ role }) {
-import Home from "../page/Home";
-import StudentLayout from "@/layouts/StudentLayout";
-import studentRoutes from "./studentRoutes";
+
 
   return (
     
