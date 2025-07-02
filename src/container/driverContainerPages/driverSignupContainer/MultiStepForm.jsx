@@ -33,7 +33,7 @@ export default function MultiStepForm() {
   const CurrentComponent = steps[currentStep].component;
 
   return (
-    <div className="p-4 bg-gray-50 h-screen">
+    <div className="p-4 bg-gray-50 ">
       <nav className="h-[10vh]  flex justify-start items-center px-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-3 mr-2">
