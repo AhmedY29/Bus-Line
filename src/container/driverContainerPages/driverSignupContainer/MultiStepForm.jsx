@@ -3,7 +3,7 @@ import Stepper from "./Stepper";
 import DriverForm from "./DriverForm";
 import VehicleForm from "./VehicleForm";
 import PaymentForm from "./PaymentForm";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 const steps = [
   { title: "Personal info", component: DriverForm },
   { title: "Vehicle Details", component: VehicleForm },

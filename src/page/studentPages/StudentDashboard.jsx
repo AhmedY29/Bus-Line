@@ -99,7 +99,7 @@ const StudentDashboard = () => {
                 </span>
               </div>
               <h1 className="text-3xl lg:text-4xl font-bold mb-3">
-                Welcome back, {user.name}!
+                Welcome back {user.name}!
               </h1>
               <p className="text-blue-100 text-lg max-w-md">
                 Ready for your next journey? Let's get you moving with our
@@ -117,7 +117,7 @@ const StudentDashboard = () => {
               <Link to="/student/tracking">
                 <Button
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-2xl backdrop-blur-sm"
+                  className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm"
                 >
                   <Bus className="w-5 h-5 mr-2" />
                   Track Bus
