@@ -164,13 +164,13 @@ const LiveTracking = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <div className="flex justify-between text-sm text-gray-600 mb-2">
               <span>Trip Progress</span>
               <span>{Math.round(tripProgress)}% Complete</span>
             </div>
             <Progress value={tripProgress} className="h-3" />
-          </div>
+          </div> */}
         </CardContent>
       </Card>
 
