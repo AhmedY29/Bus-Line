@@ -154,7 +154,7 @@ export function AppSidebar({ ...props }) {
 
           <Button
             // variant="destructive"
-            className="w-full justify-start bg-red-600 hover:bg-red-700 text-white"
+            className="w-full justify-start bg- hover:bg-red-100 text-red-600"
             onClick={() => {
               // Logout logic
               localStorage.removeItem("token");
