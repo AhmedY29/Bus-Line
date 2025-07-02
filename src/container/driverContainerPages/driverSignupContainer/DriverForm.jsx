@@ -16,7 +16,6 @@ const DriverForm = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -24,7 +23,6 @@ const DriverForm = () => {
       [name]: value,
     }));
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form Data:', formData);
