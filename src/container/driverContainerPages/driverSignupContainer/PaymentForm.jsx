@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const PaymentForm = () => {
   const [formData, setFormData] = useState({
-    creditCardType: '',
-    creditCardNumber: '',
-    expirationDate: '',
-    cvv: ''
+    backName: "",
+    accountName: "",
+    accountNumber: "",
   });
 
   const handleChange = (e) => {
@@ -18,22 +17,24 @@ const PaymentForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    console.log("Form Data:", formData);
   };
 
   return (
     <div className="flex items-center justify-center bg-gray-50">
-
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
-
-      <div className="md:w-1/2 p-8  hidden md:flex flex-col justify-center">
+        <div className="md:w-1/2 p-8  hidden md:flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
-            Be part of our driving team and start earning today. <br /> Sign up now!
+            Be part of our driving team and start earning today. <br /> Sign up
+            now!
           </p>
           <p className="mb-4 text-sm">
-            Already have an account?{' '}
-            <a href="/login" className="text-blue-500 hover:text-blue-700 transition-colors">
+            Already have an account?{" "}
+            <a
+              href="/login"
+              className="text-blue-500 hover:text-blue-700 transition-colors"
+            >
               Login here!
             </a>
           </p>
@@ -51,11 +52,11 @@ const PaymentForm = () => {
               </label> */}
               <input
                 type="text"
-                id="creditCardType"
-                name="creditCardType"
-                value={formData.creditCardType}
+                id="backName"
+                name="backName"
+                value={formData.backName}
                 onChange={handleChange}
-                placeholder="Enter Credit Card Type"
+                placeholder="Enter Back Name"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -67,11 +68,11 @@ const PaymentForm = () => {
               </label> */}
               <input
                 type="text"
-                id="creditCardNumber"
-                name="creditCardNumber"
-                value={formData.creditCardNumber}
+                id="accountName"
+                name="accountName"
+                value={formData.accountName}
                 onChange={handleChange}
-                placeholder="Credit Card Number"
+                placeholder="Enter Account Namer"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -83,27 +84,11 @@ const PaymentForm = () => {
               </label> */}
               <input
                 type="text"
-                id="expirationDate"
-                name="expirationDate"
-                value={formData.expirationDate}
+                id="accountNumber"
+                name="accountNumber"
+                value={formData.accountNumber}
                 onChange={handleChange}
                 placeholder="MM/YY"
-                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            {/* CVV */}
-            <div>
-              {/* <label htmlFor="cvv" className="block text-gray-700 font-medium mb-2">
-                CVV
-              </label> */}
-              <input
-                type="text"
-                id="cvv"
-                name="cvv"
-                value={formData.cvv}
-                onChange={handleChange}
-                placeholder="CVV"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
             </div>
