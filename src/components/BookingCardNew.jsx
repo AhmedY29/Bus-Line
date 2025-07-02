@@ -1,6 +1,6 @@
 import React from "react";
 import { FaChevronRight } from "react-icons/fa6";
-import { scrollToSection } from "../utils/scrollUtils";
+import { useNavigate } from "react-router";
 
 function BookingCardNew({
   discount = "20% OFF",
@@ -14,7 +14,7 @@ function BookingCardNew({
   departureTime = "08:00AM",
   arrivalTime = "12:00PM",
 }) {
-
+  const navigate = useNavigate();
   return (
     <div className="md:flex rounded-xl bg-neutral-50 h-45 hidden hover:scale-105 transition-all duration-500 hover:shadow-lg">
       <div className="flex flex-col items-center justify-evenly w-1/3 bg-neutral-50 rounded-2xl">
@@ -30,7 +30,7 @@ function BookingCardNew({
         </div>
         <button
           className=" text-white w-1/2 font-bold py-2 px-4 rounded-lg text-sm cursor-pointer bg-[#0165AD] hover:bg-[#0165add2] transition-colors"
-          onClick={() => scrollToSection("homeBook")}
+          onClick={() => navigate("/register")}
         >
           Learn More
         </button>
