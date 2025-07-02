@@ -3,6 +3,7 @@ import Stepper from "./Stepper";
 import DriverForm from "./DriverForm";
 import VehicleForm from "./VehicleForm";
 import PaymentForm from "./PaymentForm";
+import { Link } from "react-router-dom";
 const steps = [
   { title: "Personal info", component: DriverForm },
   { title: "Vehicle Details", component: VehicleForm },
@@ -32,7 +33,19 @@ export default function MultiStepForm() {
   const CurrentComponent = steps[currentStep].component;
 
   return (
-    <div className="p-4 bg-gray-50">
+    <div className="p-4 bg-gray-50 h-screen">
+      <nav className="h-[10vh]  flex justify-start items-center px-4">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="flex items-center gap-3 mr-2">
+            <img
+              src="./public/logo.png"
+              alt="Logo"
+              className="h-10 w-10 rounded-xl"
+            />
+            <h1 className="text-xl font-bold">Bus Line</h1>
+          </div>
+        </Link>
+      </nav>
       <Stepper currentStep={currentStep + 1} totalSteps={steps.length} />
 
       <div className="mt-6">
