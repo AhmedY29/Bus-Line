@@ -42,7 +42,7 @@ export default function MultiStepForm() {
               alt="Logo"
               className="h-10 w-10 rounded-xl"
             />
-            <h1 className="text-xl font-bold">Bus Line</h1>
+            <h1 className="text-xl font-bold">BusLine</h1>
           </div>
         </Link>
       </nav>
