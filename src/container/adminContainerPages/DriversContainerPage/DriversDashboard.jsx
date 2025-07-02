@@ -12,21 +12,21 @@ function DriversDashboard() {
 
   const navigate = useNavigate();
   const Drivers = [
-    { id: 1, name: "Driver 1" },
-    { id: 2, name: "Driver 2" },
-    { id: 3, name: "Driver 3" },
-    { id: 4, name: "Driver 4" },
-    { id: 5, name: "Driver 5" },
-    { id: 6, name: "Driver 6" },
-    { id: 7, name: "Driver 7" },
-    { id: 8, name: "Driver 8" },
-    { id: 9, name: "Driver 9" },
-    { id: 10, name: "Driver 10" },
-    { id: 11, name: "Driver 11" },
-    { id: 12, name: "Driver 12" },
-    { id: 13, name: "Driver 13" },
-    { id: 14, name: "Driver 14" },
-    { id: 15, name: "Driver 15" },
+    { id: 1, name: "Driver 1", status: "pending" },
+    { id: 2, name: "Driver 2", status: "approved" },
+    { id: 3, name: "Driver 3", status: "pending" },
+    { id: 4, name: "Driver 4", status: "pending" },
+    { id: 5, name: "Driver 5", status: "pending" },
+    { id: 6, name: "Driver 6", status: "approved" },
+    { id: 7, name: "Driver 7", status: "pending" },
+    { id: 8, name: "Driver 8", status: "approved" },
+    { id: 9, name: "Driver 9", status: "pending" },
+    { id: 10, name: "Driver 10", status: "pending" },
+    { id: 11, name: "Driver 11", status: "pending" },
+    { id: 12, name: "Driver 12", status: "approved" },
+    { id: 13, name: "Driver 13", status: "approved" },
+    { id: 14, name: "Driver 14", status: "approved" },
+    { id: 15, name: "Driver 15", status: "pending" },
   ];
   const sortOptions = [
     { value: "", label: "Sort by..." },
@@ -80,23 +80,35 @@ function DriversDashboard() {
       </div>
 
       {/* Data List */}
-      <div className="flex flex-col h-full overflow-y-auto gap-4 mt-10 md:mt-2 scrollbar-hide">
+      <div className="flex flex-col h-full w-full overflow-y-auto gap-4 mt-10 md:mt-2 scrollbar-hide">
         {filteredData.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-2">
             <div className="flex flex-col">
               <h1 className="text-base font-semibold">{item.name}</h1>
               <h2 className="text-xs text-gray-500">{item.role}</h2>
             </div>
-            <div className="flex items-center gap-4 border-l-2 border-gray-200 pl-4 h-full">
-              <FaUserPen
-                className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors"
-                onClick={() => handleEditUser()}
-              />
-              <IoChatboxOutline
-                className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors"
-                onClick={() => navigate(`chat`)}
-              />
-            </div>
+            {item.status === "approved" ? (
+              <div className="flex items-center justify-between  border-l-2 border-gray-200 pl-4 h-full w-40 ">
+                <FaUserPen
+                  className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors w-1/2"
+                  onClick={() => handleEditUser()}
+                />
+
+                <IoChatboxOutline
+                  className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors w-1/2"
+                  onClick={() => navigate(`chat`)}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-4 border-l-2 border-gray-200 pl-4 h-full w-40">
+                <button className="text-white  transition-colors bg-red-400 hover:bg-red-500 py-1 px-2 rounded-md text-sm cursor-pointer">
+                  Reject
+                </button>
+                <button className="text-white  transition-colors bg-green-400 hover:bg-green-500 py-1 px-2 rounded-md text-sm cursor-pointer">
+                  Approve
+                </button>
+              </div>
+            )}
           </div>
         ))}
         {/* Empty State */}
