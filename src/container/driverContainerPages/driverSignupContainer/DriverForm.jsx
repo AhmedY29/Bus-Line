@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
-import { HiEye, HiEyeOff } from "react-icons/hi";
+import React, { useState } from "react";
 
-const DriverForm = () => {
+const VehicleForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    licenseNumber: '',
-    licenseExpireDate: '',
-    address: '',
-    password: '',
-    confirmPassword: ''
+    vehicleType: "",
+    color: "",
+    model: "",
+    plateNumber: "",
+    vehicleLicense: "",
+    capacity: "",
+    periodicInspection: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,114 +21,151 @@ const DriverForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    console.log("Form Data:", formData);
   };
 
   return (
-    <div className="flex items-center justify-center  bg-gray-50">
+    <div className="flex items-center justify-center bg-gray-50">
       {/* Container */}
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
-        
-  
         <div className="md:w-1/2 p-8  hidden md:flex flex-col justify-center">
-        <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
-              <p className="text-xl mb-6">
-                Be part of our driving team and start earning today. <br /> Sign up now!
-              </p>
-              <p className="mb-4 text-sm">
-                Already have an account?{' '}
-                <a href="/login" className=" text-blue-500 hover:text-blue-700 transition-colors">
-                  Login here!
-                </a>
-              </p>
+          <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
+          <p className="text-xl mb-6">
+            Be part of our driving team and start earning today. <br /> Sign up
+            now!
+          </p>
+          <p className="mb-4 text-sm">
+            Already have an account?{" "}
+            <a
+              href="/login"
+              className=" text-blue-500 hover:text-blue-700 transition-colors"
+            >
+              Login here!
+            </a>
+          </p>
         </div>
 
-        {/* Right Section - Form */}
         <div className="md:w-1/2 p-8">
-          <p className='text-2xl font-bold mb-4'>Sign up</p>
-
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email */}
+            <h2 className="text-2xl font-bold mb-6 ">Add Your Vehicle</h2>
+            {/* Vehicle Type */}
             <div>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter Email"
-                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
-                />
-            </div>
-
-            {/* Username */}
-            <div>
+              {/* <label className="block text-gray-700 font-medium mb-2">
+            Vehicle Type 
+            </label> */}
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="color"
+                value={formData.color}
                 onChange={handleChange}
-                placeholder="Create User Name"
+                placeholder="Vehicle Type "
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
-                />
+              />
             </div>
 
-            {/* Phone Number */}
-            <div>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Contact Number"
-                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Color
+            </label> */}
+                <input
+                  type="text"
+                  name="color"
+                  value={formData.color}
+                  onChange={handleChange}
+                  placeholder="Vehicle color"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 />
+              </div>
+
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Model
+            </label> */}
+                <input
+                  type="text"
+                  name="model"
+                  value={formData.model}
+                  onChange={handleChange}
+                  placeholder="Vehicle model"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
             </div>
 
-            {/* Password */}
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder=" Password"
-                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+            {/* Plate Number + Capacity */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Plate Number
+            </label> */}
+                <input
+                  type="text"
+                  name="plateNumber"
+                  value={formData.plateNumber}
+                  onChange={handleChange}
+                  placeholder="Plate number"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-gray-700 transition-colors"
-              >
-                {showPassword ? <HiEyeOff className="text-xl" /> : <HiEye className="text-xl" />}
-              </button>
+              </div>
+
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Capacity
+            </label> */}
+                <input
+                  type="number"
+                  name="capacity"
+                  value={formData.capacity}
+                  onChange={handleChange}
+                  placeholder="Passenger capacity"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
             </div>
 
-            {/* Confirm Password */}
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="Confirm Password"
-                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+            {/* License + Periodic Inspection */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Vehicle License
+            </label> */}
+                <input
+                  type="text"
+                  name="vehicleLicense"
+                  value={formData.vehicleLicense}
+                  onChange={handleChange}
+                  placeholder="License Number or Upload"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-gray-700 transition-colors"
-              >
-                {showPassword ? <HiEyeOff className="text-xl" /> : <HiEye className="text-xl" />}
-              </button>
+              </div>
+
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Periodic Inspection
+            </label> */}
+                <select
+                  name="periodicInspection"
+                  value={formData.periodicInspection}
+                  onChange={handleChange}
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                >
+                  <option value="">Select...</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
             </div>
 
             {/* Submit Button */}
-            {/* <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4 transition-colors"
-            >
-              Register
-            </button> */}
+            {/* <div className="mt-6 flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded transition-colors"
+          >
+            Next
+          </button>
+        </div> */}
           </form>
         </div>
       </div>
@@ -142,4 +173,4 @@ const DriverForm = () => {
   );
 };
 
-export default DriverForm;
+export default VehicleForm;
