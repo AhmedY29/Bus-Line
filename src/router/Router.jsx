@@ -22,21 +22,17 @@ import StudentChat from "../container/driverContainerPages/StudentChat/StudentCh
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 import Home from "../page/Home";
 
-
 function Layout({ role }) {
 
-
   return (
-    
-    <div className="  bg-[#F5F7FA]" >
-    <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
-{role === 'admin' && <SideBar />}
-{role === 'driver' && <DriverSidebar />}
-</div>
-    
+    <div className="  bg-[#F5F7FA]">
+      <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
+        {role === "admin" && <SideBar />}
+        {role === "driver" && <DriverSidebar />}
+      </div>
 
-<main className="bg-[#F5F7FA]  overflow-auto h-screen md:ml-60 ">
-        <Nav  />
+      <main className="bg-[#F5F7FA]  overflow-auto h-screen md:ml-60 ">
+        <Nav />
         <Outlet />
       </main>
     </div>
@@ -56,18 +52,14 @@ const router = createBrowserRouter([
   { path: "driver-register", element: <MultiStepForm /> },
 
   {
-    path: "/",
-
-    element: <Layout role="driver" />, 
-    children: [
-      { index: true, element: <DriverDashboardPage /> },
-    ],
-
+    path: "/driver",
+    element: <Layout role="driver" />,
+    children: [{ index: true, element: <DriverDashboardPage /> }],
   },
 
   {
     path: "/admin",
-    element: <Layout role="admin" />, 
+    element: <Layout role="admin" />,
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -80,7 +72,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/driver",
-    element: <Layout role="driver" />, 
+    element: <Layout role="driver" />,
     children: [
       { index: true, element: <DriverDashboardPage /> },
       { path: "dashboard", element: <DriverDashboardPage /> },
@@ -91,16 +83,14 @@ const router = createBrowserRouter([
       { path: "reports", element: <Profile /> },
       { path: "messages", element: <StudentChat /> },
       { path: "settings", element: <Profile /> },
-     
     ],
   },
   {
-
     path: "/student",
     element: <StudentLayout />,
-    children: studentRoutes
+    children: studentRoutes,
   },
-   {
+  {
     path: "/",
     element: <Home />,
   },
