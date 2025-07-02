@@ -9,7 +9,7 @@ function DriversDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [EditUser, setEditUser] = useState(false);
-
+  const [acceptUser, setAcceptUser] = useState(false);
   const navigate = useNavigate();
   const Drivers = [
     { id: 1, name: "Driver 1", status: "pending" },
@@ -40,6 +40,9 @@ function DriversDashboard() {
   );
   const handleEditUser = () => {
     setEditUser(!EditUser);
+  };
+  const handleAcceptUser = () => {
+    setAcceptUser(!acceptUser);
   };
   return (
     <div
@@ -100,12 +103,12 @@ function DriversDashboard() {
                 />
               </div>
             ) : (
-              <div className="flex items-center justify-between gap-4 border-l-2 border-gray-200 pl-4 h-full w-40">
-                <button className="text-white  transition-colors bg-red-400 hover:bg-red-500 py-1 px-2 rounded-md text-sm cursor-pointer">
-                  Reject
-                </button>
-                <button className="text-white  transition-colors bg-green-400 hover:bg-green-500 py-1 px-2 rounded-md text-sm cursor-pointer">
-                  Approve
+              <div className="flex items-center justify-center gap-4 border-l-2 border-gray-200 pl-4 h-full w-40">
+                <button
+                  className="bg-blue-500 text-white text-sm rounded-md p-2 w-4/5 cursor-pointer hover:bg-blue-600 transition-colors duration-200"
+                  onClick={() => handleAcceptUser()}
+                >
+                  View Details
                 </button>
               </div>
             )}
@@ -167,6 +170,67 @@ function DriversDashboard() {
               >
                 Save Changes
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Accept User Modal popup */}
+      {acceptUser && (
+        <div className="fixed inset-0 bg-black/15 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-2xl shadow-lg w-4/5 md:w-3/5 max-h-4/5 flex flex-col gap-5 relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setAcceptUser(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+            >
+              <HiX className="text-2xl" />
+            </button>
+
+            <div className="flex flex-col items-center justify-center gap-5">
+              <h2 className="text-2xl font-semibold mb-4">Edit Driver</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
+                <div className="flex flex-col gap-4">
+                  <label className="flex flex-col gap-1">
+                    Driver Name
+                    <input
+                      type="text"
+                      placeholder="License Number"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    Expiration Date
+                    <input
+                      type="date"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <label className="flex flex-col gap-1">
+                    License Number
+                    <input
+                      type="text"
+                      placeholder="License Number"
+                      className="border border-gray-300 rounded-md p-2"
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-5 w-full">
+                <button
+                  onClick={() => handleAcceptUser()}
+                  className="bg-rose-600  text-white rounded-md p-2 w-1/3 cursor-pointer hover:bg-red-600 transition-colors duration-200"
+                >
+                  Reject
+                </button>
+                <button
+                  onClick={() => handleAcceptUser()}
+                  className="bg-green-500 text-white rounded-md p-2 w-1/3 cursor-pointer hover:bg-green-600 transition-colors duration-200"
+                >
+                  Accept
+                </button>
+              </div>
             </div>
           </div>
         </div>
