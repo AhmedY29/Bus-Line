@@ -1,3 +1,4 @@
+
 // src/routes/studentRoutes.jsx
 
 import Dashboard from "@/page/studentPages/StudentDashboard";

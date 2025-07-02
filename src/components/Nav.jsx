@@ -20,7 +20,6 @@ function Nav() {
       <h1 className="text-xl font-semibold text-gray-800">{getPageName()}</h1>
     </nav>
   );
-
 }
 
 export default Nav;
