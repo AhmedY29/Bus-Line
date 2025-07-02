@@ -129,12 +129,12 @@ const DriverForm = () => {
             </div>
 
             {/* Submit Button */}
-            <button
+            {/* <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4 transition-colors"
             >
               Register
-            </button>
+            </button> */}
           </form>
         </div>
       </div>
