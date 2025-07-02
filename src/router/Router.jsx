@@ -22,6 +22,9 @@ import StudentChat from "../container/driverContainerPages/StudentChat/StudentCh
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 
 function Layout({ role }) {
+import Home from "../page/Home";
+import StudentLayout from "@/layouts/StudentLayout";
+import studentRoutes from "./studentRoutes";
 
   return (
     
@@ -97,7 +100,15 @@ const router = createBrowserRouter([
     element: <StudentLayout />,
     children: studentRoutes
   },
-  
+   {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/student",
+    element: <StudentLayout />,
+    children: studentRoutes,
+  },
 ]);
 
 function AppRouter() {
