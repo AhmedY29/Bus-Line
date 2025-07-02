@@ -1,6 +1,6 @@
 import React from "react";
 import { FaChevronRight } from "react-icons/fa6";
-
+import { useNavigate } from "react-router";
 function MobileBookingCard({
   discount = "20% OFF",
   savings = "Save $20",
@@ -13,6 +13,8 @@ function MobileBookingCard({
   departureTime = "08:00AM",
   arrivalTime = "09:00AM",
 }) {
+  const navigate = useNavigate();
+
   return (
     <div className="md:hidden flex justify-center items-center w-full">
       <div className="flex flex-col items-center justify-center gap-4 bg-white p-2 rounded-xl shadow-lg w-4/5 h-60 hover:scale-105 transition-all duration-500 hover:shadow-xl">
@@ -52,7 +54,10 @@ function MobileBookingCard({
             <span className="text-gray-900 font-medium">{arrivalTime}</span>
           </div>
         </div>
-        <button className="text-white w-1/2 font-bold py-2 px-4 rounded-lg text-sm cursor-pointer bg-[#0165AD] hover:bg-[#0165add2] transition-colors">
+        <button
+          className="text-white w-1/2 font-bold py-2 px-4 rounded-lg text-sm cursor-pointer bg-[#0165AD] hover:bg-[#0165add2] transition-colors"
+          onClick={() => navigate("/register")}
+        >
           Learn More
         </button>
       </div>
