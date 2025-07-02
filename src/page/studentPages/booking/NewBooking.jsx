@@ -360,12 +360,12 @@ const NewBooking = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal:</span>
-                      <span className="font-semibold">{selectedTrip.price * searchFilters.passengers} EGP</span>
+                      <span className="font-semibold">{selectedTrip.price * searchFilters.passengers} SAR</span>
                     </div>
                     <div className="border-t pt-3">
                       <div className="flex justify-between text-xl">
                         <span className="font-bold">Total:</span>
-                        <span className="font-bold text-green-600">{selectedTrip.price * searchFilters.passengers} EGP</span>
+                        <span className="font-bold text-green-600">{selectedTrip.price * searchFilters.passengers} SAR</span>
                       </div>
                     </div>
                   </CardContent>

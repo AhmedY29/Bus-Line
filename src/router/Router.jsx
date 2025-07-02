@@ -23,6 +23,8 @@ import MultiStepForm from "../container/driverContainerPages/driverSignupContain
 import Home from "../page/Home";
 
 function Layout({ role }) {
+// import StudentLayout from "@/layouts/StudentLayout";
+// import studentRoutes from "./studentRoutes";
   return (
     <div className="  bg-[#F5F7FA]">
       <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
