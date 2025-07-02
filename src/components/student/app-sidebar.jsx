@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { LogOut, Settings, MessageCircle } from "lucide-react";
-
+import { useNavigate } from "react-router";
 const data = {
   user: {
     name: "shadcn",
@@ -110,6 +110,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }) {
+  const navigate = useNavigate();
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -158,7 +159,8 @@ export function AppSidebar({ ...props }) {
             onClick={() => {
               // Logout logic
               localStorage.removeItem("token");
-              window.location.href = "/login";
+              localStorage.removeItem("user");
+              navigate("/");
             }}
           >
             <LogOut className="mr-2 h-4 w-4" />

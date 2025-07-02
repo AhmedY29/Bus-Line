@@ -21,10 +21,11 @@ import StudentLayout from "../layouts/StudentLayout";
 import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 import Home from "../page/Home";
+import ProtectedRoute from "./ProtectedRoute";
 
 function Layout({ role }) {
-// import StudentLayout from "@/layouts/StudentLayout";
-// import studentRoutes from "./studentRoutes";
+  // import StudentLayout from "@/layouts/StudentLayout";
+  // import studentRoutes from "./studentRoutes";
   return (
     <div className="  bg-[#F5F7FA]">
       <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
@@ -49,18 +50,19 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
-
-  { path: "driver-register", element: <MultiStepForm /> },
-
   {
-    path: "/driver",
-    element: <Layout role="driver" />,
-    children: [{ index: true, element: <DriverDashboardPage /> }],
+    path: "driver-register",
+    element: <MultiStepForm />,
   },
 
+  // Admin Protected Routes
   {
     path: "/admin",
-    element: <Layout role="admin" />,
+    element: (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <Layout role="admin" />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -71,9 +73,15 @@ const router = createBrowserRouter([
       { path: "trips", element: <Trips /> },
     ],
   },
+
+  // Driver Protected Routes
   {
     path: "/driver",
-    element: <Layout role="driver" />,
+    element: (
+      <ProtectedRoute allowedRoles={["driver"]}>
+        <Layout role="driver" />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <DriverDashboardPage /> },
       { path: "dashboard", element: <DriverDashboardPage /> },
@@ -86,19 +94,33 @@ const router = createBrowserRouter([
       { path: "settings", element: <Profile /> },
     ],
   },
+
+  // Student Protected Routes
   {
     path: "/student",
-    element: <StudentLayout />,
+    element: (
+      <ProtectedRoute allowedRoles={["student"]}>
+        <StudentLayout />
+      </ProtectedRoute>
+    ),
     children: studentRoutes,
   },
+
+  // Parent Protected Routes (if you have parent routes)
+  // {
+  //   path: "/parent",
+  //   element: (
+  //     <ProtectedRoute allowedRoles={["parent"]}>
+  //       <ParentLayout />
+  //     </ProtectedRoute>
+  //   ),
+  //   children: parentRoutes,
+  // },
+
+  // Public Routes
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/student",
-    element: <StudentLayout />,
-    children: studentRoutes,
   },
 ]);
 

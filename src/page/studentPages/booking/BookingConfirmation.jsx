@@ -1,6 +1,20 @@
-
-import { CheckCircle, Calendar, Clock, MapPin, Bus, Download, Share, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  CheckCircle,
+  Calendar,
+  Clock,
+  MapPin,
+  Bus,
+  Download,
+  Share,
+  ArrowRight,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -28,8 +42,12 @@ const BookingConfirmation = () => {
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-12 h-12 text-green-600" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
-        <p className="text-lg text-gray-600 mb-4">Your booking has been confirmed</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Payment Successful!
+        </h1>
+        <p className="text-lg text-gray-600 mb-4">
+          Your booking has been confirmed
+        </p>
         <Badge className="bg-green-100 text-green-700 text-sm px-4 py-2">
           Booking ID: {booking.id.toUpperCase()}
         </Badge>
@@ -51,7 +69,9 @@ const BookingConfirmation = () => {
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-blue-600" />
                 <div>
-                  <p className="font-semibold text-blue-900">{booking.neighborhood}</p>
+                  <p className="font-semibold text-blue-900">
+                    {booking.neighborhood}
+                  </p>
                   <p className="text-sm text-blue-700">Pickup Location</p>
                 </div>
               </div>
@@ -59,7 +79,9 @@ const BookingConfirmation = () => {
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-blue-600" />
                 <div className="text-right">
-                  <p className="font-semibold text-blue-900">{booking.destination.name}</p>
+                  <p className="font-semibold text-blue-900">
+                    {booking.destination.name}
+                  </p>
                   <p className="text-sm text-blue-700">Destination</p>
                 </div>
               </div>
@@ -76,7 +98,7 @@ const BookingConfirmation = () => {
                   <p className="font-semibold">{booking.trip.busNumber}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <Calendar className="w-5 h-5 text-gray-500" />
                 <div>
@@ -94,7 +116,7 @@ const BookingConfirmation = () => {
                   <p className="font-semibold">{booking.trip.departureTime}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <Clock className="w-5 h-5 text-gray-500" />
                 <div>
@@ -113,16 +135,16 @@ const BookingConfirmation = () => {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Ticket Price:</span>
-                <span>{booking.trip.price} EGP</span>
+                <span>{booking.trip.price} SAR</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Service Fee:</span>
-                <span>5 EGP</span>
+                <span>5 SAR</span>
               </div>
               <Separator />
               <div className="flex justify-between font-bold">
                 <span>Total Paid:</span>
-                <span>{booking.trip.price + 5} EGP</span>
+                <span>{booking.trip.price + 5} SAR</span>
               </div>
             </div>
           </div>
@@ -131,18 +153,25 @@ const BookingConfirmation = () => {
 
           {/* Driver Information */}
           <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-3">Driver Information</h3>
+            <h3 className="font-semibold text-gray-900 mb-3">
+              Driver Information
+            </h3>
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="font-semibold text-blue-600">
-                  {booking.trip.driverName.split(' ').map(n => n[0]).join('')}
+                  {booking.trip.driverName
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
                 </span>
               </div>
               <div>
                 <p className="font-semibold">{booking.trip.driverName}</p>
                 <div className="flex items-center space-x-1">
                   <span className="text-yellow-500">★</span>
-                  <span className="text-sm text-gray-600">{booking.trip.rating} rating</span>
+                  <span className="text-sm text-gray-600">
+                    {booking.trip.rating} rating
+                  </span>
                 </div>
               </div>
             </div>
@@ -196,9 +225,7 @@ const BookingConfirmation = () => {
           </Button>
         </Link>
         <Link to="/student/tracking">
-          <Button className="w-full gradient-button">
-            Track Bus Live
-          </Button>
+          <Button className="w-full gradient-button">Track Bus Live</Button>
         </Link>
       </div>
     </div>
