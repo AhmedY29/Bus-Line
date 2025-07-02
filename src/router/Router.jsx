@@ -10,6 +10,9 @@ import Tracking from "../page/adminPages/Tracking";
 import Trips from "../page/adminPages/Trips";
 import DriversChat from "../container/adminContainerPages/DriversContainerPage/DriversChat";
 import Home from "../page/Home";
+import StudentLayout from "@/layouts/StudentLayout";
+import studentRoutes from "./studentRoutes";
+
 function Layout() {
   return (
     <>
@@ -49,6 +52,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/student",
+    element: <StudentLayout />,
+    children: studentRoutes,
   },
 ]);
 function Router() {
