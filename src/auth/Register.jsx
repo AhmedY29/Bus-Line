@@ -91,10 +91,12 @@ function Register() {
   return (
     <>
       <nav className="h-[10vh] bg-white flex justify-start items-center px-4">
-        <div className="flex items-center gap-3 mr-2">
-          <img src="./public/logo.png" alt="Logo" className="h-10 w-10 " />
-          <h1 className="text-xl font-bold">Bus Line</h1>
-        </div>
+        <Link to="/" className="flex items-center gap-2">
+          <div className="flex items-center gap-3 mr-2">
+            <img src="./public/logo.png" alt="Logo" className="h-10 w-10 " />
+            <h1 className="text-xl font-bold">Bus Line</h1>
+          </div>
+        </Link>
       </nav>
       <div className="bg-white flex justify-center items-center w-full h-[90vh]">
         <div className="lg:flex  justify-center items-center hidden w-1/2 h-full">
