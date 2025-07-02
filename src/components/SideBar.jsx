@@ -45,7 +45,7 @@ function SideBar() {
             )}
           </button>
           <img src="/Logo.png" alt="Logo" className="w-10 h-10 mr-2" />
-          <h1 className="text-lg font-semibold text-gray-800">Bus Line</h1>
+          <h1 className="text-lg font-semibold text-gray-800">BusLine</h1>
         </div>
       </div>
 

@@ -32,7 +32,6 @@ function DriverSidebar() {
   return (
     <div className="flex flex-col w-full md:w-50 lg:w-60 bg-white text-neutral-900 border-r border-gray-200">
       <div className="flex items-center h-[10vh] px-4 ">
-    
         <div className="flex items-center">
           <button
             className="md:hidden"
@@ -46,7 +45,7 @@ function DriverSidebar() {
             )}
           </button>
           <img src="/Logo.png" alt="Logo" className="w-15 h-15 mr-2" />
-          <h1 className="text-lg font-semibold text-gray-800">Bus Line</h1>
+          <h1 className="text-lg font-semibold text-gray-800">BusLine</h1>
         </div>
       </div>
 
@@ -55,7 +54,6 @@ function DriverSidebar() {
           isMobileMenuOpen ? "flex" : "hidden"
         }`}
       >
-
         <ul className={`flex flex-col gap-2 px-3 py-4`}>
           {adminMenuItems.map((item, index) => {
             const IconComponent = item.icon;

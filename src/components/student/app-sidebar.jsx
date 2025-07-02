@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   BookOpen,
   Bot,
@@ -14,13 +14,13 @@ import {
   ShieldCheck,
   SquareTerminal,
   Timer,
-} from "lucide-react"
+} from "lucide-react";
 import { Link } from "react-router";
 
-import { NavMain } from "@/components/student/nav-main"
-import { NavProjects } from "@/components/student/nav-projects"
-import { NavSecondary } from "@/components/student/nav-secondary"
-import { NavUser } from "@/components/student/nav-user"
+import { NavMain } from "@/components/student/nav-main";
+import { NavProjects } from "@/components/student/nav-projects";
+import { NavSecondary } from "@/components/student/nav-secondary";
+import { NavUser } from "@/components/student/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -29,9 +29,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-import { LogOut, Settings, MessageCircle } from "lucide-react"
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { LogOut, Settings, MessageCircle } from "lucide-react";
 
 const data = {
   user: {
@@ -107,9 +107,7 @@ const data = {
       ],
     },
   ],
-}
-
-
+};
 
 export function AppSidebar({ ...props }) {
   return (
@@ -120,18 +118,16 @@ export function AppSidebar({ ...props }) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-10 items-center justify-center rounded-lg">
-                   <img src="/Logo.png" alt="Logo" className="w-10 h-10" />
+                  <img src="/Logo.png" alt="Logo" className="w-10 h-10" />
                 </div>
                 <div className="flex flex-col flex-1 text-left">
-                  <span className="truncate font-bold text-lg">Bus Line</span>
+                  <span className="truncate font-bold text-lg">BusLine</span>
 
                   {/* First Slogan */}
                   <div className="flex items-center gap-1 text-xs text-gray-400">
                     <Timer className="h-3 w-3" />
                     <span>On Time, Every Time</span>
                   </div>
-
-
                 </div>
               </a>
             </SidebarMenuButton>
@@ -145,8 +141,6 @@ export function AppSidebar({ ...props }) {
         <div className="flex flex-col gap-2  py-2">
           {/* Messaging Button with badge */}
 
-
-
           <Link to="/student/chat" className="w-full">
             <Button variant="ghost" className="w-full justify-start relative">
               <MessageCircle className="mr-2 h-4 w-4" />
@@ -158,23 +152,20 @@ export function AppSidebar({ ...props }) {
             </Button>
           </Link>
 
-
           <Button
             // variant="destructive"
             className="w-full justify-start bg-red-600 hover:bg-red-700 text-white"
             onClick={() => {
               // Logout logic
-              localStorage.removeItem("token")
-              window.location.href = "/login"
+              localStorage.removeItem("token");
+              window.location.href = "/login";
             }}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>
-
         </div>
       </SidebarFooter>
-
     </Sidebar>
-  )
+  );
 }

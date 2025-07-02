@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-
+import { scrollToSection } from "../../utils/scrollUtils";
 function HomeFooter() {
   return (
     <footer className="bg-[#122031] text-white">
@@ -9,10 +9,10 @@ function HomeFooter() {
         <div className="md:w-1/2">
           <div className="flex items-center gap-3 mb-4">
             <img src="logoPng.png" alt="Logo" className="h-10 w-10" />
-            <span className="text-xl font-bold">Bus Line</span>
+            <span className="text-xl font-bold">BusLine</span>
           </div>
           <p className="text-gray-300 leading-relaxed">
-            Bus Line is a comprehensive transportation platform that connects
+            BusLine is a comprehensive transportation platform that connects
             students, parents, and drivers. We provide safe, reliable, and
             efficient school transportation services with real-time tracking and
             easy booking solutions.
@@ -24,18 +24,16 @@ function HomeFooter() {
           <li className="text-white transition-colors text-xl font-semibold">
             Get Started
           </li>
-          <li>
-            <Link
-              to="/book"
-              className="text-gray-200 hover:text-white transition-colors"
-            >
-              Book a Trip
-            </Link>
+          <li
+            className="text-gray-200 hover:text-white transition-colors cursor-pointer"
+            onClick={() => scrollToSection("homeBook")}
+          >
+            Book a Trip
           </li>
           <li>
             <Link
               to="/driver-register"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
               Join as a Driver
             </Link>
@@ -43,7 +41,7 @@ function HomeFooter() {
           <li>
             <Link
               to="/login"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
               Login
             </Link>
@@ -51,7 +49,7 @@ function HomeFooter() {
           <li>
             <Link
               to="/register"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
               Register
             </Link>
@@ -83,7 +81,7 @@ function HomeFooter() {
       <div className="py-4 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Bus Line. All rights reserved.
+            © {new Date().getFullYear()} BusLine. All rights reserved.
           </p>
         </div>
       </div>

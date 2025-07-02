@@ -94,16 +94,15 @@ function Register() {
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-3 mr-2">
             <img src="./public/logo.png" alt="Logo" className="h-10 w-10 " />
-            <h1 className="text-xl font-bold">Bus Line</h1>
+            <h1 className="text-xl font-bold">BusLine</h1>
           </div>
         </Link>
       </nav>
       <div className="bg-white flex justify-center items-center w-full h-[90vh]">
         <div className="lg:flex  justify-center items-center hidden w-1/2 h-full">
-          <div className="flex flex-col gap-10  h-full justify-center w-96">
-            <h1 className="text-6xl font-bold text-neutral-900">Register to</h1>
-            <h1 className="text-5xl font-semibold  text-neutral-900">
-              Bus Line
+          <div className="flex flex-col gap-10  h-full justify-center ">
+            <h1 className="text-6xl font-bold text-neutral-900">
+              Register to <span className="  text-[#0165AD]">BusLine</span>
             </h1>
             <p className="text-neutral-700 text-lg">
               If you already have an account <br />
