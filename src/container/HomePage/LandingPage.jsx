@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router";
 import { useNavigate } from "react-router";
 import { HiMenu, HiX } from "react-icons/hi";
+import { scrollToHomeBook } from "../../utils/scrollUtils";
 function LandingPage() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ function LandingPage() {
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <img src="./public/logo.png" alt="Logo" className="h-10 w-10" />
-            <h1 className="text-xl font-bold">Bus Line</h1>
+            <h1 className="text-xl font-bold">BusLine</h1>
           </div>
         </Link>
         {/* Desktop Menu */}
@@ -94,7 +95,7 @@ function LandingPage() {
           </p>
           <div className="flex w-full gap-5 justify-start items-center">
             <button
-              onClick={() => navigate("/")}
+              onClick={scrollToHomeBook}
               className="bg-[#0165AD] text-white px-5 md:px-7 lg:px-10 py-1.5 rounded-lg shadow-md shadow-blue-700/20 hover:bg-[#0165add2] transition-colors text-base cursor-pointer"
             >
               Book a Trip
