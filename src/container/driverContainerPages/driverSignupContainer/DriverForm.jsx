@@ -78,7 +78,7 @@ const DriverForm = () => {
             </div>
 
             {/* Phone Number */}
-            <div>
+            {/* <div>
               <input
                 type="tel"
                 name="phone"
@@ -87,7 +87,7 @@ const DriverForm = () => {
                 placeholder="Contact Number"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 />
-            </div>
+            </div> */}
 
             {/* Password */}
             <div className="relative">
