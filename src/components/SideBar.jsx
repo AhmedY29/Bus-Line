@@ -6,10 +6,11 @@ import { HiOutlineChatAlt2 } from "react-icons/hi";
 import { FaUserFriends } from "react-icons/fa";
 import { MdOutlineDirectionsBusFilled } from "react-icons/md";
 
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 function SideBar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -95,14 +96,16 @@ function SideBar() {
               </li>
             );
           })}
-          <li>
-            <Link
-              to="/login"
-              className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 pr-6"
-            >
-              <HiLogout className="text-xl" />
-              Logout
-            </Link>
+          <li
+            className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 pr-6"
+            onClick={() => {
+              localStorage.removeItem("user");
+              localStorage.removeItem("token");
+              navigate("/");
+            }}
+          >
+            <HiLogout className="text-xl" />
+            Logout
           </li>
         </ul>
       </div>

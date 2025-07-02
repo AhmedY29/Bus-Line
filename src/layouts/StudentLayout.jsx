@@ -1,5 +1,5 @@
-import { Link, Outlet } from "react-router"
-import { AppSidebar } from "@/components/student/app-sidebar"
+import { Link, Outlet } from "react-router";
+import { AppSidebar } from "@/components/student/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,14 +7,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -22,14 +22,14 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { BellIcon } from "lucide-react"
-import { LogOut } from "lucide-react"
-
-
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { BellIcon } from "lucide-react";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export default function StudentLayout() {
+  const navigate = useNavigate();
   return (
     <SidebarProvider>
       {/* Container should take full viewport height and be flex */}
@@ -46,7 +46,9 @@ export default function StudentLayout() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="/student">Student Portal</BreadcrumbLink>
+                    <BreadcrumbLink href="/student">
+                      Student Portal
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
@@ -58,7 +60,6 @@ export default function StudentLayout() {
 
             {/* Right aligned space for avatar, notifications */}
             <div className="ml-auto flex items-center gap-4">
-
               {/* Notifications Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -80,7 +81,10 @@ export default function StudentLayout() {
               {/* Avatar with Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
                     <Avatar>
                       <AvatarImage src="/avatar.jpg" alt="User avatar" />
                       <AvatarFallback>ST</AvatarFallback>
@@ -95,25 +99,28 @@ export default function StudentLayout() {
                     <Link to="/student/settings">Settings</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild className="text-red-500">
-                    <Link to="/logout">Logout</Link>
+                  <DropdownMenuItem
+                    asChild
+                    className="text-red-500"
+                    onClick={() => {
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("token");
+                      navigate("/");
+                    }}
+                  >
+                    Logout
                   </DropdownMenuItem>
-
                 </DropdownMenuContent>
               </DropdownMenu>
-
             </div>
-
-
           </header>
 
           {/* Main content area */}
           <main className="flex flex-1 flex-col gap-4 p-4 overflow-auto">
             <Outlet />
           </main>
-
         </SidebarInset>
       </div>
     </SidebarProvider>
-  )
+  );
 }
