@@ -68,14 +68,12 @@ function HomeDriver() {
               </div>
             </div>
           </div>
-
-          {/* Right Side  */}
+          {/* Right Side */}
           <div className="md:w-3/5 lg:w-4/12  ">
             <div
               className="bg-white rounded-3xl p-2  "
               style={{
-                boxShadow:
-                  "15px 15px 30px rgb(216, 234, 246), -15px -15px 30px rgb(216, 234, 246)",
+                boxShadow: "10px 0px 20px 0px rgba(216,234,246,0.6)",
               }}
             >
               {/* Driver */}
