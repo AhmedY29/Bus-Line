@@ -8,7 +8,7 @@ const Stepper = ({ currentStep = 1, totalSteps = 3 }) => {
   ];
 
   return (
-    <div className="rounded-lg p-6 w-[80%] mx-auto">
+    <div className="rounded-lg bg-gray-50 p-6 w-[80%] mx-auto">
       <div className="relative mb-4">
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden w-full">
           <div

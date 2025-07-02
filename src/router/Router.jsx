@@ -20,7 +20,7 @@ import studentRoutes from "./studentRoutes";
 import StudentLayout from "../layouts/StudentLayout";
 import StudentChat from "../container/driverContainerPages/StudentChat/StudentChat";
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
-
+import Home from "@/page/Home";
 function Layout({ role }) {
 
   return (
