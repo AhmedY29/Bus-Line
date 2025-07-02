@@ -69,7 +69,7 @@ const StudentDashboard = () => {
     {
       id: 2,
       action: "Payment Processed",
-      amount: "25 EGP",
+      amount: "25 SAR",
       time: "3 hours ago",
       status: "success",
     },
@@ -170,7 +170,7 @@ const StudentDashboard = () => {
                 Monthly Spending
               </p>
               <p className="text-3xl font-bold text-gray-900">
-                {stats.monthlySpending} EGP
+                {stats.monthlySpending} SAR
               </p>
               <div className="mt-3">
                 <Progress value={75} className="h-2 bg-orange-100" />
@@ -315,7 +315,7 @@ const StudentDashboard = () => {
                       <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
                         <div className="text-right">
                           <p className="text-2xl font-bold text-gray-900">
-                            {trip.price} EGP
+                            {trip.price} SAR
                           </p>
                         </div>
                         <div className="flex space-x-2">
