@@ -5,8 +5,8 @@ import { FaHandHoldingUsd } from "react-icons/fa";
 
 function HomeStudent() {
   return (
-    <div className="bg-[rgb(255,255,255)] flex flex-wrap justify-center gap-8 items-center w-full h-full py-10  md:py-20 lg:py-30">
-      <p className="w-full text-lg md:text-xl lg:text-3xl text-center text-gray-900 font-semibold ">
+    <div className="bg-[rgb(255,255,255)] flex flex-wrap justify-center gap-5 items-center w-full h-full py-5  md:py-15 lg:py-25">
+      <p className="w-full text-lg md:text-xl lg:text-3xl text-center text-gray-900 font-bold pb-5">
         Seamless and Comfortable Travel with <br /> Our Bus Booking System
       </p>
       {/* Feature Cards */}

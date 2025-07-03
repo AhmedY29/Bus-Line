@@ -94,7 +94,7 @@ export function NavUser({ user }) {
                   onClick={() => {
                     localStorage.removeItem("user");
                     localStorage.removeItem("token");
-                    navigate("/");
+                    navigate("/login");
                   }}
                 />
                 Log out

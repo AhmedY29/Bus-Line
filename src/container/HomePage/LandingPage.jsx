@@ -12,8 +12,8 @@ function LandingPage() {
   };
 
   return (
-    <div className="h-fit md:h-screen bg-[#F5F7FA] py-5 px-7">
-      <nav className="flex justify-between items-center py-3 px-10 bg-white shadow-md shadow-black/5 rounded-full">
+    <div className="h-fit flex flex-col justify-center md:h-screen bg-[#F5F7FA] py-5 px-7">
+      <nav className="flex justify-between items-center py-3 px-10 bg-white shadow-md shadow-black/5 rounded-full ">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <img src="./public/logo.png" alt="Logo" className="h-10 w-10" />
@@ -83,7 +83,7 @@ function LandingPage() {
         </div>
       )}
       {/* Main Content */}
-      <div className="flex flex-col-reverse md:flex-row  items-center justify-center h-full md:h-10/12 gap-5 ">
+      <div className="flex flex-col-reverse md:flex-row  items-center justify-center h-full md:h-10/12 gap-5 md:pt-5 ">
         <div className=" flex flex-col justify-center rounded-lg p-3 gap-10 h-full w-full md:w-1/2">
           <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-[#152C5B]">
             Public transport made <br /> easy!
