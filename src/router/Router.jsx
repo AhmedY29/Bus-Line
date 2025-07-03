@@ -22,6 +22,7 @@ import StudentChat from "../container/driverContainerPages/StudentChat/StudentCh
 import MultiStepForm from "../container/driverContainerPages/driverSignupContainer/MultiStepForm";
 import Home from "../page/Home";
 import ProtectedRoute from "./ProtectedRoute";
+import { FormProvider } from "../context/driverForm";
 
 function Layout({ role }) {
   // import StudentLayout from "@/layouts/StudentLayout";
@@ -52,7 +53,11 @@ const router = createBrowserRouter([
   },
   {
     path: "driver-register",
-    element: <MultiStepForm />,
+    element: (
+      <FormProvider>
+        <MultiStepForm />
+      </FormProvider>
+    ),
   },
 
   // Admin Protected Routes
