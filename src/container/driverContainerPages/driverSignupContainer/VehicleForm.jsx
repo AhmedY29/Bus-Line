@@ -55,8 +55,8 @@ const VehicleForm = () => {
             </label> */}
             <input
               type="text"
-              name="color"
-              value={formData.color}
+              name="vehicleType"
+              value={formData.vehicleType}
               onChange={handleChange}
               placeholder="Vehicle Type "
               className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
