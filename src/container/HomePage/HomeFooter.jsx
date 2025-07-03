@@ -11,7 +11,7 @@ function HomeFooter() {
             <img src="logoPng.png" alt="Logo" className="h-10 w-10" />
             <span className="text-xl font-bold">BusLine</span>
           </div>
-          <p className="text-gray-300 leading-relaxed">
+          <p className="text-gray-300 leading-relaxed text-justify">
             BusLine is a comprehensive transportation platform that connects
             students, parents, and drivers. We provide safe, reliable, and
             efficient school transportation services with real-time tracking and
@@ -59,9 +59,9 @@ function HomeFooter() {
 
       {/*  Team Names */}
 
-      <div className="max-w-6xl mx-auto">
-        <h3 className="text-center text-lg font-semibold mb-2">Our Team</h3>
-        <div className="flex flex-wrap justify-center gap-5 text-center">
+      <div className="w-full pl-5">
+        <h3 className="lg:text-center text-lg font-semibold mb-2 ">Our Team</h3>
+        <div className="flex flex-col lg:flex-row  flex-wrap justify-center gap-2 lg:gap-5 md:text-left">
           <p className="text-gray-100 hover:text-white transition-colors">
             Ahmed Alsaleh
           </p>

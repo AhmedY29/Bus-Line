@@ -160,7 +160,7 @@ export function AppSidebar({ ...props }) {
               // Logout logic
               localStorage.removeItem("token");
               localStorage.removeItem("user");
-              navigate("/");
+              navigate("/login");
             }}
           >
             <LogOut className="mr-2 h-4 w-4" />

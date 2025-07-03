@@ -105,7 +105,7 @@ export default function StudentLayout() {
                     onClick={() => {
                       localStorage.removeItem("user");
                       localStorage.removeItem("token");
-                      navigate("/");
+                      navigate("/login");
                     }}
                   >
                     Logout

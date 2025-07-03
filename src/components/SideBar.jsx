@@ -101,7 +101,7 @@ function SideBar() {
             onClick={() => {
               localStorage.removeItem("user");
               localStorage.removeItem("token");
-              navigate("/");
+              navigate("/login");
             }}
           >
             <HiLogout className="text-xl" />

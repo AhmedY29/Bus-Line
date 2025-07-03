@@ -14,10 +14,9 @@ function HomeDriver() {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
             Empowering Drivers to Serve Students
           </h1>
-          <p className="text-xl text-gray-600">Easy and Fast</p>
         </div>
 
         {/* Main Content */}
@@ -86,15 +85,15 @@ function HomeDriver() {
               </div>
               {/* Driver Stats */}{" "}
               <div className=" w-full flex flex-col  justify-center p-4 gap-5 rounded-2xl">
-                <span className="text-neutral-900 text-sm md:text-base lg:text-lg">
+                <span className="text-neutral-900 text-sm md:text-base lg:text-base">
                   14-29 June | 25 Drivers
                 </span>
                 <div className="flex items-center gap-3 w-full">
                   <div className="flex items-center bg-neutral-100 rounded-full p-2">
-                    <PiPlant className="text-neutral-500 text-lg" />
+                    <PiPlant className="text-neutral-500 text-base" />
                   </div>
                   <div className="flex items-center bg-neutral-100 rounded-full p-2">
-                    <FaRegMap className="text-neutral-500 text-lg" />
+                    <FaRegMap className="text-neutral-500 text-base" />
                   </div>
                   <div className="flex items-center bg-neutral-100 rounded-full p-2">
                     <IoPaperPlaneOutline className="text-neutral-500 text-lg" />
@@ -103,7 +102,7 @@ function HomeDriver() {
 
                 <div className="flex items-center">
                   <BsBusFront className="text-neutral-500 text-lg mr-2" />
-                  <span className="text-neutral-900 text-sm md:text-base lg:text-lg">
+                  <span className="text-neutral-900 text-sm md:text-base lg:text-base">
                     24 Trips
                   </span>
                 </div>
