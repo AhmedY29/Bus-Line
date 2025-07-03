@@ -105,7 +105,7 @@ function DriversDashboard() {
             ) : (
               <div className="flex items-center justify-center gap-4 border-l-2 border-gray-200 pl-4 h-full w-40">
                 <button
-                  className="bg-blue-500 text-white text-sm rounded-md p-2 w-4/5 cursor-pointer hover:bg-blue-600 transition-colors duration-200"
+                  className="bg-[#f1963f] text-white text-sm rounded-md p-2 w-4/5 cursor-pointer hover:bg-[#d17f32] transition-colors duration-200"
                   onClick={() => handleAcceptUser()}
                 >
                   View Details
