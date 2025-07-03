@@ -14,7 +14,7 @@ function HomeDriver() {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <h1 className="text-lg md:text-xl lg:text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
             Empowering Drivers to Serve Students
           </h1>
         </div>
