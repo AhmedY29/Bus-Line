@@ -25,8 +25,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import { FormProvider } from "../context/driverForm";
 
 function Layout({ role }) {
-  // import StudentLayout from "@/layouts/StudentLayout";
-  // import studentRoutes from "./studentRoutes";
   return (
     <div className="  bg-[#F5F7FA]">
       <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
@@ -68,6 +66,7 @@ const router = createBrowserRouter([
         <Layout role="admin" />
       </ProtectedRoute>
     ),
+    element: <Layout role="admin" />,
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -87,6 +86,7 @@ const router = createBrowserRouter([
         <Layout role="driver" />
       </ProtectedRoute>
     ),
+    element: <Layout role="driver" />,
     children: [
       { index: true, element: <DriverDashboardPage /> },
       { path: "dashboard", element: <DriverDashboardPage /> },
@@ -123,6 +123,11 @@ const router = createBrowserRouter([
   // },
 
   // Public Routes
+  {
+    path: "/student",
+    element: <StudentLayout />,
+    children: studentRoutes,
+  },
   {
     path: "/",
     element: <Home />,

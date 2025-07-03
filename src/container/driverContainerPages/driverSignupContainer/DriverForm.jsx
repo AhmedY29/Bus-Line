@@ -14,7 +14,7 @@ const DriverForm = () => {
     <div className="flex items-center justify-center bg-gray-50">
       {/* Container */}
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
-        <div className="md:w-1/2 p-8  hidden md:flex flex-col justify-center">
+        <div className="md:w-1/2 p-8 hidden md:flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
             Be part of our driving team and start earning today. <br /> Sign up
@@ -37,6 +37,7 @@ const DriverForm = () => {
             {/* Vehicle Type */}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Vehicle Color */}
               <div>
                 {/* <label className="block text-gray-700 font-medium mb-2">
             Vehicle Type 
@@ -52,6 +53,7 @@ const DriverForm = () => {
                 />
               </div>
 
+              {/* Vehicle Model */}
               <div>
                 {/* <label className="block text-gray-700 font-medium mb-2">
               Color
@@ -69,6 +71,7 @@ const DriverForm = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Plate Number */}
               <div>
                 {/* <label className="block text-gray-700 font-medium mb-2">
               Model
@@ -113,15 +116,14 @@ const DriverForm = () => {
               />
             </div>
 
-            {/* Submit Button */}
-            {/* <div className="mt-6 flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded transition-colors"
-          >
-            Next
-          </button>
-        </div> */}
+            <div className="mt-6 flex justify-end">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded transition-colors"
+              >
+                Next
+              </button>
+            </div>
           </form>
         </div>
       </div>
