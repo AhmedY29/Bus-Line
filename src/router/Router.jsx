@@ -23,10 +23,6 @@ import MultiStepForm from "../container/driverContainerPages/driverSignupContain
 import Home from "../page/Home";
 import ProtectedRoute from "./ProtectedRoute";
 
-// function Layout({ role }) {
-  // import StudentLayout from "@/layouts/StudentLayout";
-  // import studentRoutes from "./studentRoutes";
-// import Home from "@/page/Home";
 function Layout({ role }) {
 
   return (

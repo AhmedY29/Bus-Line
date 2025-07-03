@@ -173,7 +173,6 @@ const StudentDashboard = () => {
               </p>
               <p className="text-3xl font-bold text-gray-900">
                 {stats.monthlySpending} SAR
-                {stats.monthlySpending} EGP
               </p>
               <div className="mt-3">
                 <Progress value={75} className="h-2 bg-orange-100" />
@@ -319,7 +318,6 @@ const StudentDashboard = () => {
                         <div className="text-right">
                           <p className="text-2xl font-bold text-gray-900">
                             {trip.price} SAR
-                            {trip.price} EGP
                           </p>
                         </div>
                         <div className="flex space-x-2">
