@@ -100,6 +100,7 @@ const StudentDashboard = () => {
               </div>
               <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                 {/* Welcome back {user.name}! */}
+                Welcome back, {user.name}!
               </h1>
               <p className="text-blue-100 text-lg max-w-md">
                 Ready for your next journey? Let's get you moving with our
@@ -118,6 +119,7 @@ const StudentDashboard = () => {
                 <Button
                   variant="outline"
                   className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm"
+                  // className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-2xl backdrop-blur-sm"
                 >
                   <Bus className="w-5 h-5 mr-2" />
                   Track Bus
@@ -171,6 +173,7 @@ const StudentDashboard = () => {
               </p>
               <p className="text-3xl font-bold text-gray-900">
                 {stats.monthlySpending} SAR
+                {stats.monthlySpending} EGP
               </p>
               <div className="mt-3">
                 <Progress value={75} className="h-2 bg-orange-100" />
@@ -316,6 +319,7 @@ const StudentDashboard = () => {
                         <div className="text-right">
                           <p className="text-2xl font-bold text-gray-900">
                             {trip.price} SAR
+                            {trip.price} EGP
                           </p>
                         </div>
                         <div className="flex space-x-2">

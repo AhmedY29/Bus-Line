@@ -23,9 +23,12 @@ import MultiStepForm from "../container/driverContainerPages/driverSignupContain
 import Home from "../page/Home";
 import ProtectedRoute from "./ProtectedRoute";
 
-function Layout({ role }) {
+// function Layout({ role }) {
   // import StudentLayout from "@/layouts/StudentLayout";
   // import studentRoutes from "./studentRoutes";
+// import Home from "@/page/Home";
+function Layout({ role }) {
+
   return (
     <div className="  bg-[#F5F7FA]">
       <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
@@ -41,6 +44,7 @@ function Layout({ role }) {
   );
 }
 
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -53,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: "driver-register",
     element: <MultiStepForm />,
+
+    path: "/driver",
+    element: <Layout role="driver" />,
+    children: [{ index: true, element: <DriverDashboardPage /> }],
   },
 
   // Admin Protected Routes
@@ -63,6 +71,7 @@ const router = createBrowserRouter([
         <Layout role="admin" />
       </ProtectedRoute>
     ),
+    element: <Layout role="admin" />,
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -82,6 +91,7 @@ const router = createBrowserRouter([
         <Layout role="driver" />
       </ProtectedRoute>
     ),
+    element: <Layout role="driver" />,
     children: [
       { index: true, element: <DriverDashboardPage /> },
       { path: "dashboard", element: <DriverDashboardPage /> },
@@ -118,6 +128,11 @@ const router = createBrowserRouter([
   // },
 
   // Public Routes
+  {
+    path: "/student",
+    element: <StudentLayout />,
+    children: studentRoutes,
+  },
   {
     path: "/",
     element: <Home />,
