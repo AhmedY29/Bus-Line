@@ -5,7 +5,7 @@ const TripPassenger = () => {
   const [passengers, setPassengers] = useState([
     {
       id: 1,
-      destination: 'Princess Noura',
+      passengers: 'passengers1',
       neighborhood: 'ANY N',
       departureTime: '8:30 AM',
       email: '',
@@ -14,7 +14,7 @@ const TripPassenger = () => {
     },
     {
       id: 2,
-      destination: 'King Saud U',
+      passengers: 'passengers2',
       neighborhood: 'ANY N',
       departureTime: '8:30 AM',
       email: 'floyd@yahoo.com',
@@ -23,7 +23,7 @@ const TripPassenger = () => {
     },
     {
       id: 3,
-      destination: 'Ronald Richards',
+      passengers: 'passengers2',
       neighborhood: 'Adobe',
       departureTime: '8:30 AM',
       email: 'ronald@adobe.com',
