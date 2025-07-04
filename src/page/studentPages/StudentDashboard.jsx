@@ -164,7 +164,7 @@ const StudentDashboard = () => {
                 <CreditCard className="w-7 h-7 text-white" />
               </div>
               <Badge className="bg-orange-100 text-orange-700 border-orange-200">
-                75%
+                Monthly subscription
               </Badge>
             </div>
             <div>
@@ -177,7 +177,7 @@ const StudentDashboard = () => {
               <div className="mt-3">
                 <Progress value={75} className="h-2 bg-orange-100" />
                 <p className="text-xs text-gray-500 mt-1">
-                  75% of monthly budget
+                  {/* 75% of monthly budget */}
                 </p>
               </div>
             </div>
@@ -267,7 +267,7 @@ const StudentDashboard = () => {
                 {upcomingTrips.map((trip) => (
                   <div
                     key={trip.id}
-                    className="booking-card group hover:shadow-lg transition-all duration-300"
+                    className="booking-card group transition-all duration-300 p-2"
                   >
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                       <div className="flex-1">
@@ -286,7 +286,7 @@ const StudentDashboard = () => {
                             </div>
                           </div>
                           <Badge
-                            className={`status-badge ${
+                            className={`status-badge${
                               trip.status === "confirmed"
                                 ? "status-active"
                                 : "status-pending"
@@ -320,7 +320,7 @@ const StudentDashboard = () => {
                             {trip.price} SAR
                           </p>
                         </div>
-                        <div className="flex space-x-2">
+                        <div className="flex space-x-2 mt-5 mx-2">
                           <Button
                             variant="outline"
                             size="sm"
