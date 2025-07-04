@@ -212,128 +212,125 @@ const StudentDashboard = () => {
 
       {/* Enhanced Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Enhanced Upcoming Trips */}
-        <div className="lg:col-span-2">
-          <Card className="bus-card border-0">
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-2xl font-bold flex items-center">
-                    <Calendar className="w-6 h-6 mr-2 text-blue-600" />
-                    Upcoming Trips
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    Your scheduled bookings for the next few days
-                  </CardDescription>
-                </div>
-                <Badge className="bg-blue-100 text-blue-700 px-3 py-1">
-                  {upcomingTrips.length} trips
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {upcomingTrips.map((trip) => (
-                  <div
-                    key={trip.id}
-                    className="booking-card group transition-all duration-300 p-2"
-                  >
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
-                              <Bus className="w-6 h-6 text-blue-600" />
-                            </div>
-                            <div>
-                              <h3 className="font-bold text-gray-900 text-lg">
-                                {trip.destination}
-                              </h3>
-                              <p className="text-sm text-gray-600">
-                                Driver: {trip.driver}
-                              </p>
+      {/* Enhanced Upcoming Trips */}
+<div className="lg:col-span-2">
+  <Card className="bus-card border-0">
+    <CardHeader className="pb-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <CardTitle className="text-2xl font-bold flex items-center">
+            <Calendar className="w-6 h-6 mr-2 text-blue-600" />
+            Upcoming Trips
+          </CardTitle>
+          <CardDescription className="mt-1">
+            Your scheduled bookings for the next few days
+          </CardDescription>
+        </div>
+        <Badge className="bg-blue-100 text-blue-700 px-3 py-1">
+          {upcomingTrips.length} trips
+        </Badge>
+      </div>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        {upcomingTrips.map((trip) => (
+          <div
+            key={trip.id}
+            className="booking-card group transition-all duration-300 p-2"
+          >
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
+                      <Bus className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900 text-lg">
+                        {trip.destination}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Driver: {trip.driver}
+                      </p>
 
-
-
-                               <Badge
-                            className={`status-badge${
-                              trip.status === "confirmed"
-                                ? "status-active"
-                                : "status-pending"
-                            }`}
-                          >
-                            {trip.status}
-                          </Badge>
-                              
-                            </div>
-                          </div>
-                          {/* <Badge
-                            className={`status-badge${
-                              trip.status === "confirmed"
-                                ? "status-active"
-                                : "status-pending"
-                            }`}
-                          >
-                            {trip.status}
-                          </Badge> */}
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                          <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
-                            <Calendar className="w-4 h-4 text-gray-500" />
-                            <span className="font-medium">{trip.date}</span>
-                          </div>
-                          <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
-                            <Clock className="w-4 h-4 text-gray-500" />
-                            <span className="font-medium">{trip.time}</span>
-                          </div>
-                          <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
-                            <Bus className="w-4 h-4 text-gray-500" />
-                            <span className="font-medium">
-                              {trip.busNumber}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-gray-900">
-                            {trip.price} SAR
-                          </p>
-                        </div>
-                        <div className="flex space-x-2 mt-12 mx-7">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="hover:bg-blue-50 hover:border-blue-200"
-                          >
-                            View Details
-                          </Button>
-                          <Button size="sm" className="gradient-button">
-                            Track
-                          </Button>
-                        </div>
-                      </div>
+                      {/* Badge with dynamic color based on status */}
+                      <Badge
+                        className={`${
+                          trip.status === "confirmed"
+                            ? "bg-green-500 text-white"
+                            : "bg-orange-500 text-white"
+                        } px-3 py-1 rounded-full`}
+                      >
+                        {trip.status === "confirmed" ? "Confirmed" : "Pending"}
+                      </Badge>
                     </div>
                   </div>
-                ))}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                  <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                    <Calendar className="w-4 h-4 text-gray-500" />
+                    <span className="font-medium">{trip.date}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                    <Clock className="w-4 h-4 text-gray-500" />
+                    <span className="font-medium">{trip.time}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                    <Bus className="w-4 h-4 text-gray-500" />
+                    <span className="font-medium">
+                      {trip.busNumber}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-8 text-center">
-                <Link to="/student/bookings">
+              <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-gray-900">
+                    {trip.price} SAR
+                  </p>
+                </div>
+                <div className="flex space-x-2 mt-12 mx-7">
                   <Button
                     variant="outline"
-                    className="px-8 py-3 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
+                    size="sm"
+                    className="hover:bg-blue-50 hover:border-blue-200"
                   >
-                    View All Bookings
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    View Details
                   </Button>
-                </Link>
+                  <Button
+                    size="sm"
+                    className={`${
+                      trip.status === "confirmed"
+                        ? "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-gray-400 text-white hover:bg-gray-500"
+                    } gradient-button`}
+                  >
+                    {trip.status === "confirmed" ? "Track" : "Pending"}
+                  </Button>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 text-center">
+        <Link to="/student/bookings">
+          <Button
+            variant="outline"
+            className="px-8 py-3 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
+          >
+            View All Bookings
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </Link>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
 
         {/* Enhanced Recent Activity */}
         <div>
