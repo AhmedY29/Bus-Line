@@ -131,7 +131,7 @@ const StudentDashboard = () => {
       </div>
 
       {/* Enhanced Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="bus-card border-0 hover:shadow-xl transition-all duration-300 group">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
@@ -205,37 +205,6 @@ const StudentDashboard = () => {
               <p className="text-sm text-blue-600 font-medium">
                 Next: Tomorrow 7:30 AM
               </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bus-card border-0 hover:shadow-xl transition-all duration-300 group">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <MapPin className="w-7 h-7 text-white" />
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-purple-600 hover:text-purple-700 p-0"
-              >
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-600 mb-1">
-                Saved Routes
-              </p>
-              <p className="text-3xl font-bold text-gray-900">
-                {stats.savedRoutes}
-              </p>
-              <Link
-                to="/student/new-booking"
-                className="text-sm text-purple-600 hover:text-purple-700 font-medium inline-flex items-center mt-1"
-              >
-                Add route <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
             </div>
           </CardContent>
         </Card>
