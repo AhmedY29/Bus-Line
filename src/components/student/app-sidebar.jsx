@@ -48,6 +48,7 @@ const data = {
     },
     {
       title: "Booking",
+      url: "/student/new-booking",
       icon: Calendar1Icon,
       items: [
         {

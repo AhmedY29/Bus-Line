@@ -252,9 +252,10 @@ const StudentDashboard = () => {
                               <p className="text-sm text-gray-600">
                                 Driver: {trip.driver}
                               </p>
-                            </div>
-                          </div>
-                          <Badge
+
+
+
+                               <Badge
                             className={`status-badge${
                               trip.status === "confirmed"
                                 ? "status-active"
@@ -263,9 +264,21 @@ const StudentDashboard = () => {
                           >
                             {trip.status}
                           </Badge>
+                              
+                            </div>
+                          </div>
+                          {/* <Badge
+                            className={`status-badge${
+                              trip.status === "confirmed"
+                                ? "status-active"
+                                : "status-pending"
+                            }`}
+                          >
+                            {trip.status}
+                          </Badge> */}
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                           <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
                             <Calendar className="w-4 h-4 text-gray-500" />
                             <span className="font-medium">{trip.date}</span>
@@ -289,7 +302,7 @@ const StudentDashboard = () => {
                             {trip.price} SAR
                           </p>
                         </div>
-                        <div className="flex space-x-2 mt-5 mx-2">
+                        <div className="flex space-x-2 mt-12 mx-7">
                           <Button
                             variant="outline"
                             size="sm"
