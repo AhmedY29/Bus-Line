@@ -1,167 +1,425 @@
-import React, { useState } from 'react';
+import { Camera, Edit, Mail, Phone, MapPin, Calendar, User } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import React, { useState } from "react";
 
-const Profile = () => {
+const DriverProfile = () => {
+  const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState({
-    firstName: 'Mohammed',
-    lastName: 'Ali',
-    email: 'm.ali@gmail.com',
-    language: 'English',
-    timeZone: 'SA',
+    firstName: "Mohammed",
+    lastName: "Ali",
+    email: "m.ali@gmail.com",
+    phoneNumber: "+966501234567",
+    address: "Riyadh, Saudi Arabia",
+    licenseNumber: "LIC123456789",
+    licenseImage: null,
+    carModel: "Toyota Corolla",
+    plateNumber: "ABC-1234",
+    insuranceExpiry: "2025-12-31",
+    bankName: "Al Rajhi Bank",
+    accountNumber: "SA12345678901234567890",
+    accountName: "Mohammed Ali",
+    profileImage: null,
+    joinDate: "September 2024",
+    totalTrips: 47,
+    activeBookings: 2,
+    status: "Active",
   });
 
-  const [isEditing, setIsEditing] = useState(false);
-
- 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
+  const handleEditClick = () => setIsEditing(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', user);
-    setIsEditing(false); 
+    console.log("Form submitted:", user);
+    setIsEditing(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
+
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUser({ ...user, profileImage: URL.createObjectURL(file) });
+    }
+  };
+
+  const handleLicenseImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUser({ ...user, licenseImage: URL.createObjectURL(file) });
+    }
   };
 
   return (
-    <div className="bg-white m-5 shadow-md rounded-lg p-6">
-      
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center">
-          <img
-            src="https://www.svgrepo.com/show/506667/person.svg "
-            alt="Profile Picture"
-            className="w-12 h-12 rounded-full mr-4"
-          />
-          <div>
-            <h2 className="text-xl font-bold">{`${user.firstName} ${user.lastName}`}</h2>
-            <p className="text-gray-500">{user.email}</p>
+    <div className="p-2 space-y-6">
+      {/* Profile Header */}
+      <Card className="border-0 shadow-md">
+        <CardContent className="p-6">
+          <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+            <div className="relative">
+              <Avatar className="h-24 w-24 md:h-32 md:w-32">
+                <AvatarImage src={user.profileImage || "/placeholder.svg"} alt="Profile" />
+                <AvatarFallback className="bg-blue-100 text-blue-600 text-2xl font-bold">
+                  {user.firstName.charAt(0)}
+                  {user.lastName.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <Button
+                size="sm"
+                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-blue-600 hover:bg-blue-700"
+              >
+                <Camera className="h-4 w-4" />
+              </Button>
+              {isEditing && (
+                <input type="file" accept="image/*" onChange={handleProfileImageChange} className="hidden" />
+              )}
+            </div>
+
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-2">
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {`${user.firstName} ${user.lastName}`}
+                </h1>
+                <Badge className="bg-green-100 text-green-700 w-fit mx-auto md:mx-0">
+                  {user.status}
+                </Badge>
+              </div>
+              <p className="text-gray-600 mb-4">Driver ID: {user.email.split("@")[0]}</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="flex items-center justify-center md:justify-start space-x-2">
+                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <span>Joined {user.joinDate}</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start space-x-2">
+                  <span className="font-semibold">{user.totalTrips}</span>
+                  <span>Total Trips</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start space-x-2">
+                  <span className="font-semibold">{user.activeBookings}</span>
+                  <span>Active Bookings</span>
+                </div>
+              </div>
+            </div>
+
+            {!isEditing && (
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={handleEditClick}
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                Edit Profile
+              </Button>
+            )}
           </div>
-        </div>
-        <button
-          onClick={handleEditClick}
-          className="bg-blue-500  hover:bg-blue-600 text-white px-5 py-3 rounded"
-        >
-          Edit
-        </button>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Personal Info */}
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <User className="h-5 w-5 mr-2 text-blue-600" />
+              Personal Information
+            </CardTitle>
+            <CardDescription>Your personal details and contact information</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {isEditing ? (
+              <>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">First Name</label>
+                  <input
+                    name="firstName"
+                    value={user.firstName}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Last Name</label>
+                  <input
+                    name="lastName"
+                    value={user.lastName}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Email</label>
+                  <input
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Phone Number</label>
+                  <input
+                    name="phoneNumber"
+                    value={user.phoneNumber}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Address</label>
+                  <input
+                    name="address"
+                    value={user.address}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Full Name</label>
+                  <p className="text-gray-900 font-medium">{`${user.firstName} ${user.lastName}`}</p>
+                </div>
+                <Separator />
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Email</label>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <Mail className="h-4 w-4 text-gray-400" />
+                    <p className="text-gray-900">{user.email}</p>
+                  </div>
+                </div>
+                <Separator />
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Phone</label>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <Phone className="h-4 w-4 text-gray-400" />
+                    <p className="text-gray-900">{user.phoneNumber}</p>
+                  </div>
+                </div>
+                <Separator />
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Address</label>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <MapPin className="h-4 w-4 text-gray-400" />
+                    <p className="text-gray-900">{user.address}</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Vehicle & License Info */}
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle>Vehicle & License Info</CardTitle>
+            <CardDescription>Details about your vehicle and driver license</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {isEditing ? (
+              <>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Car Model</label>
+                  <input
+                    name="carModel"
+                    value={user.carModel}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Plate Number</label>
+                  <input
+                    name="plateNumber"
+                    value={user.plateNumber}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Insurance Expiry Date</label>
+                  <input
+                    name="insuranceExpiry"
+                    value={user.insuranceExpiry}
+                    onChange={handleChange}
+                    type="date"
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">License Number</label>
+                  <input
+                    name="licenseNumber"
+                    value={user.licenseNumber}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Upload License Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLicenseImageChange}
+                    className="mt-1 block w-full text-sm"
+                  />
+                  {user.licenseImage && (
+                    <img
+                      src={user.licenseImage}
+                      alt="License"
+                      className="mt-2 h-32 rounded border object-cover"
+                    />
+                  )}
+                  {!user.licenseImage && isEditing && (
+                    <p className="text-sm text-gray-500 mt-2">No license image uploaded</p>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Car Model</span>
+                    <span className="font-semibold">{user.carModel}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Plate Number</span>
+                    <span className="font-semibold">{user.plateNumber}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Insurance Expiry</span>
+                    <span className="font-semibold">{user.insuranceExpiry}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">License No.</span>
+                    <span className="font-semibold">{user.licenseNumber}</span>
+                  </div>
+                  <Separator />
+                  <span className="text-sm text-gray-600">License Image.</span>
+                  {user.licenseImage ? (
+                    <img
+                      src={user.licenseImage}
+                      alt="License"
+                      className="mt-2 h-32 rounded border object-cover"
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-500 mt-2">No license image</p>
+                  )}
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Payment Info */}
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle>Bank Account</CardTitle>
+            <CardDescription>Payment details</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {isEditing ? (
+              <>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Bank Name</label>
+                  <input
+                    name="bankName"
+                    value={user.bankName}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Account Number</label>
+                  <input
+                    name="accountNumber"
+                    value={user.accountNumber}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+                <Separator />
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Account Holder Name</label>
+                  <input
+                    name="accountName"
+                    value={user.accountName}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-3 py-1 rounded"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+               
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Bank</span>
+                    <span className="font-semibold">{user.bankName}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Account</span>
+                    <span className="font-semibold">{user.accountNumber}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Account Holder</span>
+                    <span className="font-semibold">{user.accountName}</span>
+                  </div>
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Edit Form */}
+      {/* Submit Button */}
       {isEditing && (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-            <div>
-              <label htmlFor="firstName" className="block mb-2">
-                Your First Name
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                value={user.firstName}
-                onChange={(e) =>
-                  setUser({ ...user, firstName: e.target.value })
-                }
-                placeholder="Your First Name"
-                className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-       
-            <div>
-              <label htmlFor="email" className="block mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={user.email}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-                placeholder="Email"
-                className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-     
-            <div>
-              <label htmlFor="language" className="block mb-2">
-                Language
-              </label>
-              <select
-                id="language"
-                value={user.language}
-                onChange={(e) => setUser({ ...user, language: e.target.value })}
-                className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-              >
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-                <option value="Arabic">Arabic</option>
-              </select>
-            </div>
-
-         
-            <div>
-              <label htmlFor="timeZone" className="block mb-2">
-                Time Zone
-              </label>
-              <select
-                id="timeZone"
-                value={user.timeZone}
-                onChange={(e) => setUser({ ...user, timeZone: e.target.value })}
-                className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-              >
-                <option value="UTC">UTC</option>
-                <option value="UTC+1">UTC+1</option>
-                <option value="UTC-5">UTC-5</option>
-                <option value="UTC+9">UTC+9</option>
-              </select>
-            </div>
-          </div>
-
-       
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+        <div className="text-center">
+          <Button
+            onClick={handleSubmit}
+            className="bg-blue-600 hover:bg-blue-700 text-white mt-4"
           >
-            Save Changes
-          </button>
-        </form>
-      )}
-
-
-      {!isEditing && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-   
-          <div className="flex flex-col">
-            <p>{`First Name`}</p>
-            <p>{`${user.firstName}`}</p>
-          </div>
-          <div className="flex flex-col">
-            <p>{`Last Name`}</p>
-            <p>{`${user.lastName}`}</p>
-          </div>
-
-    
-          <div>
-            <p>{`Email`}</p>
-            <p>{`${user.email}`}</p>
-          </div>
-
-    
-          <div>
-            <p>{`Language`}</p>
-            <p>{`${user.language}`}</p>
-          </div>
-
-      
-          <div>
-            <p>{`Time Zone`}</p>
-            <p>{`${user.timeZone}`}</p>
-          </div>
+            Submit Changes
+          </Button>
         </div>
       )}
     </div>
   );
 };
 
-export default Profile;
+export default DriverProfile;

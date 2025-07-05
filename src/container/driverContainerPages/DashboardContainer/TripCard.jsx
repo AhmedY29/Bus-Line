@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const TripCard = () => {
   const [trip, setTrip] = useState('');
@@ -11,21 +12,19 @@ const TripCard = () => {
     <div className="flex flex-col md:flex-row gap-6 p-4">
 
       <div className="flex flex-col gap-6 w-full md:w-1/2">
-     
+
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-bold">New request</h2>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">
-              Add Trip +
-            </button>
+           
           </div>
 
-    
+      
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-left">Trip destination</th>
+                  <th className="px-4 py-2 text-center"> Destination</th>
                   <th className="px-4 py-2 text-left">Neighborhood</th>
                   <th className="px-4 py-2 text-left"></th>
                 </tr>
@@ -35,8 +34,8 @@ const TripCard = () => {
                   <td className="px-4 py-2">Alhamra</td>
                   <td className="px-4 py-2">King Saud U</td>
                   <td className="px-4 py-2">
-                    <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm w-full sm:w-auto">
-                      More Details
+                    <button className="bg-[#0165AD] hover:bg-blue-800 text-white  py-1 px-6 rounded text-sm w-full sm:w-auto">
+                       Details
                     </button>
                   </td>
                 </tr>
@@ -44,8 +43,8 @@ const TripCard = () => {
                   <td className="px-4 py-2">King Saud U</td>
                   <td className="px-4 py-2">Alhamra</td>
                   <td className="px-4 py-2">
-                    <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm w-full sm:w-auto">
-                      More Details
+                    <button className="bg-[#0165AD] hover:bg-blue-800 text-white py-1 px-6 rounded text-sm w-full sm:w-auto">
+                       Details
                     </button>
                   </td>
                 </tr>
@@ -54,7 +53,7 @@ const TripCard = () => {
           </div>
         </div>
 
-     
+  
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between mb-4">
             <p className="block font-medium">Choose Trip</p>
@@ -62,13 +61,13 @@ const TripCard = () => {
           </div>
 
           <div className="mb-6">
+      
             <select
               id="trip"
               value={trip}
               onChange={(e) => setTrip(e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-            >
-              <option value="">Select Trip</option>
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  >
+              <option value="">Choose Trip</option>
               {trips.map((city, index) => (
                 <option key={index} value={city}>
                   {city}
@@ -79,11 +78,11 @@ const TripCard = () => {
 
           <div className="flex flex-col gap-6 mt-6">
             <div className="flex flex-col gap-4">
-              <div>
+              <div className='flex gap-5'>
                 <h1 className="block font-bold mb-2">From:</h1>
                 <h3>{currentLocation}</h3>
               </div>
-              <div>
+              <div className='flex gap-5'>
                 <h1 className="block font-bold mb-2">To:</h1>
                 <h3>{destination}</h3>
               </div>
@@ -99,9 +98,13 @@ const TripCard = () => {
         </div>
       </div>
 
-
+  
       <div className="bg-white shadow-md rounded-lg p-6 w-full md:w-1/2">
-  <h2 className="font-bold mb-4">Live Tracking Map</h2>
+      <div className='flex gap-2 '> 
+      <FaMapMarkerAlt className='h-5' />
+      <h2 className="font-bold mb-4">Live Tracking Map</h2>
+      </div>
+ 
   <div className="border border-gray-300 rounded h-64 md:h-96 overflow-hidden bg-gray-100 relative">
   
 
