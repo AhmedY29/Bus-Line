@@ -72,7 +72,7 @@ function AdminTable({
       {/* Data List */}
       <div className="flex flex-col h-full overflow-y-auto gap-2 mt-10 md:mt-2 scrollbar-hide">
         <div className="flex items-center p-2">
-          <h1 className="text-xs lg:text-base font-bold w-1/2 md:w-1/3 lg:w-1/2 text-left">
+          <h1 className="text-xs lg:text-base font-bold w-1/2 text-left">
             Name
           </h1>
           <h2 className="hidden md:block text-xs lg:text-base font-bold w-1/2  md:w-full text-left">
@@ -82,7 +82,7 @@ function AdminTable({
             Role
           </h2>
 
-          <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12 lg:w-1/12  ">
+          <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12  ">
             <h1 className="text-xs lg:text-base font-semibold  text-left md:pr-9">
               Edit
             </h1>
@@ -93,7 +93,7 @@ function AdminTable({
             key={item.id || item._id || index}
             className="flex items-center p-2"
           >
-            <h1 className="text-xs lg:text-base font-semibold w-1/2 md:w-1/3 lg:w-1/2 text-left">
+            <h1 className="text-xs lg:text-base font-semibold w-1/2 text-left">
               {item.name}
             </h1>
             <h2 className="hidden md:block text-xs lg:text-base font-semibold w-1/2 md:w-full text-left">
@@ -103,7 +103,7 @@ function AdminTable({
               {item.role}
             </h2>
 
-            <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12 lg:w-1/12  ">
+            <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12   ">
               <FaUserPen
                 className="cursor-pointer text-2xl text-blue-600 transition-colors"
                 onClick={() => onEdit && onEdit(item)}

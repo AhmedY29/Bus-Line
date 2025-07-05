@@ -302,7 +302,7 @@ function UsersDashboard() {
                   </label>
                 </div>
               </div>
-              <div className="flex gap-3 w-2/3">
+              <div className="flex gap-3 w-full md:w-2/3">
                 <button
                   onClick={handleCloseModal}
                   className="bg-gray-500 text-white rounded-md p-2 w-1/2 cursor-pointer hover:bg-gray-600 transition-colors duration-200"
