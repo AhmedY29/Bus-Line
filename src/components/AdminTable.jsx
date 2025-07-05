@@ -91,15 +91,15 @@ function AdminTable({
         {filteredData.map((item, index) => (
           <div
             key={item.id || item._id || index}
-            className="flex items-center p-2"
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
           >
-            <h1 className="text-xs lg:text-base font-semibold w-1/2 text-left">
+            <h1 className="text-xs lg:text-base  w-1/2 text-left">
               {item.name}
             </h1>
-            <h2 className="hidden md:block text-xs lg:text-base font-semibold w-1/2 md:w-full text-left">
+            <h2 className="hidden md:block text-xs lg:text-base  w-1/2 md:w-full text-left">
               {item.email}
             </h2>
-            <h2 className="text-xs lg:text-base font-semibold w-1/2 text-left">
+            <h2 className="text-xs lg:text-base  w-1/2 text-left">
               {item.role}
             </h2>
 
