@@ -22,6 +22,7 @@ const DriverProfile = () => {
     address: "Riyadh, Saudi Arabia",
     licenseNumber: "LIC123456789",
     licenseImage: null,
+    vehicleRegistration: null,
     carModel: "Toyota Corolla",
     plateNumber: "ABC-1234",
     insuranceExpiry: "2025-12-31",
@@ -59,6 +60,13 @@ const DriverProfile = () => {
     const file = e.target.files[0];
     if (file) {
       setUser({ ...user, licenseImage: URL.createObjectURL(file) });
+    }
+  };
+
+  const handleVehicleRegistration = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUser({ ...user, vehicleRegistration: URL.createObjectURL(file) });
     }
   };
 
@@ -139,59 +147,15 @@ const DriverProfile = () => {
           <CardContent className="space-y-4">
             {isEditing ? (
               <>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">First Name</label>
-                  <input
-                    name="firstName"
-                    value={user.firstName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="firstName" value={user.firstName} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="First Name" />
                 <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Last Name</label>
-                  <input
-                    name="lastName"
-                    value={user.lastName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="lastName" value={user.lastName} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Last Name" />
                 <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Email</label>
-                  <input
-                    name="email"
-                    value={user.email}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="email" value={user.email} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Email" />
                 <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Phone Number</label>
-                  <input
-                    name="phoneNumber"
-                    value={user.phoneNumber}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Phone" />
                 <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Address</label>
-                  <input
-                    name="address"
-                    value={user.address}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="address" value={user.address} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Address" />
               </>
             ) : (
               <>
@@ -202,33 +166,24 @@ const DriverProfile = () => {
                 <Separator />
                 <div>
                   <label className="text-sm font-medium text-gray-600">Email</label>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <Mail className="h-4 w-4 text-gray-400" />
-                    <p className="text-gray-900">{user.email}</p>
-                  </div>
+                  <p className="text-gray-900">{user.email}</p>
                 </div>
                 <Separator />
                 <div>
                   <label className="text-sm font-medium text-gray-600">Phone</label>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <Phone className="h-4 w-4 text-gray-400" />
-                    <p className="text-gray-900">{user.phoneNumber}</p>
-                  </div>
+                  <p className="text-gray-900">{user.phoneNumber}</p>
                 </div>
                 <Separator />
                 <div>
                   <label className="text-sm font-medium text-gray-600">Address</label>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <MapPin className="h-4 w-4 text-gray-400" />
-                    <p className="text-gray-900">{user.address}</p>
-                  </div>
+                  <p className="text-gray-900">{user.address}</p>
                 </div>
               </>
             )}
           </CardContent>
         </Card>
 
-
+        {/* Vehicle & License Info */}
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>Vehicle & License Info</CardTitle>
@@ -237,103 +192,53 @@ const DriverProfile = () => {
           <CardContent className="space-y-4">
             {isEditing ? (
               <>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Car Model</label>
-                  <input
-                    name="carModel"
-                    value={user.carModel}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="carModel" value={user.carModel} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Car Model" />
+                <Separator />
+                <input name="plateNumber" value={user.plateNumber} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Plate Number" />
+                <Separator />
+                <input name="insuranceExpiry" type="date" value={user.insuranceExpiry} onChange={handleChange} className="w-full border px-3 py-1 rounded" />
+                <Separator />
+                <input name="licenseNumber" value={user.licenseNumber} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="License Number" />
                 <Separator />
 
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Plate Number</label>
-                  <input
-                    name="plateNumber"
-                    value={user.plateNumber}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
-                <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Insurance Expiry Date</label>
-                  <input
-                    name="insuranceExpiry"
-                    value={user.insuranceExpiry}
-                    onChange={handleChange}
-                    type="date"
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
-                <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">License Number</label>
-                  <input
-                    name="licenseNumber"
-                    value={user.licenseNumber}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
-                <Separator />
-
+                {/* License Image */}
                 <div>
                   <label className="text-sm font-medium text-gray-600">Upload License Image</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLicenseImageChange}
-                    className="mt-1 block w-full text-sm"
-                  />
-                  {user.licenseImage && (
-                    <img
-                      src={user.licenseImage}
-                      alt="License"
-                      className="mt-2 h-32 rounded border object-cover"
-                    />
-                  )}
-                  {!user.licenseImage && isEditing && (
-                    <p className="text-sm text-gray-500 mt-2">No license image uploaded</p>
-                  )}
+                  <input type="file" accept="image/*" onChange={handleLicenseImageChange} className="mt-1 block w-full text-sm" />
+                  {user.licenseImage && <img src={user.licenseImage} alt="License" className="mt-2 h-32 rounded border object-cover" />}
+                </div>
+                <Separator />
+
+                {/* Vehicle Registration */}
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Upload Vehicle Registration</label>
+                  <input type="file" accept="image/*" onChange={handleVehicleRegistration} className="mt-1 block w-full text-sm" />
+                  {user.vehicleRegistration && <img src={user.vehicleRegistration} alt="Vehicle Registration" className="mt-2 h-32 rounded border object-cover" />}
                 </div>
               </>
             ) : (
               <>
                 <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Car Model</span>
-                    <span className="font-semibold">{user.carModel}</span>
-                  </div>
+                  <div className="flex justify-between"><span className="text-sm text-gray-600">Car Model</span><span className="font-semibold">{user.carModel}</span></div>
                   <Separator />
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Plate Number</span>
-                    <span className="font-semibold">{user.plateNumber}</span>
-                  </div>
+                  <div className="flex justify-between"><span className="text-sm text-gray-600">Plate Number</span><span className="font-semibold">{user.plateNumber}</span></div>
                   <Separator />
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Insurance Expiry</span>
-                    <span className="font-semibold">{user.insuranceExpiry}</span>
-                  </div>
+                  <div className="flex justify-between"><span className="text-sm text-gray-600">Insurance Expiry</span><span className="font-semibold">{user.insuranceExpiry}</span></div>
                   <Separator />
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">License No.</span>
-                    <span className="font-semibold">{user.licenseNumber}</span>
-                  </div>
+                  <div className="flex justify-between"><span className="text-sm text-gray-600">License No.</span><span className="font-semibold">{user.licenseNumber}</span></div>
                   <Separator />
-                  <span className="text-sm text-gray-600">License Image.</span>
+                  <span className="text-sm text-gray-600">License Image</span>
                   {user.licenseImage ? (
-                    <img
-                      src={user.licenseImage}
-                      alt="License"
-                      className="mt-2 h-32 rounded border object-cover"
-                    />
+                    <img src={user.licenseImage} alt="License" className="mt-2 h-32 rounded border object-cover" />
                   ) : (
                     <p className="text-sm text-gray-500 mt-2">No license image</p>
+                  )}
+                  <Separator />
+                  <span className="text-sm text-gray-600">Vehicle Registration</span>
+                  {user.vehicleRegistration ? (
+                    <img src={user.vehicleRegistration} alt="Vehicle Registration" className="mt-2 h-32 rounded border object-cover" />
+                  ) : (
+                    <p className="text-sm text-gray-500 mt-2">No registration image</p>
                   )}
                 </div>
               </>
@@ -341,7 +246,7 @@ const DriverProfile = () => {
           </CardContent>
         </Card>
 
-        {/* Payment Info */}
+        {/* Bank Info */}
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>Bank Account</CardTitle>
@@ -350,70 +255,28 @@ const DriverProfile = () => {
           <CardContent className="space-y-4">
             {isEditing ? (
               <>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Bank Name</label>
-                  <input
-                    name="bankName"
-                    value={user.bankName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="bankName" value={user.bankName} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Bank Name" />
                 <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Account Number</label>
-                  <input
-                    name="accountNumber"
-                    value={user.accountNumber}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="accountNumber" value={user.accountNumber} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Account Number" />
                 <Separator />
-
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Account Holder Name</label>
-                  <input
-                    name="accountName"
-                    value={user.accountName}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 px-3 py-1 rounded"
-                  />
-                </div>
+                <input name="accountName" value={user.accountName} onChange={handleChange} className="w-full border px-3 py-1 rounded" placeholder="Account Holder Name" />
               </>
             ) : (
               <>
-               
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Bank</span>
-                    <span className="font-semibold">{user.bankName}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Account</span>
-                    <span className="font-semibold">{user.accountNumber}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Account Holder</span>
-                    <span className="font-semibold">{user.accountName}</span>
-                  </div>
-                </div>
+                <div className="flex justify-between"><span className="text-sm text-gray-600">Bank</span><span className="font-semibold">{user.bankName}</span></div>
+                <Separator />
+                <div className="flex justify-between"><span className="text-sm text-gray-600">Account</span><span className="font-semibold">{user.accountNumber}</span></div>
+                <Separator />
+                <div className="flex justify-between"><span className="text-sm text-gray-600">Account Holder</span><span className="font-semibold">{user.accountName}</span></div>
               </>
             )}
           </CardContent>
         </Card>
       </div>
 
-      {/* Submit Button */}
       {isEditing && (
         <div className="text-center">
-          <Button
-            onClick={handleSubmit}
-            className="bg-blue-600 hover:bg-blue-700 text-white mt-4"
-          >
+          <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white mt-4">
             Submit Changes
           </Button>
         </div>
