@@ -228,7 +228,7 @@ const DriverProfile = () => {
           </CardContent>
         </Card>
 
-        {/* Vehicle & License Info */}
+
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>Vehicle & License Info</CardTitle>

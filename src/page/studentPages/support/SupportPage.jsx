@@ -376,7 +376,7 @@ const SupportPage = () => {
           </Card>
 
           {/* Emergency Contact */}
-          <Card className="border-0 mt-6 border-2 border-red-200 bg-red-50">
+          <Card className=" mt-6 border-2 border-red-200 bg-red-50">
             <CardContent className="p-4">
               <h3 className="font-semibold text-red-900 mb-2">Emergency Contact</h3>
               <p className="text-sm text-red-700 mb-3">
