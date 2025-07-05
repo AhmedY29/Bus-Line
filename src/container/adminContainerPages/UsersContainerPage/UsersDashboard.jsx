@@ -9,6 +9,7 @@ function UsersDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
   const [EditUser, setEditUser] = useState(false);
   const [users, setUsers] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -36,9 +37,16 @@ function UsersDashboard() {
           "Content-Type": "application/json",
         },
       });
-
+      const responseDrivers = await axios.get(`${API}/admin/drivers`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log("Users fetched:", response.data.users);
+      console.log("Drivers fetched:", responseDrivers.data.driver);
       setUsers(response.data.users);
+      setDrivers(responseDrivers.data.driver);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -186,7 +194,7 @@ function UsersDashboard() {
         <AdminCard
           icon={FaUserFriends}
           title="Drivers"
-          count={users.filter((user) => user.role === "driver").length}
+          count={drivers.length}
         />
         <AdminCard
           icon={FaUserFriends}
