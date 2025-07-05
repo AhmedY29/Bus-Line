@@ -20,9 +20,16 @@ function AdminTable({
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
 
-  const filteredData = data.filter((item) =>
+  // Filter and sort data
+  let filteredData = data.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (sortBy === "alphabetical") {
+    filteredData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortBy === "oldest") {
+    filteredData = [...filteredData].reverse();
+  }
 
   return (
     <div
@@ -64,19 +71,45 @@ function AdminTable({
 
       {/* Data List */}
       <div className="flex flex-col h-full overflow-y-auto gap-2 mt-10 md:mt-2 scrollbar-hide">
-        {filteredData.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-2">
-            <div className="flex flex-col">
-              <h1 className="text-base font-semibold">{item.name}</h1>
-              <h2 className="text-xs text-gray-500">{item.role}</h2>
-            </div>
-            <div className="flex items-center gap-4 border-l-2 border-gray-200 pl-4 h-full">
+        <div className="flex items-center p-2">
+          <h1 className="text-xs lg:text-base font-bold w-1/2 md:w-1/3 lg:w-1/2 text-left">
+            Name
+          </h1>
+          <h2 className="hidden md:block text-xs lg:text-base font-bold w-1/2  md:w-full text-left">
+            Email
+          </h2>
+          <h2 className="text-xs lg:text-base font-bold w-1/2 text-left">
+            Role
+          </h2>
+
+          <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12 lg:w-1/12  ">
+            <h1 className="text-xs lg:text-base font-semibold  text-left md:pr-9">
+              Edit
+            </h1>
+          </div>
+        </div>
+        {filteredData.map((item, index) => (
+          <div
+            key={item.id || item._id || index}
+            className="flex items-center p-2"
+          >
+            <h1 className="text-xs lg:text-base font-semibold w-1/2 md:w-1/3 lg:w-1/2 text-left">
+              {item.name}
+            </h1>
+            <h2 className="hidden md:block text-xs lg:text-base font-semibold w-1/2 md:w-full text-left">
+              {item.email}
+            </h2>
+            <h2 className="text-xs lg:text-base font-semibold w-1/2 text-left">
+              {item.role}
+            </h2>
+
+            <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12 lg:w-1/12  ">
               <FaUserPen
-                className="text-gray-400 cursor-pointer text-2xl hover:text-blue-600 transition-colors"
+                className="cursor-pointer text-2xl text-blue-600 transition-colors"
                 onClick={() => onEdit && onEdit(item)}
               />
               <MdOutlineDelete
-                className="text-gray-400 cursor-pointer text-2xl hover:text-red-600 transition-colors"
+                className="cursor-pointer text-2xl text-red-600 transition-colors"
                 onClick={() => onDelete && onDelete(item)}
               />
             </div>
