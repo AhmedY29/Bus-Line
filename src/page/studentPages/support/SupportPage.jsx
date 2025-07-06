@@ -255,7 +255,7 @@ const SupportPage = () => {
           </Card>
 
           {/* Vehicle Info Card */}
-          <Card className="border-0 shadow-md">
+          {/* <Card className="border-0 shadow-md">
             <CardHeader>
               <CardTitle className="text-xl font-bold">Vehicle Information</CardTitle>
               <CardDescription>Provide vehicle details</CardDescription>
@@ -295,7 +295,6 @@ const SupportPage = () => {
                 />
               </div>
 
-              {/* Image Upload Section */}
               <div className="space-y-2">
                 <Label htmlFor="licenseImage">Upload License Image</Label>
                 <div className="flex items-center space-x-4">
@@ -324,7 +323,7 @@ const SupportPage = () => {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Contact Form */}
           <Card className="border-0 shadow-md">
@@ -372,20 +371,6 @@ const SupportPage = () => {
                   We typically respond to support requests within 24 hours during business days.
                 </p>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Emergency Contact */}
-          <Card className=" mt-6 border-2 border-red-200 bg-red-50">
-            <CardContent className="p-4">
-              <h3 className="font-semibold text-red-900 mb-2">Emergency Contact</h3>
-              <p className="text-sm text-red-700 mb-3">
-                For urgent issues during your trip, call our emergency hotline:
-              </p>
-              <Button variant="destructive" className="w-full">
-                <Phone className="w-4 h-4 mr-2" />
-                Emergency: +20 19 xxx xxxx
-              </Button>
             </CardContent>
           </Card>
         </div>

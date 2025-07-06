@@ -162,15 +162,7 @@ const LiveTracking = () => {
               </div>
             </div>
           </div>
-
-          {/* Progress Bar */}
-          {/* <div className="mb-4">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
-              <span>Trip Progress</span>
-              <span>{Math.round(tripProgress)}% Complete</span>
-            </div>
-            <Progress value={tripProgress} className="h-3" />
-          </div> */}
+      
         </CardContent>
       </Card>
 
@@ -207,7 +199,7 @@ const LiveTracking = () => {
                           )}
                         </p>
                       </div>
-                      <Badge className={`status-badge ${
+                      <Badge className={`w-25 status-badge ${
                         stop.status === 'current' ? 'status-active' : 
                         stop.status === 'completed' ? 'status-completed' : 'status-pending'
                       }`}>

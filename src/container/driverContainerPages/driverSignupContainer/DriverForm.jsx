@@ -12,8 +12,9 @@ const DriverForm = () => {
 
   return (
     <div className="flex items-center justify-center bg-gray-50">
-      {/* Container */}
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
+
+        {/* Left section */}
         <div className="md:w-1/2 p-8 hidden md:flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
@@ -21,108 +22,147 @@ const DriverForm = () => {
           </p>
           <p className="mb-4 text-sm">
             Already have an account?{" "}
-            <a
-              href="/login"
-              className="text-blue-500 hover:text-blue-700 transition-colors"
-            >
+            <a href="/login" className="text-blue-500 hover:text-blue-700 transition-colors">
               Login here!
             </a>
           </p>
         </div>
 
+        {/* Right section */}
         <div className="md:w-1/2 p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-2xl font-bold mb-6 ">Add Your Information</h2>
-            {/* Vehicle Type */}
+            <h2 className="text-2xl font-bold mb-6">Add Your Information</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Vehicle Color */}
-              <div>
-                {/* <label className="block text-gray-700 font-medium mb-2">
-            Vehicle Type 
-            </label> */}
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  // onChange={handleChange}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  placeholder="Enter Your Username "
-                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
-                />
-              </div>
+            {/* Username */}
+            <div>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={(e) => updateField("name", e.target.value)}
+                placeholder="Enter Your Username"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+              />
+            </div>
 
-              {/* Vehicle Model */}
-              <div>
-                {/* <label className="block text-gray-700 font-medium mb-2">
-              Color
-            </label> */}
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  // onChange={handleChange}
-                  onChange={(e) => updateField("email", e.target.value)}
-                  placeholder="Enter Your Email"
-                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
-                />
-              </div>
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={(e) => updateField("email", e.target.value)}
+                placeholder="Enter Your Email"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Plate Number */}
+              {/* Password */}
               <div>
-                {/* <label className="block text-gray-700 font-medium mb-2">
-              Model
-            </label> */}
                 <input
                   type="password"
                   name="password"
                   value={formData.password}
-                  // onChange={handleChange}
                   onChange={(e) => updateField("password", e.target.value)}
                   placeholder="Enter Your Password"
-                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
                 />
               </div>
+
+              {/* Confirm Password */}
               <div>
-                {/* <label className="block text-gray-700 font-medium mb-2">
-              Model
-            </label> */}
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Enter Your Confirm Password"
-                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
 
-            {/* Plate Number + Capacity */}
+            {/* Vehicle Color */}
             <div>
-              {/* <label className="block text-gray-700 font-medium mb-2">
-              Plate Number
-            </label> */}
               <input
                 type="text"
-                name="plateNumber"
-                value={formData.phoneNumber}
-                // onChange={handleChange}
-                onChange={(e) => updateField("phoneNumber", e.target.value)}
-                placeholder="Enter Your Phone Number"
-                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                name="color"
+                value={formData.color}
+                onChange={(e) => updateField("color", e.target.value)}
+                placeholder="Vehicle Color"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
               />
             </div>
 
-            <div className="mt-6 flex justify-end">
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded transition-colors"
-              >
-                Next
-              </button>
+            {/* Vehicle Model */}
+            <div>
+              <input
+                type="text"
+                name="model"
+                value={formData.model}
+                onChange={(e) => updateField("model", e.target.value)}
+                placeholder="Vehicle Model"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+              />
             </div>
+
+            {/* Plate Number */}
+            <div>
+              <input
+                type="text"
+                name="plateNumber"
+                value={formData.plateNumber}
+                onChange={(e) => updateField("plateNumber", e.target.value)}
+                placeholder="Vehicle Plate Number"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            {/* Capacity */}
+            <div>
+              <input
+                type="number"
+                name="capacity"
+                value={formData.capacity}
+                onChange={(e) => updateField("capacity", e.target.value)}
+                placeholder="Vehicle Capacity"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            {/* License */}
+            <div>
+              <input
+                type="text"
+                name="vehicleLicense"
+                value={formData.vehicleLicense}
+                onChange={(e) => updateField("vehicleLicense", e.target.value)}
+                placeholder="Vehicle License Number"
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            {/* Periodic Inspection */}
+            <div>
+              <select
+                name="periodicInspection"
+                value={formData.periodicInspection}
+                onChange={(e) => updateField("periodicInspection", e.target.value)}
+                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 text-blue-500 focus:shadow-md focus:shadow-blue-50 focus:outline-none focus:border-blue-500"
+              >
+                <option value="">Select Periodic Inspection</option>
+                <option value="passed">Passed</option>
+                <option value="not-passed">Not Passed</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"
+            >
+              Submit
+            </button>
+
           </form>
         </div>
       </div>
