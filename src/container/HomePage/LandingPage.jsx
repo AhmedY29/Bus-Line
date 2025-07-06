@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router"; 
-import { useNavigate } from "react-router"; 
 import { HiMenu, HiX } from "react-icons/hi";
 import { scrollToHomeBook } from "../../utils/scrollUtils";
 
@@ -17,26 +17,18 @@ function LandingPage() {
       <nav className="flex justify-between items-center py-3 px-10 bg-white shadow-md shadow-black/5 rounded-full">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Logo" className="h-10 w-10" /> {/* تعديل هنا */}
+            <img src="/Logo.png" alt="Logo" className="h-10 w-10" /> {/* Corrected path */}
             <h1 className="text-xl font-bold">BusLine</h1>
           </div>
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-10 pr-5">
-          <Link to="/" className="text-blue-700 text-lg">
-            Home
-          </Link>
-          <Link
-            to="/login"
-            className="text-neutral-700 text-lg hover:text-blue-700 transition-colors"
-          >
+          <Link to="/" className="text-blue-700 text-lg">Home</Link>
+          <Link to="/login" className="text-neutral-700 text-lg hover:text-blue-700 transition-colors">
             Login
           </Link>
-          <Link
-            to="/register"
-            className="text-neutral-700 text-lg hover:text-blue-700 transition-colors"
-          >
+          <Link to="/register" className="text-neutral-700 text-lg hover:text-blue-700 transition-colors">
             Register
           </Link>
         </div>
@@ -60,25 +52,13 @@ function LandingPage() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white absolute w-8/12 shadow-md rounded-lg mt-2 mx-7 overflow-hidden">
           <div className="flex flex-col">
-            <Link
-              to="/"
-              className="text-blue-700 text-lg px-6 py-3 border-b border-gray-100"
-              onClick={toggleMobileMenu}
-            >
+            <Link to="/" className="text-blue-700 text-lg px-6 py-3 border-b border-gray-100" onClick={toggleMobileMenu}>
               Home
             </Link>
-            <Link
-              to="/login"
-              className="text-neutral-700 text-lg hover:text-blue-700 hover:bg-gray-50 transition-colors px-6 py-3 border-b border-gray-100"
-              onClick={toggleMobileMenu}
-            >
+            <Link to="/login" className="text-neutral-700 text-lg hover:text-blue-700 hover:bg-gray-50 transition-colors px-6 py-3 border-b border-gray-100" onClick={toggleMobileMenu}>
               Login
             </Link>
-            <Link
-              to="/register"
-              className="text-neutral-700 text-lg hover:text-blue-700 hover:bg-gray-50 transition-colors px-6 py-3"
-              onClick={toggleMobileMenu}
-            >
+            <Link to="/register" className="text-neutral-700 text-lg hover:text-blue-700 hover:bg-gray-50 transition-colors px-6 py-3" onClick={toggleMobileMenu}>
               Register
             </Link>
           </div>
@@ -125,3 +105,4 @@ function LandingPage() {
 }
 
 export default LandingPage;
+

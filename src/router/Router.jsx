@@ -24,8 +24,14 @@ import Home from "../page/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import { FormProvider } from "../context/driverForm";
 
+
+
+
+  // import StudentLayout from "@/layouts/StudentLayout";
+  // import studentRoutes from "./studentRoutes";
 function Layout({ role }) {
-  return (
+
+ return (
     <div className="  bg-[#F5F7FA]">
       <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">
         {role === "admin" && <SideBar />}
@@ -56,6 +62,10 @@ const router = createBrowserRouter([
         <MultiStepForm />
       </FormProvider>
     ),
+    element: <MultiStepForm />,
+    path: "/driver",
+    element: <Layout role="driver" />,
+    children: [{ index: true, element: <DriverDashboardPage /> }],
   },
 
   // Admin Protected Routes
@@ -123,6 +133,7 @@ const router = createBrowserRouter([
   // },
 
   // Public Routes
+
   {
     path: "/student",
     element: <StudentLayout />,

@@ -1,3 +1,4 @@
+
 import {
   Calendar,
   Clock,
@@ -120,6 +121,8 @@ const StudentDashboard = () => {
                   variant="outline"
                   className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm"
                   // className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-2xl backdrop-blur-sm"
+                  // className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm"
+                  className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-2xl backdrop-blur-sm"
                 >
                   <Bus className="w-5 h-5 mr-2" />
                   Track Bus
@@ -255,14 +258,51 @@ const StudentDashboard = () => {
 
                       {/* Badge with dynamic color based on status */}
                       <Badge
-                        className={`${
+                        className={${
                           trip.status === "confirmed"
                             ? "bg-green-500 text-white"
                             : "bg-orange-500 text-white"
-                        } px-3 py-1 rounded-full`}
+                        } px-3 py-1 rounded-full}
                       >
                         {trip.status === "confirmed" ? "Confirmed" : "Pending"}
                       </Badge>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                          <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                            <Calendar className="w-4 h-4 text-gray-500" />
+                            <span className="font-medium">{trip.date}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                            <Clock className="w-4 h-4 text-gray-500" />
+                            <span className="font-medium">{trip.time}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                            <Bus className="w-4 h-4 text-gray-500" />
+                            <span className="font-medium">
+                              {trip.busNumber}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-gray-900">
+                            {trip.price} SAR
+                          </p>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="hover:bg-blue-50 hover:border-blue-200"
+                          >
+                            View Details
+                          </Button>
+                          <Button size="sm" className="gradient-button">
+                            Track
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -301,11 +341,11 @@ const StudentDashboard = () => {
                   </Button>
                   <Button
                     size="sm"
-                    className={`${
+                    className={${
                       trip.status === "confirmed"
                         ? "bg-blue-500 text-white hover:bg-blue-600"
                         : "bg-gray-400 text-white hover:bg-gray-500"
-                    } gradient-button`}
+                    } gradient-button}
                   >
                     {trip.status === "confirmed" ? "Track" : "Pending"}
                   </Button>
@@ -356,13 +396,13 @@ const StudentDashboard = () => {
                     className="flex items-start space-x-4 p-3 rounded-xl hover:bg-gray-50 transition-colors duration-200"
                   >
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold ${
+                      className={w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold ${
                         activity.status === "success"
                           ? "bg-gradient-to-br from-green-400 to-green-600"
                           : activity.status === "completed"
                           ? "bg-gradient-to-br from-blue-400 to-blue-600"
                           : "bg-gradient-to-br from-yellow-400 to-orange-500"
-                      }`}
+                      }}
                     >
                       {index + 1}
                     </div>

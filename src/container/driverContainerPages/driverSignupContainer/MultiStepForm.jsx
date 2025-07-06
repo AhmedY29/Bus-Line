@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useForm } from "../../../context/driverForm";
+import { useNavigate } from "react-router";
+import { Link } from "react-router"; 
 import Stepper from "./Stepper";
 import DriverForm from "./DriverForm";
 import VehicleForm from "./VehicleForm";
 import PaymentForm from "./PaymentForm";
-import { Link } from "react-router";
-import { useForm } from "../../../context/driverForm";
 import axios from "axios";
+
 const steps = [
   { title: "Personal info", component: DriverForm },
   { title: "Vehicle Details", component: VehicleForm },
@@ -14,57 +16,60 @@ const steps = [
 
 export default function MultiStepForm() {
   const { formData } = useForm();
+  const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const goToNextStep = () => {
-    if (currentStep == 0) {
-      if (formData.name.trim() == "") {
+    // Validation based on current step
+    if (currentStep === 0) {
+      if (!formData.name.trim()) {
         alert("Please Enter Your Username");
         return;
       }
-      if (formData.email.trim() == "") {
+      if (!formData.email.trim()) {
         alert("Please Enter Your Email");
         return;
       }
-      if (formData.password.trim() == "") {
+      if (!formData.password.trim()) {
         alert("Please Enter Your Password");
         return;
       }
-      if (formData.phoneNumber.trim() == "") {
+      if (!formData.phoneNumber.trim()) {
         alert("Please Enter Your Phone Number");
         return;
       }
     }
-    //Vehicle Validation
-    if (currentStep == 1) {
-      if (formData.vehicleName.trim() == "") {
+
+    if (currentStep === 1) {
+      if (!formData.vehicleName.trim()) {
         alert("Please Enter Your Vehicle Type Ex: bus");
         return;
       }
-      if (formData.vehicleColor.trim() == "") {
+      if (!formData.vehicleColor.trim()) {
         alert("Please Enter Your Vehicle Color");
         return;
       }
-      if (formData.vehicleModel.trim() == "") {
+      if (!formData.vehicleModel.trim()) {
         alert("Please Enter Your Vehicle Model");
         return;
       }
-      if (formData.vehicleCapacity.trim() == "") {
+      if (!formData.vehicleCapacity.trim()) {
         alert("Please Enter Your Vehicle Capacity");
         return;
       }
-      if (formData.vehiclePlateNumber.trim() == "") {
+      if (!formData.vehiclePlateNumber.trim()) {
         alert("Please Enter Your Vehicle Plate Number Ex: BJB 8989");
         return;
       }
-      if (formData.vehicleYearlyCheck.trim() == "") {
-        alert("Please Enter Your Vehicle Periodic Inspection ");
+      if (!formData.vehicleYearlyCheck.trim()) {
+        alert("Please Enter Your Vehicle Periodic Inspection");
         return;
       }
     }
+
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
@@ -76,34 +81,33 @@ export default function MultiStepForm() {
     }
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     try {
       setIsLoading(true);
-      axios
-        .post(
-          "https://bus-line-backend.onrender.com/api/auth/signup-driver",
-          formData
-        )
-        .then(() => alert("Created Driver Successfully"));
+      await axios.post(
+        "https://bus-line-backend.onrender.com/api/auth/signup-driver",
+        formData
+      );
+      alert("Driver Created Successfully");
+      setShowConfirmation(true);
     } catch (error) {
       console.log("Error In Create Driver:", error.message);
     } finally {
       setIsLoading(false);
-      setShowConfirmation(true);
     }
-    console.log(formData, "form");
   };
 
   const CurrentComponent = steps[currentStep].component;
 
   return (
     <div className="p-4 bg-gray-50 h-screen">
-      <div className="p-4 bg-gray-50 ">
+      {/* Container */}
+      <div className="p-4 bg-gray-50">
         <nav className="h-[10vh] flex justify-start items-center px-4">
           <Link to="/" className="flex items-center gap-2">
             <div className="flex items-center gap-3 mr-2">
               <img
-                src="/logo.png" // تعديل هنا
+                src="/logo.png"
                 alt="Logo"
                 className="h-10 w-10 rounded-xl"
               />
@@ -121,7 +125,7 @@ export default function MultiStepForm() {
           <button
             onClick={goToPrevStep}
             disabled={currentStep === 0}
-            className="bg-transparent hover:bg-blue-500  text-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500  hover:border-transparent rounded disabled:opacity-50"
+            className="bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded disabled:opacity-50"
           >
             Back
           </button>
@@ -130,7 +134,7 @@ export default function MultiStepForm() {
               currentStep === steps.length - 1 ? handleFinish : goToNextStep
             }
             disabled={currentStep === steps.length - 1 && showConfirmation}
-            className="bg-blue-500  hover:bg-blue-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
             {isLoading
               ? "Loading..."
@@ -141,12 +145,12 @@ export default function MultiStepForm() {
         </div>
 
         {showConfirmation && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-50-50 bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-50 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md w-96">
               <div className="flex items-center mb-4">
                 <div className="bg-blue-500 text-white rounded-full p-2 mr-2"></div>
                 <h3 className="text-lg font-medium">
-                  Your Request is Under Review
+                  Your request is under review
                 </h3>
               </div>
               <p className="mb-4">
@@ -173,3 +177,4 @@ export default function MultiStepForm() {
     </div>
   );
 }
+
