@@ -29,7 +29,10 @@ function DestinationsDashboard() {
     title: "",
     latitude: "",
     longitude: "",
+    location: "",
   });
+
+  const [processingLocation, setProcessingLocation] = useState(false);
 
   const fetchDestinations = async () => {
     try {
@@ -105,12 +108,212 @@ function DestinationsDashboard() {
     }));
   };
 
+  // Handle location input and extract coordinates
+  const handleLocationChange = async (e) => {
+    const { value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      location: value,
+    }));
+
+    // Only process URLs or coordinate-like strings
+    if (
+      value.trim() &&
+      (value.includes("http") ||
+        value.includes("maps") ||
+        /\d+\.\d+.*,.*\d+\.\d+/.test(value))
+    ) {
+      setProcessingLocation(true);
+      await extractCoordinates(value);
+      setProcessingLocation(false);
+    } else if (!value.trim()) {
+      // Clear coordinates if input is empty
+      setFormData((prev) => ({ ...prev, latitude: "", longitude: "" }));
+    }
+  };
+
+  // Extract coordinates from Google Maps URL or coordinate string
+  const extractCoordinates = async (input) => {
+    if (!input.trim()) {
+      setFormData((prev) => ({ ...prev, latitude: "", longitude: "" }));
+      return;
+    }
+
+    let lat, lng;
+
+    try {
+      let urlToProcess = input;
+
+      // Check if it's a shortened Google Maps URL (goo.gl, maps.app.goo.gl)
+      if (input.includes("goo.gl") || input.includes("maps.app.goo.gl")) {
+        try {
+          // Try multiple approaches for shortened URLs
+          // Approach 1: Try to fetch the URL directly and check for redirects
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+          const response = await fetch(input, {
+            method: "HEAD",
+            redirect: "follow",
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+
+          if (response.url && response.url !== input) {
+            urlToProcess = response.url;
+          }
+        } catch (error) {
+          console.warn(
+            "Direct fetch failed, trying alternative approach:",
+            error
+          );
+
+          // Approach 2: Try a different CORS proxy
+          try {
+            const proxyResponse = await fetch(
+              `https://corsproxy.io/?${encodeURIComponent(input)}`
+            );
+            const proxyText = await proxyResponse.text();
+
+            // Look for coordinates in the response
+            const coordMatch = proxyText.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+            if (coordMatch) {
+              lat = parseFloat(coordMatch[1]);
+              lng = parseFloat(coordMatch[2]);
+            }
+          } catch (proxyError) {
+            console.warn("Proxy approach also failed:", proxyError);
+            setError(
+              "Unable to process shortened URL. Please try using the full Google Maps URL or enter coordinates directly (e.g., 24.7136, 46.6753)"
+            );
+            return;
+          }
+        }
+      }
+
+      // If we have extracted coordinates from proxy, use them
+      if (lat !== undefined && lng !== undefined) {
+        // Skip pattern matching since we already have coordinates
+      } else {
+        // Try to extract from Google Maps URL patterns
+        // Pattern 1: https://maps.google.com/?q=24.7136,46.6753
+        let match = urlToProcess.match(/[?&]q=(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+        if (match) {
+          lat = parseFloat(match[1]);
+          lng = parseFloat(match[2]);
+        }
+
+        // Pattern 2: https://www.google.com/maps/@24.7136,46.6753,15z
+        if (!match) {
+          match = urlToProcess.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+          if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+          }
+        }
+
+        // Pattern 3: Direct coordinates like "24.7136, 46.6753" or "24.7136,46.6753"
+        if (!match) {
+          match = urlToProcess.match(
+            /^\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)\s*$/
+          );
+          if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+          }
+        }
+
+        // Pattern 4: Plus codes or other Google Maps formats
+        if (!match) {
+          match = urlToProcess.match(
+            /place\/[^/]*@(-?\d+\.?\d*),(-?\d+\.?\d*)/
+          );
+          if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+          }
+        }
+
+        // Pattern 5: 3d and 4d format (common in Google Maps URLs)
+        if (!match) {
+          match = urlToProcess.match(/!3d(-?\d+\.?\d*)!4d(-?\d+\.?\d*)/);
+          if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+          }
+        }
+
+        // Pattern 6: data parameter format
+        if (!match) {
+          match = urlToProcess.match(/data=.*!3d(-?\d+\.?\d*)!4d(-?\d+\.?\d*)/);
+          if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+          }
+        }
+
+        // Pattern 7: Try to find coordinates anywhere in the URL
+        if (!match) {
+          match = urlToProcess.match(/(-?\d+\.\d{6,}),(-?\d+\.\d{6,})/);
+          if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+          }
+        }
+      }
+
+      // Validate coordinates
+      if (
+        lat !== undefined &&
+        lng !== undefined &&
+        !isNaN(lat) &&
+        !isNaN(lng)
+      ) {
+        if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+          setFormData((prev) => ({
+            ...prev,
+            latitude: lat.toString(),
+            longitude: lng.toString(),
+          }));
+          setError(""); // Clear any previous errors
+        } else {
+          setError(
+            "Invalid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180."
+          );
+        }
+      } else {
+        // Clear coordinates if no valid pattern found
+        setFormData((prev) => ({ ...prev, latitude: "", longitude: "" }));
+        if (input.includes("goo.gl") || input.includes("maps.app.goo.gl")) {
+          setError(
+            "Could not extract coordinates from shortened URL. Please try one of these alternatives:\n• Use the full Google Maps URL\n• Right-click on the location in Google Maps → 'What's here?' and copy coordinates\n• Enter coordinates directly (e.g., 24.7136, 46.6753)"
+          );
+        } else if (
+          input.includes("maps.google") ||
+          input.includes("google.com/maps")
+        ) {
+          setError(
+            "Could not extract coordinates from this URL format. Please try entering coordinates directly (e.g., 24.7136, 46.6753)"
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error extracting coordinates:", error);
+      setFormData((prev) => ({ ...prev, latitude: "", longitude: "" }));
+      setError(
+        "Error processing the URL. Please try entering coordinates directly (e.g., 24.7136, 46.6753)"
+      );
+    }
+  };
+
   // Handle add destination
   const handleAddDestination = () => {
     setFormData({
       title: "",
       latitude: "",
       longitude: "",
+      location: "",
     });
     setAddDestination(true);
     setError("");
@@ -120,10 +323,17 @@ function DestinationsDashboard() {
   // Handle edit destination
   const handleEditDestination = (destination) => {
     setSelectedDestination(destination);
+    // Create a location string from existing coordinates for editing
+    const locationString =
+      destination.latitude && destination.longitude
+        ? `${destination.latitude}, ${destination.longitude}`
+        : "";
+
     setFormData({
       title: destination.title || "",
       latitude: destination.latitude ? destination.latitude.toString() : "",
       longitude: destination.longitude ? destination.longitude.toString() : "",
+      location: locationString,
     });
     setEditDestination(true);
     setError("");
@@ -142,12 +352,29 @@ function DestinationsDashboard() {
       setError("Title is required");
       return false;
     }
+
+    // Check if location was provided but coordinates weren't extracted
+    if (
+      formData.location &&
+      formData.location.trim() &&
+      (!formData.latitude || !formData.longitude)
+    ) {
+      setError(
+        "Could not extract coordinates from the provided location. Please try:\n• Using a different Google Maps URL format\n• Entering coordinates directly (e.g., 24.7136, 46.6753)\n• Right-clicking on Google Maps → 'What's here?' and copying coordinates"
+      );
+      return false;
+    }
+
     if (!formData.latitude || isNaN(parseFloat(formData.latitude))) {
-      setError("Valid latitude is required");
+      setError(
+        "Valid latitude is required. Please enter coordinates or a valid Google Maps URL."
+      );
       return false;
     }
     if (!formData.longitude || isNaN(parseFloat(formData.longitude))) {
-      setError("Valid longitude is required");
+      setError(
+        "Valid longitude is required. Please enter coordinates or a valid Google Maps URL."
+      );
       return false;
     }
     const lat = parseFloat(formData.latitude);
@@ -280,7 +507,7 @@ function DestinationsDashboard() {
     setAddDestination(false);
     setViewDestination(false);
     setSelectedDestination(null);
-    setFormData({ title: "", latitude: "", longitude: "" });
+    setFormData({ title: "", latitude: "", longitude: "", location: "" });
     setError("");
     setSuccess("");
   };
@@ -349,8 +576,14 @@ function DestinationsDashboard() {
                 <h1>{item.title}</h1>
               </div>
               <div className="flex flex-col text-xs lg:text-base w-2/6 text-left">
-                <h1>lat: {item.latitude}</h1>
-                <h1>long: {item.longitude}</h1>
+                <h1>
+                  <span className="font-semibold">lat: </span>
+                  {item.latitude}
+                </h1>
+                <h1>
+                  <span className="font-semibold">long: </span>
+                  {item.longitude}
+                </h1>
               </div>
 
               <div className="flex items-center justify-around gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 lg:pl-4 h-full w-1/4">
@@ -415,7 +648,7 @@ function DestinationsDashboard() {
                   {error}
                 </div>
               )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
+              <div className="grid grid-cols-1 gap-4 w-fit px-4">
                 <div className="flex flex-col gap-4">
                   <label className="flex flex-col gap-1">
                     Title
@@ -430,37 +663,42 @@ function DestinationsDashboard() {
                     />
                   </label>
                   <label className="flex flex-col gap-1">
-                    Latitude
-                    <input
-                      type="number"
-                      name="latitude"
-                      value={formData.latitude}
-                      onChange={handleInputChange}
-                      placeholder="Latitude"
-                      step="any"
-                      min="-90"
-                      max="90"
-                      className="border border-gray-300 rounded-md p-2"
-                      disabled={loading}
-                    />
+                    Location (Google Maps URL or Coordinates) *
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="location"
+                        value={formData.location || ""}
+                        onChange={handleLocationChange}
+                        placeholder="Paste Google Maps URL (including short links) or enter coordinates"
+                        className="border border-gray-300 rounded-md p-2 w-full pr-10"
+                        disabled={loading}
+                      />
+                      {processingLocation && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                        </div>
+                      )}
+                    </div>
+                    <small className="text-gray-500">
+                      Examples: https://maps.app.goo.gl/xyz,
+                      https://maps.google.com/?q=24.7136,46.6753, or
+                      24.7136,46.6753
+                    </small>
                   </label>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <label className="flex flex-col gap-1">
-                    Longitude
-                    <input
-                      type="number"
-                      name="longitude"
-                      value={formData.longitude}
-                      onChange={handleInputChange}
-                      placeholder="Longitude"
-                      step="any"
-                      min="-180"
-                      max="180"
-                      className="border border-gray-300 rounded-md p-2"
-                      disabled={loading}
-                    />
-                  </label>
+
+                  {/* Display extracted coordinates */}
+                  {formData.latitude && formData.longitude && (
+                    <div className="bg-green-50 p-3 rounded-md border border-green-200">
+                      <p className="text-sm text-green-800">
+                        <strong>Current Coordinates:</strong>
+                        <br />
+                        Latitude: {formData.latitude}
+                        <br />
+                        Longitude: {formData.longitude}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -604,10 +842,10 @@ function DestinationsDashboard() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
+              <div className="grid grid-cols-1  gap-4 w-fit px-4">
                 <div className="flex flex-col gap-4">
                   <label className="flex flex-col gap-1">
-                    Title *
+                    Title
                     <input
                       type="text"
                       name="title"
@@ -620,44 +858,43 @@ function DestinationsDashboard() {
                     />
                   </label>
                   <label className="flex flex-col gap-1">
-                    Latitude *
-                    <input
-                      type="number"
-                      name="latitude"
-                      value={formData.latitude}
-                      onChange={handleInputChange}
-                      placeholder="Latitude (-90 to 90)"
-                      step="any"
-                      min="-90"
-                      max="90"
-                      className="border border-gray-300 rounded-md p-2"
-                      disabled={loading}
-                      required
-                    />
+                    Location (Google Maps URL or Coordinates) *
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="location"
+                        value={formData.location || ""}
+                        onChange={handleLocationChange}
+                        placeholder="Paste Google Maps URL (including short links) or enter coordinates"
+                        className="border border-gray-300 rounded-md p-2 w-full pr-10"
+                        disabled={loading}
+                        required
+                      />
+                      {processingLocation && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                        </div>
+                      )}
+                    </div>
+                    <small className="text-gray-500">
+                      Examples: https://maps.app.goo.gl/xyz,
+                      https://maps.google.com/?q=24.7136,46.6753, or
+                      24.7136,46.6753
+                    </small>
                   </label>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <label className="flex flex-col gap-1">
-                    Longitude *
-                    <input
-                      type="number"
-                      name="longitude"
-                      value={formData.longitude}
-                      onChange={handleInputChange}
-                      placeholder="Longitude (-180 to 180)"
-                      step="any"
-                      min="-180"
-                      max="180"
-                      className="border border-gray-300 rounded-md p-2"
-                      disabled={loading}
-                      required
-                    />
-                  </label>
-                  <div className="text-sm text-gray-600 p-2 bg-blue-50 rounded-md">
-                    <p className="font-medium">💡 Tips:</p>
-                    <p>• Use Google Maps to find coordinates</p>
-                    <p>• Right-click on location → "What's here?"</p>
-                  </div>
+
+                  {/* Display extracted coordinates */}
+                  {formData.latitude && formData.longitude && (
+                    <div className="bg-green-50 p-3 rounded-md border border-green-200">
+                      <p className="text-sm text-green-800">
+                        <strong>Extracted Coordinates:</strong>
+                        <br />
+                        Latitude: {formData.latitude}
+                        <br />
+                        Longitude: {formData.longitude}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
