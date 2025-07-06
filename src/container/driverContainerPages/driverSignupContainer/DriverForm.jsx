@@ -17,14 +17,13 @@ const DriverForm = () => {
         <div className="md:w-1/2 p-8 hidden md:flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
-            Be part of our driving team and start earning today. <br /> Sign up
-            now!
+            Be part of our driving team and start earning today. <br /> Sign up now!
           </p>
           <p className="mb-4 text-sm">
             Already have an account?{" "}
             <a
               href="/login"
-              className=" text-blue-500 hover:text-blue-700 transition-colors"
+              className="text-blue-500 hover:text-blue-700 transition-colors"
             >
               Login here!
             </a>

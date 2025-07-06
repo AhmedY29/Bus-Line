@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { IoSearchOutline } from "react-icons/io5";
+
 const TripRequests = () => {
   const requests = [
     { id: 1, destination: 'Princess Noura', neighborhood: 'ANY N', departureTime: '8:30 AM', passengerEmail: 'jane@microsoft.com', paymentStatus: 'Paid', status: 'Pending' },
     { id: 2, destination: 'King Saud U', neighborhood: 'ANY N', departureTime: '8:30 AM', passengerEmail: 'floyd@yahoo.com', paymentStatus: 'Paid', status: 'Pending' },
-    { id: 3, destination: 'King Saud U', neighborhood: 'ANY N', departureTime: '8:30 AM', passengerEmail: 'ronald@adobe.com', paymentStatus: 'Paid', status: 'Pending' },
-  ]
+    { id: 3, destination: 'Adobe', neighborhood: 'Adobe', departureTime: '8:30 AM', passengerEmail: 'ronald@adobe.com', paymentStatus: 'Paid', status: 'Pending' },
+  ];
 
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('Newest');
@@ -42,42 +42,69 @@ const TripRequests = () => {
   };
 
   return (
-    <div className="bg-white m-4 shadow-md rounded-lg p-4 md:p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-xl font-bold">Request</h1>
-        <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
-        <div className="flex items-center justify-between bg-gray-100 rounded-lg p-1 px-2 gap-2 md:w-1/2">
-          <IoSearchOutline className="text-gray-400 text-xl" />
-            <input
-              type="search"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-             className="focus:outline-none bg-gray-100 rounded-md p-1 w-full"
-            />
-          </div>
-          <select
+    <div className="bg-white shadow-md m-6 rounded-lg p-4 md:p-6">
+      
+    <div className="flex flex-col sm:flex-row  items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-xl font-bold">Requests</h1>
+        <form className="w-full max-w-xl">
+   
+   <div className="relative">
+     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+       <svg
+         className="w-4 h-4 text-gray-500 dark:text-gray-400"
+         aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg"
+         fill="none"
+         viewBox="0 0 20 20"
+       >
+         <path
+   
+           strokeLinecap="round"
+           strokeLinejoin="round"
+           strokeWidth="2"
+           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+         />
+       </svg>
+     </div>
+     <input
+ type="search"
+ id="default-search"
+ value={searchQuery}
+ onChange={(e) => setSearchQuery(e.target.value)}
+ className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+ placeholder="Search..."
+ required
+/>
+<button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-[#0165AD] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+               <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+               </svg>
+               <span className="sr-only">Search</span>
+           </button>
+   </div>
+ </form>
+          {/* <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
           >
             <option value="Newest">Newest</option>
             <option value="Oldest">Oldest</option>
-          </select>
-        </div>
+          </select> */}
+     
       </div>
 
 
       <div className="hidden md:block overflow-x-auto">
-        <table className="min-w-full table-auto text-sm">
+        <table className="w-full table-auto text-sm">
           <thead className="bg-gray-100 border-b">
             <tr>
-              <th className="px-4 py-3 text-left">Trip Destination</th>
+              <th className="px-4 py-3 text-left"> Destination</th>
               <th className="px-4 py-3 text-left">Neighborhood</th>
               <th className="px-4 py-3 text-left">Departure Time</th>
               <th className="px-4 py-3 text-left">Passengers</th>
               <th className="px-4 py-3 text-left">Payment</th>
-              <th className="px-4 py-3 text-left">Status</th>
+              <th className="px-4 py-3 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -92,7 +119,7 @@ const TripRequests = () => {
                     Paid
                   </span>
                 </td>
-                <td className="px-4 py-3 space-x-2">
+                <td className=" py-3 space-x-2">
                   <button
                     onClick={() => handleAccept(request.id)}
                     className="bg-green-500 hover:bg-green-600 text-white px-3 gap-3 py-1 rounded"
@@ -170,7 +197,7 @@ const TripRequests = () => {
               onClick={() => setCurrentPage(page + 1)}
               className={`px-3 py-1 rounded transition-colors ${
                 currentPage === page + 1
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#0165AD] text-white'
                   : 'bg-gray-200 hover:bg-blue-300 text-gray-800'
               }`}
             >

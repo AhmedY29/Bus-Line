@@ -10,6 +10,7 @@ const Stepper = ({ currentStep = 1, totalSteps = 3 }) => {
   return (
     <div className="rounded-lg p-6 w-[80%] mx-auto bg-gray-50">
       <div className="relative mb-4">
+        {/* Progress bar */}
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden w-full">
           <div
             className="h-full bg-blue-500 transition-all duration-500 ease-in-out"
@@ -18,6 +19,7 @@ const Stepper = ({ currentStep = 1, totalSteps = 3 }) => {
         </div>
       </div>
 
+      {/* Step labels */}
       <div className="flex justify-between text-sm text-gray-500">
         {steps.map((step, index) => (
           <div key={index} className="text-center flex-1 px-2">

@@ -103,7 +103,7 @@ export default function MultiStepForm() {
           <Link to="/" className="flex items-center gap-2">
             <div className="flex items-center gap-3 mr-2">
               <img
-                src="/logo.png" // تعديل هنا
+                src="/logoPng.png" 
                 alt="Logo"
                 className="h-10 w-10 rounded-xl"
               />
@@ -173,3 +173,4 @@ export default function MultiStepForm() {
     </div>
   );
 }
+

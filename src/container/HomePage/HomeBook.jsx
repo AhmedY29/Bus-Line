@@ -10,20 +10,20 @@ function HomeBook() {
     >
       <div className="w-full justify-center items-center">
         <h1 className="text-lg md:text-2xl lg:text-3xl text-center text-gray-900 font-bold py-10 ">
-          Best Packages For You
+          Explore Our Travel Packages
         </h1>
       </div>
       <div className="flex justify-center items-center w-full">
         <div className="bg-[url('/worldMap.png')] bg-no-repeat bg-left w-full  md:py-0  flex justify-center lg:justify-end items-center px-2 md:px-4 lg:px-8 relative">
           <div className="absolute inset-0 w-1/3 hidden lg:block">
             {/* Dot 1 */}
-            <div className="absolute top-[350px] left-[275px] w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
+            <div className="absolute top-[300px] left-[275px] w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
             {/* Dot 2 */}
-            <div className="absolute top-[300px] left-[500px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
+            <div className="absolute top-[275px] left-[500px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
             {/* Dot 3 */}
-            <div className="absolute top-[350px] left-[400px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
+            <div className="absolute top-[300px] left-[400px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
             {/* Dot 4 */}
-            <div className="absolute top-[225px] left-[150px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
+            <div className="absolute top-[175px] left-[125px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
             {/* Dot 5 */}
             <div className="absolute top-[225px] left-[375px] w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-lg"></div>
           </div>

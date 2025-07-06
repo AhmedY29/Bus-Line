@@ -66,7 +66,6 @@ const router = createBrowserRouter([
         <Layout role="admin" />
       </ProtectedRoute>
     ),
-    element: <Layout role="admin" />,
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -86,7 +85,6 @@ const router = createBrowserRouter([
         <Layout role="driver" />
       </ProtectedRoute>
     ),
-    element: <Layout role="driver" />,
     children: [
       { index: true, element: <DriverDashboardPage /> },
       { path: "dashboard", element: <DriverDashboardPage /> },
@@ -123,11 +121,6 @@ const router = createBrowserRouter([
   // },
 
   // Public Routes
-  {
-    path: "/student",
-    element: <StudentLayout />,
-    children: studentRoutes,
-  },
   {
     path: "/",
     element: <Home />,
