@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useForm } from "../../../context/driverForm";
 import { useNavigate } from "react-router";
 import { Link } from "react-router"; 
 import Stepper from "./Stepper";
 import DriverForm from "./DriverForm";
 import VehicleForm from "./VehicleForm";
 import PaymentForm from "./PaymentForm";
+import { useForm } from "../../../context/driverForm";
 import axios from "axios";
-
 const steps = [
   { title: "Personal info", component: DriverForm },
   { title: "Vehicle Details", component: VehicleForm },
@@ -101,13 +100,12 @@ export default function MultiStepForm() {
 
   return (
     <div className="p-4 bg-gray-50 h-screen">
-      {/* Container */}
-      <div className="p-4 bg-gray-50">
+      <div className="p-4 bg-gray-50 ">
         <nav className="h-[10vh] flex justify-start items-center px-4">
           <Link to="/" className="flex items-center gap-2">
             <div className="flex items-center gap-3 mr-2">
               <img
-                src="/logo.png"
+                src="/logoPng.png" 
                 alt="Logo"
                 className="h-10 w-10 rounded-xl"
               />
@@ -125,7 +123,7 @@ export default function MultiStepForm() {
           <button
             onClick={goToPrevStep}
             disabled={currentStep === 0}
-            className="bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded disabled:opacity-50"
+            className="bg-transparent hover:bg-blue-500  text-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500  hover:border-transparent rounded disabled:opacity-50"
           >
             Back
           </button>
@@ -145,12 +143,12 @@ export default function MultiStepForm() {
         </div>
 
         {showConfirmation && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-50 bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-50-50 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md w-96">
               <div className="flex items-center mb-4">
                 <div className="bg-blue-500 text-white rounded-full p-2 mr-2"></div>
                 <h3 className="text-lg font-medium">
-                  Your request is under review
+                  Your Request is Under Review
                 </h3>
               </div>
               <p className="mb-4">

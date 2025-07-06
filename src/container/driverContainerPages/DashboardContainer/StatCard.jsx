@@ -12,8 +12,10 @@ const StatCard = ({ title, value, icon }) => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };
 
 export default StatCard;
+
