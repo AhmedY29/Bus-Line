@@ -7,7 +7,7 @@ import { MdStarRate } from "react-icons/md";
 
 const StatsCards = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-7 bg-[#F5F7FA]">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-7 ">
       <StatCard
         title="Total Passenger"
         value="24"
