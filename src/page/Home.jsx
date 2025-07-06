@@ -71,14 +71,7 @@ function Home() {
         <HomeReviews />
       </motion.div>
 
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <HomeFooter />
-      </motion.div>
+      <HomeFooter />
     </div>
   );
 }

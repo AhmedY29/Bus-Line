@@ -23,6 +23,7 @@ import MultiStepForm from "../container/driverContainerPages/driverSignupContain
 import Home from "../page/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import { FormProvider } from "../context/driverForm";
+import Destinations from "../page/adminPages/Destinations";
 
 function Layout({ role }) {
   return (
@@ -74,6 +75,7 @@ const router = createBrowserRouter([
       { path: "buses", element: <Buses /> },
       { path: "tracking", element: <Tracking /> },
       { path: "trips", element: <Trips /> },
+      { path: "destinations", element: <Destinations /> },
     ],
   },
 

@@ -3,7 +3,7 @@ import { HiMap, HiCog, HiLogout, HiMenu, HiX } from "react-icons/hi";
 import { LuBus } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
-import { FaUserFriends } from "react-icons/fa";
+import { FaUserFriends, FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineDirectionsBusFilled } from "react-icons/md";
 
 import { Link, useLocation, useNavigate } from "react-router";
@@ -20,6 +20,7 @@ function SideBar() {
     { icon: FaUserFriends, label: "Users" },
     { icon: MdOutlineDirectionsBusFilled, label: "Drivers" },
     { icon: LuBus, label: "Buses" },
+    { icon: FaMapMarkerAlt, label: "Destinations" },
     { icon: IoLocationOutline, label: "Tracking" },
     { icon: HiMap, label: "Trips" },
   ];
