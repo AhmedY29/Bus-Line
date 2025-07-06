@@ -4,6 +4,8 @@ import { FaUserFriends } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 import AdminCard from "../../../components/AdminCard";
 import AdminTable from "../../../components/AdminTable";
+import { LuBus } from "react-icons/lu";
+import { RiParentFill } from "react-icons/ri";
 
 function UsersDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
@@ -191,18 +193,14 @@ function UsersDashboard() {
     <div className="flex flex-col items-center justify-center h-full w-full  md:px-5 p-2 ">
       {/* Header Section Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-5 lg:gap-10 py-4 w-full ">
-        <AdminCard
-          icon={FaUserFriends}
-          title="Drivers"
-          count={drivers.length}
-        />
+        <AdminCard icon={LuBus} title="Drivers" count={drivers.length} />
         <AdminCard
           icon={FaUserFriends}
           title="Student"
           count={users.filter((user) => user.role === "student").length}
         />
         <AdminCard
-          icon={FaUserFriends}
+          icon={RiParentFill}
           title="Parent"
           count={users.filter((user) => user.role === "parent").length}
         />
