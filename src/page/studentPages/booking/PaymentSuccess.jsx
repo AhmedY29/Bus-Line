@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 
 const PaymentSuccess = ({ bookingId, amount, route, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/65 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-md bg-white rounded-2xl shadow-2xl animate-scale-in">
         <CardContent className="p-8 text-center">
           {/* Success Icon */}

@@ -1,11 +1,8 @@
+import { useForm } from "@/context/driverForm";
 import React, { useState } from "react";
 
 const PaymentForm = () => {
-  const [formData, setFormData] = useState({
-    backName: "",
-    accountName: "",
-    accountNumber: "",
-  });
+  const { formData, updateField } = useForm();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,10 +49,10 @@ const PaymentForm = () => {
               </label> */}
               <input
                 type="text"
-                id="backName"
-                name="backName"
-                value={formData.backName}
-                onChange={handleChange}
+                id="bankName"
+                name="bankName"
+                value={formData.bankName}
+                onChange={(e) => updateField("bankName", e.target.value)}
                 placeholder="Enter Back Name"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
@@ -71,7 +68,7 @@ const PaymentForm = () => {
                 id="accountName"
                 name="accountName"
                 value={formData.accountName}
-                onChange={handleChange}
+                onChange={(e) => updateField("accountName", e.target.value)}
                 placeholder="Enter Account Namer"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
@@ -87,7 +84,7 @@ const PaymentForm = () => {
                 id="accountNumber"
                 name="accountNumber"
                 value={formData.accountNumber}
-                onChange={handleChange}
+                onChange={(e) => updateField("accountNumber", e.target.value)}
                 placeholder="MM/YY"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />

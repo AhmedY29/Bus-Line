@@ -1,27 +1,9 @@
+import { useForm } from "../../../context/driverForm";
 import React, { useState } from "react";
 
-const VehicleForm = () => {
-  const [formData, setFormData] = useState({
-    vehicleType: "",
-    color: "",
-    model: "",
-    plateNumber: "",
-    vehicleLicense: "",
-    capacity: "",
-    periodicInspection: "",
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+const DriverForm = () => {
+  const { formData, updateField } = useForm();
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,109 +32,95 @@ const VehicleForm = () => {
 
         <div className="md:w-1/2 p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-2xl font-bold mb-6 ">Add Your Vehicle</h2>
-
+            <h2 className="text-2xl font-bold mb-6 ">Add Your Information</h2>
             {/* Vehicle Type */}
-            <div>
-              <input
-                type="text"
-                name="vehicleType"
-                value={formData.vehicleType}
-                onChange={handleChange}
-                placeholder="Vehicle Type"
-                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
-              />
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Vehicle Color */}
               <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+            Vehicle Type 
+            </label> */}
                 <input
                   type="text"
-                  name="color"
-                  value={formData.color}
-                  onChange={handleChange}
-                  placeholder="Vehicle Color"
-                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+                  name="name"
+                  value={formData.name}
+                  // onChange={handleChange}
+                  onChange={(e) => updateField("name", e.target.value)}
+                  placeholder="Enter Your Username "
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               {/* Vehicle Model */}
               <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Color
+            </label> */}
                 <input
-                  type="text"
-                  name="model"
-                  value={formData.model}
-                  onChange={handleChange}
-                  placeholder="Vehicle Model"
-                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  // onChange={handleChange}
+                  onChange={(e) => updateField("email", e.target.value)}
+                  placeholder="Enter Your Email"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Plate Number */}
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Model
+            </label> */}
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  // onChange={handleChange}
+                  onChange={(e) => updateField("password", e.target.value)}
+                  placeholder="Enter Your Password"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                {/* <label className="block text-gray-700 font-medium mb-2">
+              Model
+            </label> */}
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Enter Your Confirm Password"
+                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
 
             {/* Plate Number + Capacity */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Plate Number */}
-              <div>
-                <input
-                  type="text"
-                  name="plateNumber"
-                  value={formData.plateNumber}
-                  onChange={handleChange}
-                  placeholder="Plate Number"
-                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              {/* Capacity */}
-              <div>
-                <input
-                  type="number"
-                  name="capacity"
-                  value={formData.capacity}
-                  onChange={handleChange}
-                  placeholder="Passenger Capacity"
-                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
-                />
-              </div>
+            <div>
+              {/* <label className="block text-gray-700 font-medium mb-2">
+              Plate Number
+            </label> */}
+              <input
+                type="text"
+                name="plateNumber"
+                value={formData.phoneNumber}
+                // onChange={handleChange}
+                onChange={(e) => updateField("phoneNumber", e.target.value)}
+                placeholder="Enter Your Phone Number"
+                className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+              />
             </div>
 
-            {/* License + Periodic Inspection */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Vehicle License */}
-              <div>
-                <input
-                  type="text"
-                  name="vehicleLicense"
-                  value={formData.vehicleLicense}
-                  onChange={handleChange}
-                  placeholder="License Number or Upload"
-                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              {/* Periodic Inspection */}
-              <div>
-                <select
-                  name="periodicInspection"
-                  value={formData.periodicInspection}
-                  onChange={handleChange}
-                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
-                >
-                  <option value="">Select...</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Submit Button */}
             <div className="mt-6 flex justify-end">
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded transition-colors"
               >
-                Submit
+                Next
               </button>
             </div>
           </form>
@@ -162,4 +130,4 @@ const VehicleForm = () => {
   );
 };
 
-export default VehicleForm;
+export default DriverForm;

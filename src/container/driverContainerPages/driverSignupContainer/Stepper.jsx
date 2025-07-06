@@ -8,7 +8,7 @@ const Stepper = ({ currentStep = 1, totalSteps = 3 }) => {
   ];
 
   return (
-    <div className="rounded-lg p-6 w-[80%] mx-auto">
+    <div className="rounded-lg p-6 w-[80%] mx-auto bg-gray-50">
       <div className="relative mb-4">
         {/* Progress bar */}
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden w-full">
@@ -39,3 +39,4 @@ const Stepper = ({ currentStep = 1, totalSteps = 3 }) => {
 };
 
 export default Stepper;
+

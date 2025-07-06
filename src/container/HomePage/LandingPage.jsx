@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Corrected the import
-import { useNavigate } from "react-router-dom"; // Corrected the import
+import { Link } from "react-router"; 
+import { useNavigate } from "react-router";
 import { HiMenu, HiX } from "react-icons/hi";
 import { scrollToHomeBook } from "../../utils/scrollUtils";
+
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function LandingPage() {
       <nav className="flex justify-between items-center py-3 px-10 bg-white shadow-md shadow-black/5 rounded-full ">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Logo" className="h-10 w-10" /> {/* Corrected path */}
+            <img src="/logoPng.png" alt="Logo" className="h-10 w-10" /> {/* Corrected path */}
             <h1 className="text-xl font-bold">BusLine</h1>
           </div>
         </Link>
@@ -84,6 +85,7 @@ function LandingPage() {
           </div>
         </div>
       )}
+
 
       {/* Main Content */}
       <div className="flex flex-col-reverse md:flex-row items-center justify-center h-full md:h-10/12 gap-5 md:pt-5 ">
