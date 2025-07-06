@@ -25,7 +25,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import { FormProvider } from "../context/driverForm";
 import Destinations from "../page/adminPages/Destinations";
 
-
 function Layout({ role }) {
   return (
     <div className="  bg-[#F5F7FA]">
@@ -58,10 +57,6 @@ const router = createBrowserRouter([
         <MultiStepForm />
       </FormProvider>
     ),
-    element: <MultiStepForm />,
-    path: "/driver",
-    element: <Layout role="driver" />,
-    children: [{ index: true, element: <DriverDashboardPage /> }],
   },
 
   // Admin Protected Routes
