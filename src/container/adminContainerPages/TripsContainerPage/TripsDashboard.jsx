@@ -302,7 +302,7 @@ function TripsDashboard() {
           >
             <div className="flex flex-col text-xs lg:text-base w-1/4 text-left">
               <h1>{item.neighborhood}</h1>
-              <p
+              {/* <p
                 className={`text-xs px-2 py-0.5 font-medium rounded-sm w-fit ${
                   item.status === "completed"
                     ? "text-green-700 bg-green-300"
@@ -314,7 +314,7 @@ function TripsDashboard() {
                 }`}
               >
                 {item.status}
-              </p>
+              </p> */}
             </div>
             <h2 className="hidden lg:block text-xs lg:text-base w-1/4 text-left">
               {item.destinationId?.title || "N/A"}
