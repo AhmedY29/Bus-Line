@@ -26,7 +26,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
   // import StudentLayout from "@/layouts/StudentLayout";
   // import studentRoutes from "./studentRoutes";
-import Home from "@/page/Home";
+// import Home from "@/page/Home";
 function Layout({ role }) {
 
  return (
@@ -56,9 +56,7 @@ const router = createBrowserRouter([
   {
     path: "driver-register",
     element: <MultiStepForm />,
-    path: "/driver",
-    element: <Layout role="driver" />,
-    children: [{ index: true, element: <DriverDashboardPage /> }],
+  
   },
 
   // Admin Protected Routes
@@ -69,7 +67,6 @@ const router = createBrowserRouter([
         <Layout role="admin" />
       </ProtectedRoute>
     ),
-    element: <Layout role="admin" />,
     children: [
       { index: true, element: <Users /> },
       { path: "users", element: <Users /> },
@@ -89,7 +86,6 @@ const router = createBrowserRouter([
         <Layout role="driver" />
       </ProtectedRoute>
     ),
-    element: <Layout role="driver" />,
     children: [
       { index: true, element: <DriverDashboardPage /> },
       { path: "dashboard", element: <DriverDashboardPage /> },
