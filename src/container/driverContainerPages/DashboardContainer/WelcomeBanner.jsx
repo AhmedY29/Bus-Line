@@ -2,7 +2,7 @@ import React from 'react';
 
 const WelcomeBanner = () => {
   return (
-    <div className="mx-4 sm:mx-6 md:mx-auto my-6 p-6 bg-[#0165AD] text-white rounded-lg shadow-lg max-w-3xl w-full">
+    <div className="relative overflow-hidden bg-gradient-to-br m-3 from-blue-600 via-blue-500 to-indigo-600 rounded-3xl p-8 text-white">
    
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex items-center">
