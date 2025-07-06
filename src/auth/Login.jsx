@@ -61,7 +61,6 @@ function Login() {
           <div className="flex items-center gap-3 mr-2">
             <img src="./public/logo.png" alt="Logo" className="h-10 w-10 " />
             <h1 className="text-xl font-bold">BusLine</h1>
-            <h1 className="text-xl font-bold">Bus Line</h1>
           </div>
         </Link>
       </nav>
