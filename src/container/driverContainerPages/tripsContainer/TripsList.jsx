@@ -45,21 +45,48 @@ const TripsList = () => {
 
       
   
-        <div className="flex items-center justify-between bg-gray-100 rounded-lg p-1 px-2 gap-2 md:w-1/2">
-          <IoSearchOutline className="text-gray-400 text-xl" />
-            <input
-              type="search"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-             className="focus:outline-none bg-gray-100 rounded-md p-1 w-full"
-            />
-          </div>
+        <form className="w-82">
+   
+   <div className="relative">
+     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+       <svg
+         className="w-4 h-4 text-gray-500 dark:text-gray-400"
+         aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg"
+         fill="none"
+         viewBox="0 0 20 20"
+       >
+         <path
+   
+           strokeLinecap="round"
+           strokeLinejoin="round"
+           strokeWidth="2"
+           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+         />
+       </svg>
+     </div>
+     <input
+ type="search"
+ id="default-search"
+ value={searchQuery}
+ onChange={(e) => setSearchQuery(e.target.value)}
+ className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+ placeholder="Search..."
+ required
+/>
+<button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-[#0165add8] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+               <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+               </svg>
+               <span className="sr-only">Search</span>
+           </button>
+   </div>
+ </form>
 
           {/* Add Trip Button */}
           <button
             onClick={handleOpenModal}
-            className="bg-blue-500 hover:bg-[#3b586cf3] text-white font-bold py-2 px-4 rounded whitespace-nowrap"
+            className="bg-[#0165AD] hover:bg-[#0165addf] text-white font-bold py-2 px-4 rounded whitespace-nowrap"
           >
             Add Trip +
           </button>
@@ -124,29 +151,38 @@ const TripsList = () => {
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">New Trip</h2>
-              <button
-                type="button"
-                onClick={handleCloseModal}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                  <path d="M18 6l-1.41-1.41L13.59 10.07 7.41 3.93 6 5.34l6 6 6-6z" />
-                </svg>
-              </button>
+            
             </div>
 
             <form>
           
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
                   <label htmlFor="neighborhood" className="block text-gray-700 font-medium mb-2">
                     Neighborhood
                   </label>
+                  {/* <div className="mb-6">
+      
+      <select
+        id="trip"
+        value={trip}
+        onChange={(e) => setTrip(e.target.value)}
+        className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900 appearance-none dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  >
+        <option value="">Select Trip</option>
+        {trips.map((city, index) => (
+          <option key={index} value={city}>
+            {city}
+          </option>
+        ))}
+      </select>
+    </div> */}
+
                   <select
                     id="neighborhood"
                     name="neighborhood"
-                    className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-                  >
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
+                     >
+
                     <option value="">Select</option>
                     <option value="Neighborhood 1">Neighborhood 1</option>
                     <option value="Neighborhood 2">Neighborhood 2</option>
@@ -159,8 +195,8 @@ const TripsList = () => {
                   <select
                     id="destination"
                     name="destination"
-                    className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-                  >
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" >
+
                     <option value="">Select</option>
                     <option value="Destination 1">Destination 1</option>
                     <option value="Destination 2">Destination 2</option>
@@ -177,8 +213,8 @@ const TripsList = () => {
                   <input
                     type="time"
                     id="departureTime"
-                    className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-                  />
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
+                    />
                 </div>
                 <div>
                   <label htmlFor="arrivalTime" className="block text-gray-700 font-medium mb-2">
@@ -187,8 +223,8 @@ const TripsList = () => {
                   <input
                     type="time"
                     id="arrivalTime"
-                    className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-                  />
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
+                    />
                 </div>
               </div>
 
@@ -201,8 +237,8 @@ const TripsList = () => {
                   type="number"
                   id="price"
                   placeholder="Enter price"
-                  className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-                />
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
+                  />
               </div>
 
               {/* Buttons */}
