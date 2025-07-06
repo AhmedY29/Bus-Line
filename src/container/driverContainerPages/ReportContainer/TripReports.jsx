@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MdStarRate } from "react-icons/md";
+import { IoSearchOutline } from "react-icons/io5";
 
 const TripReports = () => {
   const reports = [
@@ -83,23 +84,43 @@ const TripReports = () => {
   }, []);
 
   return (
-    <div className="bg-white m-5 shadow-md rounded-lg p-4 md:p-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-xl font-bold">Report</h1>
+    <div className="bg-white shadow-md m-6 rounded-lg p-4 md:p-6">
+      
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-xl font-bold">Reports</h1>
+        <form className="w-82">
+          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
+            Search
+          </label>
+          <div className="relative">
+          
+            <input
+              type="search"
+              id="default-search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search "
+              required
+            />
+            <button
+              type="submit"
+              className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
+        </form>
         <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by Destination..."
-            className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-          />
+       
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-          >
+            className="block py-2.5 px-0 text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-[#0165AD] focus:outline-none focus:ring-0 focus:border-[#0165AD] peer" 
+            >
             <option value="Newest">Newest</option>
             <option value="Oldest">Oldest</option>
           </select>
@@ -133,7 +154,7 @@ const TripReports = () => {
                 <td className="px-4 py-3 text-right">
                   <button
                     onClick={() => handleMoreDetails(report)}
-                    className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
+                    className="bg-[#0165AD] hover:bg-[#0165addf] text-white px-3 py-1 rounded"
                   >
                     More Details
                   </button>
@@ -161,7 +182,7 @@ const TripReports = () => {
             <p className="text-sm text-gray-600 mt-1">📧 {report.email}</p>
             <button
               onClick={() => handleMoreDetails(report)}
-              className="mt-3 w-full bg-blue-500 hover:bg- text-white text-sm px-3 py-1 rounded"
+              className="mt-3 w-full bg-[#0165AD] hover:bg- text-white text-sm px-3 py-1 rounded"
             >
               More Details
             </button>
@@ -192,7 +213,7 @@ const TripReports = () => {
               onClick={() => setCurrentPage(page + 1)}
               className={`px-3 py-1 rounded transition-colors ${
                 currentPage === page + 1
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#0165AD] text-white'
                   : 'bg-gray-200 hover:bg-blue-300 text-gray-800'
               }`}
             >
@@ -215,7 +236,7 @@ const TripReports = () => {
 
     
       {selectedReport && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4 relative">
             <button
               onClick={handleCloseModal}
@@ -245,7 +266,7 @@ const TripReports = () => {
             </div>
             <button
               onClick={handleCloseModal}
-              className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+              className="mt-4 bg-[#0165AD] hover:bg-[#0165addb] text-white px-4 py-2 rounded"
             >
               Close
             </button>
