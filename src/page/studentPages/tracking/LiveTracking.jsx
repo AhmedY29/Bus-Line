@@ -162,8 +162,7 @@ const LiveTracking = () => {
               </div>
             </div>
           </div>
-
-         
+      
         </CardContent>
       </Card>
 
