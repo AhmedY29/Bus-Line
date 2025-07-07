@@ -148,8 +148,10 @@ const DriverTrackingMap = ({ tripId, token, trackingStarted }) => {
         passengers?.forEach((p, idx) => {
           console.log(p, "sss");
           directionsRef.current.addWaypoint(idx, [
+
             p?.address?.coordinate?.lng,
             p?.address?.coordinate?.lat,
+
           ]);
         });
 
