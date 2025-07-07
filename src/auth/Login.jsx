@@ -60,6 +60,8 @@ function Login() {
 // >>>>>>> 73b28ba (update passengers file)
 
 
+      toast.success("Login successful! Redirecting...");
+
       const role = user?.data?.user.role;
       if (role == "admin") {
         navigate("/admin");
