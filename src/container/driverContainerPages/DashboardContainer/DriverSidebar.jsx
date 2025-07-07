@@ -98,8 +98,7 @@ function DriverSidebar() {
           <li
             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 pr-6 cursor-pointer"
             onClick={() => {
-
-              toast(
+       toast(
                 (t) => (
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center">
