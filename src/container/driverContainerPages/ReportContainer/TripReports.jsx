@@ -23,16 +23,13 @@ const TripReports = () => {
     }
 
     fetch(`https://bus-line-backend.onrender.com/api/rating/driver/${driverId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch ratings');
         return res.json();
       })
       .then(data => {
-        console.log("API response data:", data);
         setReports(Array.isArray(data) ? data : (data.ratings || []));
         setLoading(false);
       })
@@ -44,10 +41,10 @@ const TripReports = () => {
 
   const filteredReports = reports.filter(report =>
     (report.comment?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-     (typeof report.userId === 'string'
+      (typeof report.userId === 'string'
         ? report.userId.toLowerCase().includes(searchQuery.toLowerCase())
         : (report.userId?.name?.toLowerCase() || '').includes(searchQuery.toLowerCase())
-     )
+      )
     )
   );
 
@@ -82,7 +79,6 @@ const TripReports = () => {
   if (error) return <p className="p-6 text-red-600">Error: {error}</p>;
   if (reports.length === 0) return <p className="p-6">No ratings found for this driver.</p>;
 
- 
   const getUserName = (userId) => {
     if (!userId) return 'Unknown';
     if (typeof userId === 'string') return userId;
@@ -92,7 +88,7 @@ const TripReports = () => {
 
   return (
     <div className="bg-white shadow-md m-6 rounded-lg p-4 md:p-6">
-
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-xl font-bold">Driver Ratings</h1>
 
@@ -120,7 +116,7 @@ const TripReports = () => {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="block py-2.5 px-0 text-sm bg-transparent border-0 border-b-2 border-gray-500 dark:text-gray-900 dark:border-[#0165AD] focus:outline-none focus:ring-0 focus:border-[#0165AD] peer"
+          className="block py-2.5 px-0 text-sm bg-transparent border-0 border-b-2 border-gray-500 focus:outline-none focus:border-[#0165AD]"
         >
           <option value="Newest">Newest</option>
           <option value="Oldest">Oldest</option>
@@ -145,7 +141,6 @@ const TripReports = () => {
                 <td className="px-4 py-3">{getUserName(report.userId)}</td>
                 <td className="px-4 py-3">{report.comment}</td>
                 <td className="px-4 py-3 flex items-center">
-               
                   {[...Array(Math.floor(report.rating))].map((_, i) => (
                     <MdStarRate key={i} className="text-yellow-400 inline-block" />
                   ))}
@@ -169,7 +164,7 @@ const TripReports = () => {
       <div className="block md:hidden space-y-4">
         {currentReports.map(report => (
           <div key={report._id} className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
-            <p className="font-semibold">{getUserName(report.userId)}</p>
+            <p className="font-semibold">User: {getUserName(report.userId)}</p>
             <p className="text-sm text-gray-600 mt-1">💬 {report.comment}</p>
             <div className="flex items-center mt-1">
               <span className="text-yellow-400 flex">
@@ -180,7 +175,6 @@ const TripReports = () => {
               <span className="ml-1 text-sm">{report.rating}</span>
             </div>
             <p className="text-sm text-gray-600 mt-1">📅 {new Date(report.createdAt).toLocaleDateString()}</p>
-         
             <button
               onClick={() => handleMoreDetails(report)}
               className="mt-3 w-full bg-[#0165AD] text-white text-sm px-3 py-1 rounded hover:bg-[#0165addf]"
@@ -200,11 +194,9 @@ const TripReports = () => {
           <button
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className={`px-3 py-1 rounded ${
-              currentPage === 1
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
-            }`}
+            className={`px-3 py-1 rounded ${currentPage === 1
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              : 'bg-gray-200 hover:bg-gray-300 text-gray-800'}`}
           >
             Previous
           </button>
@@ -212,11 +204,9 @@ const TripReports = () => {
             <button
               key={page + 1}
               onClick={() => setCurrentPage(page + 1)}
-              className={`px-3 py-1 rounded transition-colors ${
-                currentPage === page + 1
-                  ? 'bg-[#0165AD] text-white'
-                  : 'bg-gray-200 hover:bg-blue-300 text-gray-800'
-              }`}
+              className={`px-3 py-1 rounded ${currentPage === page + 1
+                ? 'bg-[#0165AD] text-white'
+                : 'bg-gray-200 hover:bg-blue-300 text-gray-800'}`}
             >
               {page + 1}
             </button>
@@ -224,11 +214,9 @@ const TripReports = () => {
           <button
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className={`px-3 py-1 rounded ${
-              currentPage === totalPages
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
-            }`}
+            className={`px-3 py-1 rounded ${currentPage === totalPages
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              : 'bg-gray-200 hover:bg-gray-300 text-gray-800'}`}
           >
             Next
           </button>
@@ -249,7 +237,7 @@ const TripReports = () => {
 
             <h2 className="text-xl font-bold mb-4">Report Details</h2>
             <div className="space-y-2">
-              <p> {getUserName(selectedReport.userId)}</p>
+              <p><strong>User:</strong> {getUserName(selectedReport.userId)}</p>
               <p><strong>Comment:</strong> {selectedReport.comment}</p>
               <p className="flex items-center">
                 <strong>Rating:</strong>
@@ -261,7 +249,6 @@ const TripReports = () => {
                 <span className="ml-2">{selectedReport.rating}</span>
               </p>
               <p><strong>Date:</strong> {new Date(selectedReport.createdAt).toLocaleString()}</p>
-            
             </div>
             <button
               onClick={handleCloseModal}

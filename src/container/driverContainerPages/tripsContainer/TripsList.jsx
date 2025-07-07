@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { IoSearchOutline } from "react-icons/io5";
 
+
 const TripsList = () => {
   const API = "https://bus-line-backend.onrender.com/api";
 
@@ -88,10 +89,12 @@ const TripsList = () => {
     setEditingTripId(trip._id);
     setFormData({
       neighborhood: trip.neighborhood || "",
+
       destinationId:
         typeof trip.destinationId === "object"
           ? trip.destinationId._id
           : trip.destinationId,
+
       tripPrice: trip.tripPrice?.toString() || "",
       arrivalTime: trip.arrivalTime || "",
       departureTime: trip.departureTime || "",
@@ -136,6 +139,7 @@ const TripsList = () => {
         });
         if (!result.isConfirmed) return;
 
+
         await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -176,6 +180,7 @@ const TripsList = () => {
           error.response?.data?.message ||
           error.message ||
           "An error occurred",
+
       });
       console.error("Error submitting trip:", error);
     }
@@ -218,6 +223,7 @@ const TripsList = () => {
   };
 
   const filteredTrips = trips.filter((trip) => {
+
     const destination = destinations.find(
       (d) =>
         d._id ===
@@ -225,6 +231,7 @@ const TripsList = () => {
           ? trip.destinationId._id
           : trip.destinationId)
     );
+
     const destinationName = destination?.title?.toLowerCase() || "";
     return destinationName.includes(searchQuery.toLowerCase());
   });
@@ -277,6 +284,7 @@ const TripsList = () => {
           </thead>
           <tbody className="text-sm font-medium text-gray-700">
             {filteredTrips.map((trip) => {
+
               const destinationId =
                 typeof trip.destinationId === "object"
                   ? trip.destinationId._id
@@ -284,12 +292,14 @@ const TripsList = () => {
 
               const destination = destinations.find((d) => d._id === destinationId);
 
+
               return (
                 <tr key={trip._id} className="flex flex-col sm:table-row border-b">
                   <td className="px-4 py-2">{destination?.title || "Unknown"}</td>
                   <td className="px-4 py-2">{trip.neighborhood}</td>
                   <td className="px-4 py-2">{trip.departureTime}</td>
                   <td className="px-4 py-2">
+
                     <span
                       className={`px-2 py-1 rounded text-xs font-semibold ${
                         trip.status === "active"
@@ -339,7 +349,11 @@ const TripsList = () => {
                     name="neighborhood"
                     value={formData.neighborhood}
                     onChange={handleInputChange}
+
                     className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                    // className="border border-gray-300 rounded-md p-2"
+
                     required
                   />
                 </label>
@@ -350,7 +364,12 @@ const TripsList = () => {
                     name="destinationId"
                     value={formData.destinationId}
                     onChange={handleInputChange}
+
                     className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                    // className="border border-gray-300 rounded-md p-2"
+
+
                     required
                   >
                     <option value="">Select</option>
@@ -371,6 +390,9 @@ const TripsList = () => {
                   value={formData.tripDateStart}
                   onChange={handleInputChange}
                   className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                  // className="border border-gray-300 rounded-md p-2"
+
                   required
                 />
               </label>
@@ -382,7 +404,11 @@ const TripsList = () => {
                   name="tripDateEnd"
                   value={formData.tripDateEnd}
                   onChange={handleInputChange}
+
                   className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                  // className="border border-gray-300 rounded-md p-2"
+
                   required
                 />
               </label>
@@ -395,7 +421,11 @@ const TripsList = () => {
                     name="arrivalTime"
                     value={formData.arrivalTime}
                     onChange={handleInputChange}
+
                     className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                    // className="border border-gray-300 rounded-md p-2"
+
                     required
                   />
                 </label>
@@ -407,7 +437,11 @@ const TripsList = () => {
                     name="departureTime"
                     value={formData.departureTime}
                     onChange={handleInputChange}
+
                     className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                    // className="border border-gray-300 rounded-md p-2"
+
                     required
                   />
                 </label>
@@ -420,7 +454,11 @@ const TripsList = () => {
                   name="tripPrice"
                   value={formData.tripPrice}
                   onChange={handleInputChange}
+
                   className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
+
+                  // className="border border-gray-300 rounded-md p-2"
+
                   required
                   min="0"
                 />
