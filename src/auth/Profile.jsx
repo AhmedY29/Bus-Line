@@ -10,9 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-
+import React, { useState } from "react";
 
 const DriverProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -33,51 +31,10 @@ const DriverProfile = () => {
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found");
-        return;
-      }
-  
-      const response = await fetch("https://bus-line-backend.onrender.com/api/auth/edit-user", {
-        method: "PATCH", // استخدمي PUT إذا كنتِ تفضلين ذلك
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(user),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update profile");
-      }
-  
-      const updatedUser = await response.json();
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-      setIsEditing(false);
-  
-     
-      Swal.fire({
-        icon: "success",
-        title: "Profile updated successfully",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-  
-    } catch (error) {
-      console.error("Error updating user:", error.message);
-  
-      Swal.fire({
-        icon: "error",
-        title: "Update failed",
-        text: error.message || "Something went wrong",
-      });
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUser({ ...user, profileImage: URL.createObjectURL(file) });
     }
   };
   
