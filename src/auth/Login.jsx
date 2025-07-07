@@ -38,6 +38,9 @@ function Login() {
       console.log(user);
       localStorage.setItem("token", user.data.token);
       localStorage.setItem("user", JSON.stringify(user?.data?.user));
+      if (user?.data?.user?.role === "driver") {
+        localStorage.setItem("driverId", user.data.user._id);
+      }
 
       const role = user?.data?.user.role;
       if (role == "admin") {
