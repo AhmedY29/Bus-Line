@@ -69,7 +69,7 @@ const PaymentForm = () => {
                 name="accountName"
                 value={formData.accountName}
                 onChange={(e) => updateField("accountName", e.target.value)}
-                placeholder="Enter Account Namer"
+                placeholder="Enter Account Name"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -85,7 +85,7 @@ const PaymentForm = () => {
                 name="accountNumber"
                 value={formData.accountNumber}
                 onChange={(e) => updateField("accountNumber", e.target.value)}
-                placeholder="MM/YY"
+                placeholder="Enter Account Number"
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
               />
             </div>

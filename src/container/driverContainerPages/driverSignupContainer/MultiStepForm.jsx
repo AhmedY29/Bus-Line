@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router"; 
+import { Link } from "react-router";
 import Stepper from "./Stepper";
 import DriverForm from "./DriverForm";
 import VehicleForm from "./VehicleForm";
 import PaymentForm from "./PaymentForm";
 import { useForm } from "../../../context/driverForm";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 const steps = [
   { title: "Personal info", component: DriverForm },
   { title: "Vehicle Details", component: VehicleForm },
@@ -25,46 +26,74 @@ export default function MultiStepForm() {
     // Validation based on current step
     if (currentStep === 0) {
       if (!formData.name.trim()) {
-        alert("Please Enter Your Username");
+        toast.error("Please Enter Your Username");
         return;
       }
       if (!formData.email.trim()) {
-        alert("Please Enter Your Email");
+        toast.error("Please Enter Your Email");
+        return;
+      }
+      const emailRgex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+      const correctEmail = emailRgex.test(formData.email);
+      if (!correctEmail) {
+        toast.error("Please Enter Valid Email EX: example@example.com");
         return;
       }
       if (!formData.password.trim()) {
-        alert("Please Enter Your Password");
+        toast.error("Please Enter Your Password");
+        return;
+      }
+      if (formData.password.length < 6) {
+        toast.error("Password must be at least 6 characters long");
         return;
       }
       if (!formData.phoneNumber.trim()) {
-        alert("Please Enter Your Phone Number");
+        toast.error("Please Enter Your Phone Number");
+        return;
+      }
+
+      if (formData.phoneNumber[0] !== "5") {
+        toast.error("Please Enter Valid Phone Number Ex: 5xx xxx xxx");
+        return;
+      }
+      const phoneNumber = formData.phoneNumber.trim();
+      if (phoneNumber.length !== 9) {
+        toast.error("Phone number must be 9 digits long ex: 5xx xxx xxx");
         return;
       }
     }
 
     if (currentStep === 1) {
       if (!formData.vehicleName.trim()) {
-        alert("Please Enter Your Vehicle Type Ex: bus");
+        toast.error("Please Enter Your Vehicle Type Ex: bus");
         return;
       }
       if (!formData.vehicleColor.trim()) {
-        alert("Please Enter Your Vehicle Color");
+        toast.error("Please Enter Your Vehicle Color");
         return;
       }
       if (!formData.vehicleModel.trim()) {
-        alert("Please Enter Your Vehicle Model");
-        return;
-      }
-      if (!formData.vehicleCapacity.trim()) {
-        alert("Please Enter Your Vehicle Capacity");
+        toast.error("Please Enter Your Vehicle Model");
         return;
       }
       if (!formData.vehiclePlateNumber.trim()) {
-        alert("Please Enter Your Vehicle Plate Number Ex: BJB 8989");
+        toast.error("Please Enter Your Vehicle Plate Number Ex: BJB 8989");
+        return;
+      }
+      if (!formData.vehicleCapacity.trim()) {
+        toast.error("Please Enter Your Vehicle Capacity");
+        return;
+      }
+      if (formData.vehicleCapacity < 1) {
+        toast.error("Vehicle capacity must be at least 1");
+        return;
+      }
+      if (!formData.licenseImage) {
+        toast.error("Please Upload Your Vehicle License Image");
         return;
       }
       if (!formData.vehicleYearlyCheck.trim()) {
-        alert("Please Enter Your Vehicle Periodic Inspection");
+        toast.error("Please Enter Your Vehicle Periodic Inspection");
         return;
       }
     }
@@ -81,16 +110,39 @@ export default function MultiStepForm() {
   };
 
   const handleFinish = async () => {
+    if (currentStep === 2) {
+      if (!formData.bankName.trim()) {
+        toast.error("Please Select Your Bank");
+        return;
+      }
+      if (!formData.accountName.trim()) {
+        toast.error("Please Enter Your Account Name");
+        return;
+      }
+      if (!formData.accountNumber.trim()) {
+        toast.error("Please Enter Your Account Number");
+        return;
+      }
+      if (formData.accountNumber.length !== 16) {
+        toast.error("Account number must be 16 digits long");
+        return;
+      }
+    }
     try {
       setIsLoading(true);
       await axios.post(
         "https://bus-line-backend.onrender.com/api/auth/signup-driver",
         formData
       );
-      alert("Driver Created Successfully");
+      toast.success("Driver Created Successfully");
       setShowConfirmation(true);
     } catch (error) {
       console.log("Error In Create Driver:", error.message);
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message || "Error creating driver");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -100,12 +152,37 @@ export default function MultiStepForm() {
 
   return (
     <div className="p-4 bg-gray-50 h-screen">
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+          success: {
+            duration: 2000,
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            duration: 2000,
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
       <div className="p-4 bg-gray-50 ">
         <nav className="h-[10vh] flex justify-start items-center px-4">
           <Link to="/" className="flex items-center gap-2">
             <div className="flex items-center gap-3 mr-2">
               <img
-                src="/logoPng.png" 
+                src="/logoPng.png"
                 alt="Logo"
                 className="h-10 w-10 rounded-xl"
               />
@@ -123,7 +200,7 @@ export default function MultiStepForm() {
           <button
             onClick={goToPrevStep}
             disabled={currentStep === 0}
-            className="bg-transparent hover:bg-blue-500  text-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500  hover:border-transparent rounded disabled:opacity-50"
+            className="bg-transparent hover:bg-blue-500  text-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500  hover:border-transparent rounded disabled:opacity-50 cursor-pointer"
           >
             Back
           </button>
@@ -132,7 +209,7 @@ export default function MultiStepForm() {
               currentStep === steps.length - 1 ? handleFinish : goToNextStep
             }
             disabled={currentStep === steps.length - 1 && showConfirmation}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 cursor-pointer"
           >
             {isLoading
               ? "Loading..."
@@ -175,4 +252,3 @@ export default function MultiStepForm() {
     </div>
   );
 }
-

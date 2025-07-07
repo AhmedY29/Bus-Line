@@ -116,17 +116,54 @@ const VehicleForm = () => {
             {/* License + Periodic Inspection */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                {/* <label className="block text-gray-700 font-medium mb-2">
-              Vehicle License
-            </label> */}
+                {/* License Image Upload */}
+                <button
+                  type="button"
+                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 text-blue-500 focus:outline-none focus:border-blue-500 cursor-pointer hover:bg-blue-100 hover:shadow-md hover:shadow-blue-50 transition-all flex items-center justify-center"
+                  onClick={() =>
+                    document.getElementById("licenseImageInput").click()
+                  }
+                >
+                  {formData.licenseImage ? (
+                    <span className="text-green-600 font-medium">
+                      ✓ License Image Uploaded
+                    </span>
+                  ) : (
+                    <span>Upload License Image</span>
+                  )}
+                </button>
                 <input
-                  type="text"
-                  name="licenseImage"
-                  value={formData.licenseImage}
-                  onChange={(e) => updateField("licenseImage", e.target.value)}
-                  placeholder="License Number or Upload"
-                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
+                  id="licenseImageInput"
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        updateField("licenseImage", reader.result);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
                 />
+                {formData.licenseImage && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <img
+                      src={formData.licenseImage}
+                      alt="License preview"
+                      className="h-16 w-16 object-cover rounded border border-gray-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => updateField("licenseImage", "")}
+                      className="text-red-500 hover:text-red-700 text-sm"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div>
