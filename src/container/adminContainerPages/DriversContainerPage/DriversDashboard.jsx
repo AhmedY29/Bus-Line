@@ -6,7 +6,8 @@ import { HiX } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdOutlineDelete } from "react-icons/md";
-
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 function DriversDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
   const [searchTerm, setSearchTerm] = useState("");
@@ -193,7 +194,7 @@ function DriversDashboard() {
         },
       });
 
-      setSuccess("Driver updated successfully!");
+      toast.success("Driver updated successfully!");
       await fetchDrivers();
 
       setTimeout(() => {
@@ -201,7 +202,7 @@ function DriversDashboard() {
       }, 1500);
     } catch (error) {
       console.error("Error updating driver:", error);
-      setError(error.response?.data?.message || "Failed to update driver");
+      toast.error(error.response?.data?.message || "Failed to update driver");
     } finally {
       setLoading(false);
     }
@@ -230,7 +231,7 @@ function DriversDashboard() {
         }
       );
 
-      setSuccess("Driver approved successfully!");
+      toast.success("Driver approved successfully!");
       await fetchDrivers();
 
       setTimeout(() => {
@@ -238,7 +239,7 @@ function DriversDashboard() {
       }, 1500);
     } catch (error) {
       console.error("Error approving driver:", error);
-      setError(error.response?.data?.message || "Failed to approve driver");
+      toast.error(error.response?.data?.message || "Failed to approve driver");
     } finally {
       setLoading(false);
     }
@@ -264,7 +265,7 @@ function DriversDashboard() {
           },
         }
       );
-      setSuccess("Driver rejected successfully!");
+      toast.success("Driver rejected successfully!");
       await fetchDrivers();
 
       setTimeout(() => {
@@ -272,7 +273,7 @@ function DriversDashboard() {
       }, 1500);
     } catch (error) {
       console.error("Error rejecting driver:", error);
-      setError(error.response?.data?.message || "Failed to reject driver");
+      toast.error(error.response?.data?.message || "Failed to reject driver");
     } finally {
       setLoading(false);
     }
@@ -297,30 +298,70 @@ function DriversDashboard() {
           },
         }
       );
-      setSuccess("Driver pending successfully!");
+      toast.success("Driver set to pending successfully!");
       await fetchDrivers();
 
       setTimeout(() => {
         handleCloseModal();
       }, 1500);
     } catch (error) {
-      console.error("Error pending driver:", error);
-      setError(error.response?.data?.message || "Failed to pending driver");
+      console.error("Error setting driver to pending:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to set driver to pending"
+      );
     } finally {
       setLoading(false);
     }
   };
   const handleDeleteDriver = async (driver) => {
-    try {
-      const confirmDelete = window.confirm(
-        `Are you sure you want to delete driver "${driver.name}"? This action cannot be undone.`
+    const confirmDelete = await new Promise((resolve) => {
+      toast(
+        (t) => (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center">
+              <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
+              <h1 className="font-bold">Warning!</h1>
+            </div>
+            <div className="text-xs md:text-base lg:text-lg text-gray-900">
+              Are you sure you want to delete driver "{driver.name}"?
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => {
+                  toast.dismiss(t.id);
+                  resolve(false);
+                }}
+                className="bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-400 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  toast.dismiss(t.id);
+                  resolve(true);
+                }}
+                className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 cursor-pointer"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        ),
+        {
+          duration: Infinity,
+          position: "top-center",
+        }
       );
-      if (!confirmDelete) return;
+    });
+    if (!confirmDelete) return;
 
+    try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("No authentication token found");
       }
+
+      const loadingToast = toast.loading(`Deleting driver "${driver.name}"...`);
 
       await axios.delete(`${API}/admin/driver/${driver._id}`, {
         headers: {
@@ -331,11 +372,15 @@ function DriversDashboard() {
 
       console.log("Driver deleted:", driver.name);
 
+      // Dismiss loading and show success
+      toast.dismiss(loadingToast);
+      toast.success(`Driver "${driver.name}" deleted successfully!`);
+
       // Refresh the drivers list
       await fetchDrivers();
     } catch (error) {
       console.error("Error deleting driver:", error);
-      alert(error.response?.data?.message || "Failed to delete driver");
+      toast.error(error.response?.data?.message || "Failed to delete driver");
     }
   };
   return (
@@ -798,6 +843,16 @@ function DriversDashboard() {
           </div>
         </div>
       )}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-800",
+          },
+        }}
+      />
     </div>
   );
 }
