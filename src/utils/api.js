@@ -3,8 +3,6 @@ import axios from "axios";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "https://bus-line-backend.onrender.com/api";
 
-  // we will replace this local link with this https://bus-line-backend.onrender.com/api
-
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -35,7 +33,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("user");
-      localStorage.removeItem("token"); // Also remove the token
+      localStorage.removeItem("token"); 
       window.location.href = "/login"; // Redirect to login
     }
     return Promise.reject(error);
