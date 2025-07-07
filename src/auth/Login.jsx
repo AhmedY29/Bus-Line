@@ -40,9 +40,6 @@ function Login() {
       console.log(user);
       localStorage.setItem("token", user.data.token);
       localStorage.setItem("user", JSON.stringify(user?.data?.user));
-
-      toast.success("Login successful! Redirecting...");
-
       const role = user?.data?.user.role;
       if (role == "admin") {
         navigate("/admin");
