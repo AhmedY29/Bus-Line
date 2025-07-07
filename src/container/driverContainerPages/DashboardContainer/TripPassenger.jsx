@@ -1,42 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 
 const TripPassenger = () => {
   const [passengers, setPassengers] = useState([
     {
       id: 1,
-      passengers: 'passengers1',
-      neighborhood: 'ANY N',
-      departureTime: '8:30 AM',
-      status: 'boarded',
+      passengers: "passengers1",
+      neighborhood: "ANY N",
+      departureTime: "8:30 AM",
+      status: "boarded",
     },
     {
       id: 2,
-      passengers: 'passengers2',
-      neighborhood: 'ANY N',
-      departureTime: '8:30 AM',
-      status: 'absent',
+      passengers: "passengers2",
+      neighborhood: "ANY N",
+      departureTime: "8:30 AM",
+      status: "absent",
     },
     {
       id: 3,
-      passengers: 'passengers2',
-      neighborhood: 'Adobe',
-      departureTime: '8:30 AM',
-  
-   
-      status: 'boarded',
+      passengers: "passengers2",
+      neighborhood: "Adobe",
+      departureTime: "8:30 AM",
+
+      status: "boarded",
     },
   ]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
-
-  const filteredPassengers = passengers.filter((passenger) =>
-    passenger.passengers.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    passenger.neighborhood.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    passenger.trip.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPassengers = passengers.filter(
+    (passenger) =>
+      passenger.passengers.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      passenger.neighborhood
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      passenger.trip.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
 
   const handleStatusChange = (id, newStatus) => {
     setPassengers((prevPassengers) =>
@@ -52,7 +52,10 @@ const TripPassenger = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-xl font-bold">Trip Passenger</h1>
         <form className="w-82">
-          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
+          <label
+            htmlFor="default-search"
+            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          >
             Search
           </label>
           <div className="relative">
@@ -72,8 +75,20 @@ const TripPassenger = () => {
               type="submit"
               className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-blue-900 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-900 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
               </svg>
               <span className="sr-only">Search</span>
             </button>
@@ -92,36 +107,40 @@ const TripPassenger = () => {
               <th className="px-4 py-3 text-left">Destination</th>
               <th className="px-4 py-3 text-left">Neighborhood</th>
               <th className="px-4 py-3 text-left">Departure Time</th>
-             
+
               <th className="px-4 py-3 text-left">Status</th>
             </tr>
           </thead>
           <tbody>
             {filteredPassengers.map((passenger) => (
-              <tr key={passenger.id} className="hover:bg-gray-50 border-b border-gray-200">
+              <tr
+                key={passenger.id}
+                className="hover:bg-gray-50 border-b border-gray-200"
+              >
                 <td className="px-4 py-3">{passenger.passengers}</td>
                 <td className="px-4 py-3">{passenger.neighborhood}</td>
                 <td className="px-4 py-3">{passenger.departureTime}</td>
-       
-    
+
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleStatusChange(passenger.id, 'boarded')}
+                      onClick={() =>
+                        handleStatusChange(passenger.id, "boarded")
+                      }
                       className={`px-2 py-1 rounded ${
-                        passenger.status === 'boarded'
-                          ? 'bg-green-200 text-green-700'
-                          : 'bg-gray-200 text-gray-700'
+                        passenger.status === "boarded"
+                          ? "bg-green-200 text-green-700"
+                          : "bg-gray-200 text-gray-700"
                       }`}
                     >
                       Boarded
                     </button>
                     <button
-                      onClick={() => handleStatusChange(passenger.id, 'absent')}
+                      onClick={() => handleStatusChange(passenger.id, "absent")}
                       className={`px-2 py-1 rounded ${
-                        passenger.status === 'absent'
-                          ? 'bg-red-200 text-red-700'
-                          : 'bg-gray-200 text-gray-700'
+                        passenger.status === "absent"
+                          ? "bg-red-200 text-red-700"
+                          : "bg-gray-200 text-gray-700"
                       }`}
                     >
                       Absent
@@ -137,28 +156,35 @@ const TripPassenger = () => {
       {/* Mobile Cards */}
       <div className="block md:hidden space-y-4">
         {filteredPassengers.map((passenger) => (
-          <div key={passenger.id} className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
+          <div
+            key={passenger.id}
+            className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white"
+          >
             <h3 className="font-semibold">{passenger.passengers}</h3>
-            <p className="text-sm text-gray-600 mt-1">📍 Neighborhood: {passenger.neighborhood}</p>
-            <p className="text-sm text-gray-600">🕒 Departure: {passenger.departureTime}</p>
-           
+            <p className="text-sm text-gray-600 mt-1">
+              📍 Neighborhood: {passenger.neighborhood}
+            </p>
+            <p className="text-sm text-gray-600">
+              🕒 Departure: {passenger.departureTime}
+            </p>
+
             <div className="mt-3 flex gap-2">
               <button
-                onClick={() => handleStatusChange(passenger.id, 'boarded')}
+                onClick={() => handleStatusChange(passenger.id, "boarded")}
                 className={`flex-1 py-1 rounded text-sm ${
-                  passenger.status === 'boarded'
-                    ? 'bg-green-200 text-green-700'
-                    : 'bg-gray-200 text-gray-700'
+                  passenger.status === "boarded"
+                    ? "bg-green-200 text-green-700"
+                    : "bg-gray-200 text-gray-700"
                 }`}
               >
                 Boarded
               </button>
               <button
-                onClick={() => handleStatusChange(passenger.id, 'absent')}
+                onClick={() => handleStatusChange(passenger.id, "absent")}
                 className={`flex-1 py-1 rounded text-sm ${
-                  passenger.status === 'absent'
-                    ? 'bg-red-200 text-red-700'
-                    : 'bg-gray-200 text-gray-700'
+                  passenger.status === "absent"
+                    ? "bg-red-200 text-red-700"
+                    : "bg-gray-200 text-gray-700"
                 }`}
               >
                 Absent
