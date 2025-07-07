@@ -136,12 +136,13 @@ const TripsList = () => {
         });
         if (!result.isConfirmed) return;
 
-        await axios.put(`${API}/trips/${editingTripId}`, updateData, {
+        await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
+     
 
         Swal.fire({
           icon: "success",

@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+
 
 const DriverProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -42,7 +44,7 @@ const DriverProfile = () => {
       }
   
       const response = await fetch("https://bus-line-backend.onrender.com/api/auth/edit-user", {
-        method: "PUT",
+        method: "PATCH", // استخدمي PUT إذا كنتِ تفضلين ذلك
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -59,9 +61,23 @@ const DriverProfile = () => {
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
       setIsEditing(false);
-      console.log("Profile updated successfully:", updatedUser);
+  
+     
+      Swal.fire({
+        icon: "success",
+        title: "Profile updated successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+  
     } catch (error) {
       console.error("Error updating user:", error.message);
+  
+      Swal.fire({
+        icon: "error",
+        title: "Update failed",
+        text: error.message || "Something went wrong",
+      });
     }
   };
   

@@ -73,14 +73,14 @@ const StatsCards = () => {
         value="24"
         color="green"
         
-        icon={<div className='w-13 h-13 bg-green-200 flex rounded-full shadow-sm'><FaUserGroup className="w-8 items-center h-8 text-[#19ACA0] " /></div> }
+        icon={<div className=' bg-green-200 w-13 h-13 flex items-center justify-center rounded-full shadow-sm'><FaUserGroup className="w-8 items-center h-8 text-[#19ACA0] " /></div> }
       />
 
       <StatCard
         title="Total Trip"
         value={activeTripsCount}
         color="yellow"
-        icon={<div className='w-13 h-13 bg-blue-200 flex rounded-full shadow-sm'><FaBus className="w-8 items-center h-8 text-[#0751c7] " /></div> }
+        icon={<div className=' bg-blue-200 w-13 h-13 flex items-center justify-center rounded-full shadow-sm'><FaBus className="w-8 items-center h-8 text-[#0751c7] " /></div> }
 
 
       />
@@ -97,7 +97,7 @@ const StatsCards = () => {
         title="Total Rating"
         value={averageRating}
         color="yellow"
-        icon={<div className='w-13 h-13 bg-yellow-200 flex rounded-full shadow-sm'><MdStarRate className="w-8 items-center h-8 text-[#E4B83C] " /></div> }
+        icon={<div className=' bg-yellow-200 w-13 h-13 flex items-center justify-center rounded-full shadow-sm'><MdStarRate className="w-9 items-center h-9 text-[#E4B83C] " /></div> }
 
 
       />
