@@ -16,7 +16,8 @@ import {
   Timer,
 } from "lucide-react";
 import { Link } from "react-router";
-
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import { NavMain } from "@/components/student/nav-main";
 import { NavProjects } from "@/components/student/nav-projects";
 import { NavSecondary } from "@/components/student/nav-secondary";
@@ -156,17 +157,58 @@ export function AppSidebar({ ...props }) {
 
           <Button
             // variant="destructive"
-            className="w-full justify-start bg- hover:bg-red-100 text-red-600"
+            className="w-full justify-start bg- hover:bg-red-100 text-red-600 cursor-pointer"
             onClick={() => {
-              // Logout logic
-              localStorage.removeItem("token");
-              localStorage.removeItem("user");
-              navigate("/login");
+              toast(
+                (t) => (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center">
+                      <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
+                      <h1 className="font-bold">Warning!</h1>
+                    </div>
+                    <p className="text-xs md:text-base lg:text-lg text-gray-900">
+                      Are you sure you want to logout?
+                    </p>
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="px-4 py-2 bg-gray-200 rounded-md cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => {
+                          toast.dismiss(t.id);
+                          localStorage.removeItem("user");
+                          localStorage.removeItem("token");
+                          navigate("/login");
+                        }}
+                        className="px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                ),
+                {
+                  duration: 5000,
+                }
+              );
             }}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: "bg-white",
+                color: "text-neutral-900",
+              },
+            }}
+          />
         </div>
       </SidebarFooter>
     </Sidebar>

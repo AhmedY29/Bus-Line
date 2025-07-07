@@ -5,7 +5,8 @@ import { IoLocationOutline } from "react-icons/io5";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 import { FaUserFriends } from "react-icons/fa";
 import { MdOutlineDirectionsBusFilled } from "react-icons/md";
-
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router";
 function DriverSidebar() {
@@ -22,7 +23,6 @@ function DriverSidebar() {
     { icon: LuBus, label: "Passengers" },
     { icon: IoLocationOutline, label: "Requests" },
     { icon: HiMap, label: "Reports" },
-   
   ];
 
   const adminBottomItems = [
@@ -96,12 +96,44 @@ function DriverSidebar() {
             );
           })}
           <li
-            className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 pr-6"
+            className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 pr-6 cursor-pointer"
             onClick={() => {
-              
-              localStorage.removeItem("user");
-              localStorage.removeItem("token");
-              navigate("/login");
+              toast(
+                (t) => (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center">
+                      <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
+                      <h1 className="font-bold">Warning!</h1>
+                    </div>
+                    <p className="text-xs md:text-base lg:text-lg text-gray-900">
+                      Are you sure you want to logout?
+                    </p>
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="px-4 py-2 bg-gray-200 rounded-md cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => {
+                          toast.dismiss(t.id);
+                          localStorage.removeItem("user");
+                          localStorage.removeItem("token");
+                          navigate("/login");
+                        }}
+                        className="px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                ),
+                {
+                  duration: 5000,
+                }
+              );
+>>>>>>> a10d211 (Add confirmation toast for logout in SideBar, AppSidebar, and DriverSidebar components)
             }}
           >
             <HiLogout className="text-xl" />
@@ -109,6 +141,16 @@ function DriverSidebar() {
           </li>
         </ul>
       </div>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+        }}
+      />
     </div>
   );
 }
