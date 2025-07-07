@@ -47,6 +47,11 @@ function Login() {
       }
       toast.success("Login successful! Redirecting...");
 
+      if (user?.data?.user?.role === "driver") {
+        localStorage.setItem("driverId", user.data.user._id);
+      }
+
+
 
       const role = user?.data?.user.role;
       if (role == "admin") {

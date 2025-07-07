@@ -135,6 +135,7 @@ function DriverSidebar() {
                   duration: 5000,
                 }
               );
+
             }}
           >
             <HiLogout className="text-xl" />
