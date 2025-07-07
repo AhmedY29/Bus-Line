@@ -576,14 +576,15 @@ function DestinationsDashboard() {
                 <h1>{item.title}</h1>
               </div>
               <div className="flex flex-col text-xs lg:text-base w-2/6 text-left">
-                <h1>
-                  <span className="font-semibold">lat: </span>
-                  {item.latitude}
-                </h1>
-                <h1>
-                  <span className="font-semibold">long: </span>
-                  {item.longitude}
-                </h1>
+                <a
+                  href={`https://www.google.com/maps?q=${item.latitude},${item.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  <FaMapMarkerAlt className="text-sm" />
+                  Google Maps
+                </a>
               </div>
 
               <div className="flex items-center justify-around gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 lg:pl-4 h-full w-1/4">
