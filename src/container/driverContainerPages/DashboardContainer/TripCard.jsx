@@ -1,182 +1,184 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import DriverTrackingMap from "./DriverTrackingMap";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const TripCard = () => {
-  const [trip, setTrip] = useState('');
+  const [trip, setTrip] = useState({});
+  const [tripId, setTripId] = useState("");
   const [trips, setTrips] = useState([]);
-  const [destinations, setDestinations] = useState([]);
-  const [currentLocation, setCurrentLocation] = useState('');
-  const [destination, setDestination] = useState('');
-  useEffect(() => {
-    const fetchTrips = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("https://bus-line-backend.onrender.com/api/trips/driver-trips", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
+  const [pendingBooking, setPendingBooking] = useState([]);
+  const [trackingStarted, setTrackingStarted] = useState(false);
 
-        if (Array.isArray(data.trips)) {
-          setTrips(data.trips);
-        } else {
-          console.error("Unexpected trips structure", data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch trips:", error);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tripRes = await axios.get(
+          "https://bus-line-backend.onrender.com/api/trips/driver-trips",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setTrips(tripRes.data.trips);
+
+        const pendingRes = await axios.get(
+          "https://bus-line-backend.onrender.com/api/bookings/booking-pending",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setPendingBooking(pendingRes.data.bookings);
+      } catch (err) {
+        console.error("Error fetching trips or bookings", err);
       }
     };
 
-    fetchTrips();
-  }, []);
-
+    fetchData();
+  }, [token]);
 
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const fetchTripData = async () => {
+      if (!tripId) return;
       try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("https://bus-line-backend.onrender.com/api/destination", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setDestinations(data.destinations || []);
+        const res = await axios.get(
+          `https://bus-line-backend.onrender.com/api/trips/${tripId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setTrip(res.data.trip);
       } catch (error) {
-        console.error("Failed to fetch destinations:", error);
+        toast.error("Error in Selected Trip");
       }
     };
 
-    fetchDestinations();
-  }, []);
-
-  const handleTripChange = (e) => {
-    const selectedTripId = e.target.value;
-    setTrip(selectedTripId);
-
-    const selectedTrip = trips.find(t => t._id === selectedTripId);
-    if (selectedTrip) {
-      setCurrentLocation(selectedTrip.neighborhood || '');
-
-      let destTitle = '';
-      const destinationId =
-        typeof selectedTrip.destinationId === 'object'
-          ? selectedTrip.destinationId._id
-          : selectedTrip.destinationId;
-
-      const destObj = destinations.find(d => d._id === destinationId);
-      destTitle = destObj?.title || '';
-
-      setDestination(destTitle);
-    } else {
-      setCurrentLocation('');
-      setDestination('');
-    }
-  };
+    fetchTripData();
+  }, [tripId, token]);
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4">
-
+      {/* Left Column */}
       <div className="flex flex-col gap-6 w-full md:w-1/2">
-       
+        {/* New Request Section */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="font-bold">New request</h2>
+            <h2 className="font-bold">New Request</h2>
           </div>
-
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-center">Destination</th>
+                  <th className="px-4 py-2 text-center">Name</th>
                   <th className="px-4 py-2 text-left">Neighborhood</th>
                   <th className="px-4 py-2 text-left"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="px-4 py-2">Alhamra</td>
-                  <td className="px-4 py-2">King Saud U</td>
-                  <td className="px-4 py-2">
-                    <button className="bg-[#0165AD] hover:bg-blue-800 text-white py-1 px-6 rounded text-sm w-full sm:w-auto">
-                      Details
-                    </button>
-                  </td>
-                </tr>
+                {pendingBooking && pendingBooking.length > 0 ? (
+                  pendingBooking.slice(0, 3).map((pendingBook) => (
+                    <tr key={pendingBook._id} className="border-b border-gray-200">
+                      <td className="px-4 py-2 text-center">
+                        {pendingBook.userId?.name || "Unknown"}
+                      </td>
+                      <td className="px-4 py-2">
+                        {pendingBook.tripId?.neighborhood || "N/A"}
+                      </td>
+                      <td className="px-4 py-2">
+                        <Link to="requests">
+                          <button className="bg-[#0165AD] hover:bg-blue-800 text-white cursor-pointer py-1 px-6 rounded text-sm w-full sm:w-auto">
+                            Details
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="text-center py-4 text-gray-500">
+                      No Requests yet...
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
 
-     
+        {/* Choose Trip Section */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between mb-4">
-            <p className="block font-medium">Choose Trip</p>
+            <p className="font-medium">Choose Trip</p>
             <span className="text-sm text-gray-500">
-  {new Date().toLocaleDateString('en-US', {
-    weekday: 'short',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-  })}
-</span>
+              Today |{" "}
+              {new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </div>
-
-          <div className="mb-6">
-            <select
-              id="trip"
-              value={trip}
-              onChange={handleTripChange}
-              className="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-900 focus:outline-none"
-            >
-              <option value="">Choose Trip</option>
-              {trips.map((t) => (
-                <option key={t._id} value={t._id}>
-                  {`#${t._id.slice(0, 5)} 
-                  `}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            id="trip"
+            value={tripId}
+            onChange={(e) => setTripId(e.target.value)}
+            className="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-900 focus:outline-none"
+          >
+            <option value="">Choose Trip</option>
+            {trips.map((t) => (
+              <option key={t._id} value={t._id}>
+                {t.neighborhood} ➡️ {t.destinationId?.title || ""}
+              </option>
+            ))}
+          </select>
 
           <div className="flex flex-col gap-6 mt-6">
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-5">
-                <h1 className="block font-bold mb-2">From:</h1>
-                <h3>{currentLocation}</h3>
-              </div>
-              <div className="flex gap-5">
-                <h1 className="block font-bold mb-2">To:</h1>
-                <h3>{destination}</h3>
-              </div>
+            <div className="flex gap-5">
+              <h1 className="font-bold">From:</h1>
+              <h3>{trip?.neighborhood || "—"}</h3>
+            </div>
+            <div className="flex gap-5">
+              <h1 className="font-bold">To:</h1>
+              <h3>{trip?.destinationId?.title || "—"}</h3>
             </div>
 
             <button
               type="button"
-              className="bg-[#00B087] hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full"
+              onClick={() => {
+                if (!tripId) {
+                  toast.error("Please Select Trip!");
+                  return;
+                }
+                setTrackingStarted(!trackingStarted);
+              }}
+              className={`mt-6 ${
+                trackingStarted
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-green-600 hover:bg-green-700"
+              } text-white font-bold py-2 px-4 rounded w-full`}
             >
-              Start
+              {trackingStarted ? "Stop Tracking" : "Start Tracking"}
             </button>
           </div>
         </div>
       </div>
 
-   
+      {/* Right Column - Map */}
       <div className="bg-white shadow-md rounded-lg p-6 w-full md:w-1/2">
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-4">
           <FaMapMarkerAlt className="h-5 mt-1" />
-          <h2 className="font-bold mb-4">Live Tracking Map</h2>
+          <h2 className="font-bold">Live Tracking Map</h2>
         </div>
-
         <div className="border border-gray-300 rounded h-64 md:h-96 overflow-hidden bg-gray-100 relative">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.012345678!2d-46.67511408467358!3d24.71355298412488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c4e4e0f5e2d027%3A0x5e722f5b45c6b9f8!2sTuwaij%20Academy!5e0!3m2!1sen!2s!4v1631954444031!5m2!1sen!2s"
-            title="Google Maps Tracking"
-            className="w-full h-full absolute"
-            allowFullScreen
-            loading="lazy"
-          ></iframe>
+          {trackingStarted ? (
+            <DriverTrackingMap
+              tripId={trip._id}
+              token={token}
+              trackingStarted={trackingStarted}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-500">
+              اضغط Start Tracking لبدء التتبع
+            </div>
+          )}
         </div>
       </div>
     </div>

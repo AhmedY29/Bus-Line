@@ -13,7 +13,7 @@ const WelcomeBanner = () => {
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-br m-3 from-blue-600 via-blue-500 to-indigo-600 rounded-3xl p-8 text-white">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center">
           <span className="text-green-400 text-3xl">•</span>
           <span className="text-md font-medium">Good Morning</span>
@@ -31,7 +31,8 @@ const WelcomeBanner = () => {
       </h1>
 
       <p className="text-sm sm:text-base leading-relaxed text-white/90 max-w-xl">
-        You have a trip scheduled for today. Make sure to be on time and check the list of students before departure.
+        You have a trip scheduled for today. Make sure to be on time and check
+        the list of students before departure.
       </p>
     </div>
   );
