@@ -6,6 +6,8 @@ import { MdOutlineDelete } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
 import { FaUserPen } from "react-icons/fa6";
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 function DestinationsDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
@@ -55,7 +57,7 @@ function DestinationsDashboard() {
       setError("");
     } catch (error) {
       console.error("Error fetching destinations:", error);
-      setError("Failed to fetch destinations. Please try again.");
+      toast.error("Failed to fetch destinations. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -184,7 +186,7 @@ function DestinationsDashboard() {
             }
           } catch (proxyError) {
             console.warn("Proxy approach also failed:", proxyError);
-            setError(
+            toast.error(
               "Unable to process shortened URL. Please try using the full Google Maps URL or enter coordinates directly (e.g., 24.7136, 46.6753)"
             );
             return;
@@ -278,7 +280,7 @@ function DestinationsDashboard() {
           }));
           setError(""); // Clear any previous errors
         } else {
-          setError(
+          toast.error(
             "Invalid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180."
           );
         }
@@ -286,14 +288,14 @@ function DestinationsDashboard() {
         // Clear coordinates if no valid pattern found
         setFormData((prev) => ({ ...prev, latitude: "", longitude: "" }));
         if (input.includes("goo.gl") || input.includes("maps.app.goo.gl")) {
-          setError(
-            "Could not extract coordinates from shortened URL. Please try one of these alternatives:\n• Use the full Google Maps URL\n• Right-click on the location in Google Maps → 'What's here?' and copy coordinates\n• Enter coordinates directly (e.g., 24.7136, 46.6753)"
+          toast.error(
+            "Could not extract coordinates from shortened URL. Please try using the full Google Maps URL or entering coordinates directly."
           );
         } else if (
           input.includes("maps.google") ||
           input.includes("google.com/maps")
         ) {
-          setError(
+          toast.error(
             "Could not extract coordinates from this URL format. Please try entering coordinates directly (e.g., 24.7136, 46.6753)"
           );
         }
@@ -301,7 +303,7 @@ function DestinationsDashboard() {
     } catch (error) {
       console.error("Error extracting coordinates:", error);
       setFormData((prev) => ({ ...prev, latitude: "", longitude: "" }));
-      setError(
+      toast.error(
         "Error processing the URL. Please try entering coordinates directly (e.g., 24.7136, 46.6753)"
       );
     }
@@ -349,7 +351,7 @@ function DestinationsDashboard() {
   // Validate form data
   const validateForm = () => {
     if (!formData.title.trim()) {
-      setError("Title is required");
+      toast.error("Title is required");
       return false;
     }
 
@@ -359,20 +361,20 @@ function DestinationsDashboard() {
       formData.location.trim() &&
       (!formData.latitude || !formData.longitude)
     ) {
-      setError(
-        "Could not extract coordinates from the provided location. Please try:\n• Using a different Google Maps URL format\n• Entering coordinates directly (e.g., 24.7136, 46.6753)\n• Right-clicking on Google Maps → 'What's here?' and copying coordinates"
+      toast.error(
+        "Could not extract coordinates from the provided location. Please try using a different Google Maps URL format or entering coordinates directly."
       );
       return false;
     }
 
     if (!formData.latitude || isNaN(parseFloat(formData.latitude))) {
-      setError(
+      toast.error(
         "Valid latitude is required. Please enter coordinates or a valid Google Maps URL."
       );
       return false;
     }
     if (!formData.longitude || isNaN(parseFloat(formData.longitude))) {
-      setError(
+      toast.error(
         "Valid longitude is required. Please enter coordinates or a valid Google Maps URL."
       );
       return false;
@@ -380,11 +382,11 @@ function DestinationsDashboard() {
     const lat = parseFloat(formData.latitude);
     const lng = parseFloat(formData.longitude);
     if (lat < -90 || lat > 90) {
-      setError("Latitude must be between -90 and 90");
+      toast.error("Latitude must be between -90 and 90");
       return false;
     }
     if (lng < -180 || lng > 180) {
-      setError("Longitude must be between -180 and 180");
+      toast.error("Longitude must be between -180 and 180");
       return false;
     }
     return true;
@@ -414,13 +416,13 @@ function DestinationsDashboard() {
       });
 
       console.log("Destination added:", response.data);
-      setSuccess("Destination added successfully!");
+      toast.success("Destination added successfully!");
       setAddDestination(false);
       fetchDestinations();
       setFormData({ title: "", latitude: "", longitude: "" });
     } catch (error) {
       console.error("Error adding destination:", error);
-      setError(
+      toast.error(
         error.response?.data?.message ||
           "Failed to add destination. Please try again."
       );
@@ -457,12 +459,12 @@ function DestinationsDashboard() {
       );
 
       console.log("Destination updated:", response.data);
-      setSuccess("Destination updated successfully!");
+      toast.success("Destination updated successfully!");
       setEditDestination(false);
       fetchDestinations();
     } catch (error) {
       console.error("Error updating destination:", error);
-      setError(
+      toast.error(
         error.response?.data?.message ||
           "Failed to update destination. Please try again."
       );
@@ -473,32 +475,73 @@ function DestinationsDashboard() {
 
   // Delete destination
   const handleDeleteDestination = async (destinationId) => {
-    if (!window.confirm("Are you sure you want to delete this destination?")) {
-      return;
-    }
+    const destination = destinations.find((d) => d._id === destinationId);
+    const destinationName = destination?.title || "this destination";
 
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center">
+            <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
+            <h1 className="font-bold">Warning!</h1>
+          </div>
+          <div>
+            <p className="text-xs md:text-base lg:text-lg text-gray-900">
+              Are you sure you want to delete "{destinationName}" destination?
+            </p>
+          </div>
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  setLoading(true);
+                  const token = localStorage.getItem("token");
 
-      await axios.delete(`${API}/destination/${destinationId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+                  await axios.delete(`${API}/destination/${destinationId}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                  });
+
+                  toast.success("Destination deleted successfully!");
+                  fetchDestinations();
+                } catch (error) {
+                  console.error("Error deleting destination:", error);
+                  toast.error(
+                    error.response?.data?.message ||
+                      "Failed to delete destination. Please try again."
+                  );
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+        style: {
+          background: "white",
+          color: "black",
+          border: "1px solid #e5e7eb",
+          padding: "16px",
+          borderRadius: "8px",
+          maxWidth: "400px",
         },
-      });
-
-      setSuccess("Destination deleted successfully!");
-      fetchDestinations();
-    } catch (error) {
-      console.error("Error deleting destination:", error);
-      setError(
-        error.response?.data?.message ||
-          "Failed to delete destination. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
+      }
+    );
   };
 
   // Close modals
@@ -576,14 +619,15 @@ function DestinationsDashboard() {
                 <h1>{item.title}</h1>
               </div>
               <div className="flex flex-col text-xs lg:text-base w-2/6 text-left">
-                <h1>
-                  <span className="font-semibold">lat: </span>
-                  {item.latitude}
-                </h1>
-                <h1>
-                  <span className="font-semibold">long: </span>
-                  {item.longitude}
-                </h1>
+                <a
+                  href={`https://www.google.com/maps?q=${item.latitude},${item.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  <FaMapMarkerAlt className="text-sm" />
+                  Google Maps
+                </a>
               </div>
 
               <div className="flex items-center justify-around gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 lg:pl-4 h-full w-1/4">
@@ -918,6 +962,16 @@ function DestinationsDashboard() {
           </div>
         </div>
       )}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+        }}
+      />
     </div>
   );
 }
