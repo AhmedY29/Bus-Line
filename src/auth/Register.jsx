@@ -73,6 +73,7 @@ function Register() {
       const user = await axios
         .post(`https://bus-line-backend.onrender.com/api/auth/signup`, formData)
         .then((res) => {
+          toast.success("Registration successful! Redirecting...");
           localStorage.setItem("token", res?.data?.token);
           localStorage.setItem("user", JSON.stringify(res?.data?.user));
           navigate(`/${formData.role}`);
