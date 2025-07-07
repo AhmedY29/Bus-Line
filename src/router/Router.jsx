@@ -123,12 +123,6 @@ const router = createBrowserRouter([
   // },
 
   // Public Routes
-
-  {
-    path: "/student",
-    element: <StudentLayout />,
-    children: studentRoutes,
-  },
   {
     path: "/",
     element: <Home />,
