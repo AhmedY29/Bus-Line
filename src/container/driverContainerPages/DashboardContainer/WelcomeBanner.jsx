@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from "react";
 const WelcomeBanner = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   return (
     <div className="relative overflow-hidden bg-gradient-to-br m-3 from-blue-600 via-blue-500 to-indigo-600 rounded-3xl p-8 text-white">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
@@ -15,12 +16,13 @@ const WelcomeBanner = () => {
         </a>
       </div>
 
- 
-      <h1 className="text-2xl sm:text-3xl font-bold mb-3">Welcome back, Driver!</h1>
-
+      <h1 className="text-2xl sm:text-3xl font-bold mb-3">
+        Welcome back, Caption {user.name}!
+      </h1>
 
       <p className="text-sm sm:text-base leading-relaxed text-white/90 max-w-xl">
-        You have a trip scheduled for today. Make sure to be on time and check the list of students before departure.
+        You have a trip scheduled for today. Make sure to be on time and check
+        the list of students before departure.
       </p>
     </div>
   );

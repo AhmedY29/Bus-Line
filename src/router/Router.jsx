@@ -24,6 +24,7 @@ import Home from "../page/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import { FormProvider } from "../context/driverForm";
 import Destinations from "../page/adminPages/Destinations";
+import StudentConversations from "@/page/studentPages/conversations/StudentConversations";
 
 function Layout({ role }) {
   return (
@@ -95,7 +96,7 @@ const router = createBrowserRouter([
       { path: "requests", element: <Request /> },
       { path: "reports", element: <Report /> },
       { path: "reports", element: <Profile /> },
-      { path: "messages", element: <StudentChat /> },
+      { path: "messages", element: <StudentConversations /> },
       { path: "settings", element: <Profile /> },
     ],
   },
