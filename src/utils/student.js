@@ -1,4 +1,4 @@
-import api from "./api"; // Assuming your api setup is in a file named api.js
+import api from "./api"; 
 
 //  New Booking Page Functions 
 
