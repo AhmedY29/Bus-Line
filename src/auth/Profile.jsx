@@ -10,13 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-// <<<<<<< HEAD
-import React, { useState } from "react";
-// =======
-// import React, { useState, useEffect } from "react";
-// import Swal from "sweetalert2";
 
-// >>>>>>> 582cf62 (update driver profile)
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 const DriverProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -37,66 +33,51 @@ const DriverProfile = () => {
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-// <<<<<<< HEAD
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setUser({ ...user, profileImage: URL.createObjectURL(file) });
-// =======
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-  
-//     try {
-//       const token = localStorage.getItem("token");
-//       if (!token) {
-//         console.error("No token found");
-//         return;
-//       }
-  
-//       const response = await fetch("https://bus-line-backend.onrender.com/api/auth/edit-user", {
-//         method: "PATCH", // استخدمي PUT إذا كنتِ تفضلين ذلك
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify(user),
-//       });
-  
-//       if (!response.ok) {
-//         const errorData = await response.json();
-//         throw new Error(errorData.message || "Failed to update profile");
-//       }
-  
-//       const updatedUser = await response.json();
-//       localStorage.setItem("user", JSON.stringify(updatedUser));
-//       setUser(updatedUser);
-//       setIsEditing(false);
-  
-     
-//       Swal.fire({
-//         icon: "success",
-//         title: "Profile updated successfully",
-//         showConfirmButton: false,
-//         timer: 2000,
-//       });
-  
-//     } catch (error) {
-//       console.error("Error updating user:", error.message);
-  
-//       Swal.fire({
-//         icon: "error",
-//         title: "Update failed",
-//         text: error.message || "Something went wrong",
-//       });
-// >>>>>>> 582cf62 (update driver profile)
+      setUser((prev) => ({ ...prev, profileImage: URL.createObjectURL(file) }));
     }
   };
-  
 
   const handleLicenseImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setUser({ ...user, licenseImage: URL.createObjectURL(file) });
+      setUser((prev) => ({ ...prev, licenseImage: URL.createObjectURL(file) }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("https://bus-line-backend.onrender.com/api/auth/edit-user", {
+        method: "PUT", // أو PATCH حسب ما يدعمه السيرفر
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) throw new Error("Failed to update user");
+
+      const updatedUser = await response.json();
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      setIsEditing(false);
+
+      Swal.fire({
+        icon: "success",
+        title: "تم تحديث البيانات بنجاح",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "فشل التحديث",
+        text: error.message || "حدث خطأ ما",
+      });
     }
   };
 
@@ -104,7 +85,6 @@ const DriverProfile = () => {
 
   return (
     <div className="p-4 space-y-6 max-w-5xl mx-auto">
-      {/* Profile Header */}
       <Card className="border-0 shadow-md">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
@@ -119,9 +99,7 @@ const DriverProfile = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) =>
-                    setUser({ ...user, profileImage: URL.createObjectURL(e.target.files[0]) })
-                  }
+                  onChange={handleProfileImageChange}
                   className="absolute bottom-0 right-0 opacity-0 w-full h-full cursor-pointer"
                 />
               )}
@@ -167,7 +145,6 @@ const DriverProfile = () => {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Personal Info */}
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center">
@@ -205,8 +182,8 @@ const DriverProfile = () => {
               </>
             ) : (
               <>
-                    <div><label>Name</label><p className="font-medium">{user.name}</p></div>
-                    <Separator />
+                <div><label>Name</label><p className="font-medium">{user.name}</p></div>
+                <Separator />
                 <div><label>Email</label><p className="font-medium">{user.email}</p></div>
                 <Separator />
                 <div><label>Phone</label><p className="font-medium">{user.phoneNumber}</p></div>
@@ -215,7 +192,6 @@ const DriverProfile = () => {
           </CardContent>
         </Card>
 
-        {/* Vehicle & License */}
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>License</CardTitle>
@@ -247,7 +223,6 @@ const DriverProfile = () => {
           </CardContent>
         </Card>
 
-        {/* Bank Account */}
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>Bank Account</CardTitle>
