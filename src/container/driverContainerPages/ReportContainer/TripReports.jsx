@@ -141,6 +141,7 @@ const TripReports = () => {
                 <td className="px-4 py-3">{getUserName(report.userId)}</td>
                 <td className="px-4 py-3">{report.comment}</td>
                 <td className="px-4 py-3 flex items-center">
+
                   {[...Array(Math.floor(report.rating))].map((_, i) => (
                     <MdStarRate key={i} className="text-yellow-400 inline-block" />
                   ))}
@@ -164,7 +165,7 @@ const TripReports = () => {
       <div className="block md:hidden space-y-4">
         {currentReports.map(report => (
           <div key={report._id} className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
-            <p className="font-semibold">User: {getUserName(report.userId)}</p>
+            <p className="font-semibold">{getUserName(report.userId)}</p>
             <p className="text-sm text-gray-600 mt-1">💬 {report.comment}</p>
             <div className="flex items-center mt-1">
               <span className="text-yellow-400 flex">
@@ -175,6 +176,7 @@ const TripReports = () => {
               <span className="ml-1 text-sm">{report.rating}</span>
             </div>
             <p className="text-sm text-gray-600 mt-1">📅 {new Date(report.createdAt).toLocaleDateString()}</p>
+         
             <button
               onClick={() => handleMoreDetails(report)}
               className="mt-3 w-full bg-[#0165AD] text-white text-sm px-3 py-1 rounded hover:bg-[#0165addf]"
@@ -237,7 +239,7 @@ const TripReports = () => {
 
             <h2 className="text-xl font-bold mb-4">Report Details</h2>
             <div className="space-y-2">
-              <p><strong>User:</strong> {getUserName(selectedReport.userId)}</p>
+              <p> {getUserName(selectedReport.userId)}</p>
               <p><strong>Comment:</strong> {selectedReport.comment}</p>
               <p className="flex items-center">
                 <strong>Rating:</strong>
@@ -249,6 +251,7 @@ const TripReports = () => {
                 <span className="ml-2">{selectedReport.rating}</span>
               </p>
               <p><strong>Date:</strong> {new Date(selectedReport.createdAt).toLocaleString()}</p>
+            
             </div>
             <button
               onClick={handleCloseModal}

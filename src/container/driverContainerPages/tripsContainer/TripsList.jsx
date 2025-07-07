@@ -137,11 +137,16 @@ const TripsList = () => {
         if (!result.isConfirmed) return;
         await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
 
+// <<<<<<< HEAD
+// =======
+//         await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
+// >>>>>>> 582cf62 (update driver profile)
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
+     
 
         Swal.fire({
           icon: "success",
