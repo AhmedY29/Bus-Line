@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router";
+import toast, { Toaster } from "react-hot-toast";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +18,11 @@ function Login() {
 
   const handleLogin = async () => {
     if (!loginData.email.trim()) {
-      alert("Please Enter Your Email");
+      toast.error("Please Enter Your Email");
       return;
     }
     if (!loginData.password.trim()) {
-      alert("Please Enter Your Email");
+      toast.error("Please Enter Your Password");
       return;
     }
 
@@ -31,13 +32,16 @@ function Login() {
         `https://bus-line-backend.onrender.com/api/auth/signin`,
         loginData
       );
+
       if (user.data.error) {
-        alert(user.data.error.message);
+        toast.error(user.data.error.message);
         return;
       }
       console.log(user);
       localStorage.setItem("token", user.data.token);
       localStorage.setItem("user", JSON.stringify(user?.data?.user));
+
+      toast.success("Login successful! Redirecting...");
 
       const role = user?.data?.user.role;
       if (role == "admin") {
@@ -49,6 +53,10 @@ function Login() {
       }
     } catch (error) {
       console.log("ERROR IN SIGN IN:", error.message);
+
+      if (error.response.status === 400) {
+        toast.error("Incorrect email or password. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +64,31 @@ function Login() {
 
   return (
     <>
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+          success: {
+            duration: 2000,
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            duration: 2000,
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
       <nav className="h-[10vh] bg-white flex justify-start items-center px-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-3 mr-2">
