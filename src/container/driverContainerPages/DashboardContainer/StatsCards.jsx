@@ -3,6 +3,7 @@ import StatCard from './StatCard';
 import axios from 'axios';
 import { FaBus } from "react-icons/fa";
 import { MdGroups2, MdGroupOff, MdStarRate } from "react-icons/md";
+import { FaUserGroup } from "react-icons/fa6";
 
 const StatsCards = () => {
   const [activeTripsCount, setActiveTripsCount] = useState(0);
@@ -66,33 +67,39 @@ const StatsCards = () => {
   }, [token, driverId]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-7">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-5 gap-6">
       <StatCard
         title="Total Passenger"
         value="24"
         color="green"
-        icon={<MdGroups2 className="text-[#19ACA0] w-10 h-10 bg-green-200 rounded-full shadow-sm" />}
+        
+        icon={<div className='w-13 h-13 bg-green-200 flex rounded-full shadow-sm'><FaUserGroup className="w-8 items-center h-8 text-[#19ACA0] " /></div> }
       />
 
       <StatCard
         title="Total Trip"
         value={activeTripsCount}
         color="yellow"
-        icon={<FaBus className="text-[#E4B83C] w-10 h-10 bg-yellow-200 rounded-full shadow-sm" />}
+        icon={<div className='w-13 h-13 bg-blue-200 flex rounded-full shadow-sm'><FaBus className="w-8 items-center h-8 text-[#0751c7] " /></div> }
+
+
       />
 
-      <StatCard
+      {/* <StatCard
         title="Absent Today"
         value="3"
         color="green"
         icon={<MdGroupOff className="text-[#28A1BB] w-10 h-10 bg-sky-200 rounded-full shadow-sm" />}
-      />
+      /> */}
 
       <StatCard
+
         title="Total Rating"
         value={averageRating}
         color="yellow"
-        icon={<MdStarRate className="text-[#E4B83C] w-10 h-10 bg-yellow-200 rounded-full shadow-sm" />}
+        icon={<div className='w-13 h-13 bg-yellow-200 flex rounded-full shadow-sm'><MdStarRate className="w-8 items-center h-8 text-[#E4B83C] " /></div> }
+
+
       />
     </div>
   );

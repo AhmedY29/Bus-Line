@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { IoSearchOutline } from "react-icons/io5";
 
 const TripsList = () => {
   const API = "https://bus-line-backend.onrender.com/api";
@@ -87,7 +88,10 @@ const TripsList = () => {
     setEditingTripId(trip._id);
     setFormData({
       neighborhood: trip.neighborhood || "",
-      destinationId: typeof trip.destinationId === "object" ? trip.destinationId._id : trip.destinationId,
+      destinationId:
+        typeof trip.destinationId === "object"
+          ? trip.destinationId._id
+          : trip.destinationId,
       tripPrice: trip.tripPrice?.toString() || "",
       arrivalTime: trip.arrivalTime || "",
       departureTime: trip.departureTime || "",
@@ -131,19 +135,13 @@ const TripsList = () => {
           cancelButtonText: "Cancel",
         });
         if (!result.isConfirmed) return;
-        await axios.put(`https://bus-line-backend.onrender.com/api/trips/${trip._id}`, data, {
+
+        await axios.put(`${API}/trips/${editingTripId}`, updateData, {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
-        
-        // await axios.put(`${API}/trips/${editingTripId}`, updateData, {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     "Content-Type": "application/json",
-        //   },
-        // });
 
         Swal.fire({
           icon: "success",
@@ -173,7 +171,10 @@ const TripsList = () => {
       Swal.fire({
         icon: "error",
         title: isEditing ? "Failed to update trip" : "Failed to add trip",
-        text: error.response?.data?.message || error.message || "An error occurred",
+        text:
+          error.response?.data?.message ||
+          error.message ||
+          "An error occurred",
       });
       console.error("Error submitting trip:", error);
     }
@@ -216,7 +217,13 @@ const TripsList = () => {
   };
 
   const filteredTrips = trips.filter((trip) => {
-    const destination = destinations.find((d) => d._id === (typeof trip.destinationId === "object" ? trip.destinationId._id : trip.destinationId));
+    const destination = destinations.find(
+      (d) =>
+        d._id ===
+        (typeof trip.destinationId === "object"
+          ? trip.destinationId._id
+          : trip.destinationId)
+    );
     const destinationName = destination?.title?.toLowerCase() || "";
     return destinationName.includes(searchQuery.toLowerCase());
   });
@@ -226,13 +233,23 @@ const TripsList = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-xl font-bold">My Trips</h1>
 
-        <input
-          type="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="block w-full sm:w-64 p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
-          placeholder="Search by destination..."
-        />
+        <div className="relative w-82">
+            <input
+              type="search"
+              id="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by comment or user ID"
+              className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <button
+              type="submit"
+              className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-blue-800"
+            >
+              <IoSearchOutline size={20} />
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
 
         <button
           onClick={() => {
@@ -259,33 +276,34 @@ const TripsList = () => {
           </thead>
           <tbody className="text-sm font-medium text-gray-700">
             {filteredTrips.map((trip) => {
-            const destinationId =
-            typeof trip.destinationId === "object" ? trip.destinationId._id : trip.destinationId;
-          
-          const destination = destinations.find((d) => d._id === destinationId);
-          
+              const destinationId =
+                typeof trip.destinationId === "object"
+                  ? trip.destinationId._id
+                  : trip.destinationId;
+
+              const destination = destinations.find((d) => d._id === destinationId);
+
               return (
                 <tr key={trip._id} className="flex flex-col sm:table-row border-b">
                   <td className="px-4 py-2">{destination?.title || "Unknown"}</td>
                   <td className="px-4 py-2">{trip.neighborhood}</td>
                   <td className="px-4 py-2">{trip.departureTime}</td>
                   <td className="px-4 py-2">
-                  <span
-  className={`px-2 py-1 rounded text-xs font-semibold ${
-    trip.status === "active"
-      ? "bg-green-200 text-green-800"
-      : trip.status === "pending"
-      ? "bg-yellow-200 text-yellow-800"
-      : "bg-red-200 text-red-800"
-  }`}
->
-  {trip.status}
-</span>
-
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-semibold ${
+                        trip.status === "active"
+                          ? "bg-green-200 text-green-800"
+                          : trip.status === "pending"
+                          ? "bg-yellow-200 text-yellow-800"
+                          : "bg-red-200 text-red-800"
+                      }`}
+                    >
+                      {trip.status}
+                    </span>
                   </td>
                   <td className="px-4 py-2 flex gap-2">
                     <button
-                    onClick={() => handleEditTrip(trip)}
+                      onClick={() => handleEditTrip(trip)}
                       className="text-blue-600 hover:underline"
                     >
                       Edit
@@ -320,7 +338,7 @@ const TripsList = () => {
                     name="neighborhood"
                     value={formData.neighborhood}
                     onChange={handleInputChange}
-                    className="border border-gray-300 rounded-md p-2"
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                     required
                   />
                 </label>
@@ -331,7 +349,7 @@ const TripsList = () => {
                     name="destinationId"
                     value={formData.destinationId}
                     onChange={handleInputChange}
-                    className="border border-gray-300 rounded-md p-2"
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                     required
                   >
                     <option value="">Select</option>
@@ -351,7 +369,7 @@ const TripsList = () => {
                   name="tripDateStart"
                   value={formData.tripDateStart}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md p-2"
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                   required
                 />
               </label>
@@ -363,7 +381,7 @@ const TripsList = () => {
                   name="tripDateEnd"
                   value={formData.tripDateEnd}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md p-2"
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                   required
                 />
               </label>
@@ -376,7 +394,7 @@ const TripsList = () => {
                     name="arrivalTime"
                     value={formData.arrivalTime}
                     onChange={handleInputChange}
-                    className="border border-gray-300 rounded-md p-2"
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                     required
                   />
                 </label>
@@ -388,7 +406,7 @@ const TripsList = () => {
                     name="departureTime"
                     value={formData.departureTime}
                     onChange={handleInputChange}
-                    className="border border-gray-300 rounded-md p-2"
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                     required
                   />
                 </label>
@@ -401,7 +419,7 @@ const TripsList = () => {
                   name="tripPrice"
                   value={formData.tripPrice}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md p-2"
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  
                   required
                   min="0"
                 />
