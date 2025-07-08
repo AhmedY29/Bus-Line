@@ -21,58 +21,121 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
-import axios from "axios";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const API_URL = "https://bus-line-backend.onrender.com/api/messages";
-const getToken = () =>
-  localStorage.getItem("token") ||
-  (JSON.parse(localStorage.getItem("user"))?.token ?? "");
-
-const fetchContacts = async () => {
-  const token = getToken();
-  const res = await axios.get(`${API_URL}/contact`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return res.data.contacts || [];
-};
-
-const fetchConversations = async () => {
-  const token = getToken();
-  const res = await axios.get(`${API_URL}/`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return res.data.conversations || [];
-};
-
-const fetchConversation = async (tripId, userId) => {
-  const token = getToken();
-  const res = await axios.get(`${API_URL}/${tripId}/${userId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return res.data.conversation || res.data;
-};
-
-const sendMessageApi = async (payload) => {
-  const token = getToken();
-  const res = await axios.post(`${API_URL}/`, payload, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return res.data.message || res.data;
-};
-
-const markAsReadApi = async (messageId) => {
-  const token = getToken();
-  await axios.patch(
-    `${API_URL}/${messageId}/read`,
-    {},
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-};
 
 const StudentConversations = () => {
+  // const [selectedConversation, setSelectedConversation] = useState(null);
+  // const [message, setMessage] = useState("");
+  // const messagesEndRef = useRef(null);
+
+  // const conversations = [
+  //   {
+  //     id: 1,
+  //     driverName: "Mohamed Ali",
+  //     lastMessage: "I'll be there in 5 minutes",
+  //     timestamp: "2 min ago",
+  //     unread: 2,
+  //     tripRoute: "Maadi → Downtown",
+  //     status: "active",
+  //     avatar: "MA",
+  //     messages: [
+  //       { id: 1, text: "Good morning! I'll be your driver today.", sender: "driver", time: "07:15 AM" },
+  //       { id: 2, text: "Good morning! Thank you.", sender: "student", time: "07:16 AM" },
+  //       { id: 3, text: "I'll be there in 5 minutes", sender: "driver", time: "08:20 AM" }
+  //     ]
+  //   },
+  //   {
+  //     id: 2,
+  //     driverName: "Ahmed Khaled",
+  //     lastMessage: "Have a safe trip!",
+  //     timestamp: "1 hour ago",
+  //     unread: 0,
+  //     tripRoute: "New Cairo → Heliopolis",
+  //     status: "completed",
+  //     avatar: "AK",
+  //     messages: [
+  //       { id: 1, text: "Trip completed successfully!", sender: "driver", time: "06:15 PM" },
+  //       { id: 2, text: "Thank you for the ride!", sender: "student", time: "06:16 PM" },
+  //       { id: 3, text: "Have a safe trip!", sender: "driver", time: "06:17 PM" }
+  //     ]
+  //   },
+  //   {
+  //     id: 3,
+  //     driverName: "Omar Hassan",
+  //     lastMessage: "Trip will be delayed by 10 minutes",
+  //     timestamp: "3 hours ago",
+  //     unread: 1,
+  //     tripRoute: "Zamalek → Maadi",
+  //     status: "upcoming",
+  //     avatar: "OH",
+  //     messages: [
+  //       { id: 1, text: "Hello! Your trip is scheduled for tomorrow.", sender: "driver", time: "02:15 PM" },
+  //       { id: 2, text: "Trip will be delayed by 10 minutes", sender: "driver", time: "02:30 PM" }
+  //     ]
+  //   },
+  //   {
+  //     id: 4,
+  //     driverName: "Mahmoud Saad",
+  //     lastMessage: "Thank you for choosing our service",
+  //     timestamp: "Yesterday",
+  //     unread: 0,
+  //     tripRoute: "6th October → Giza",
+  //     status: "completed",
+  //     avatar: "MS",
+  //     messages: [
+  //       { id: 1, text: "Thank you for choosing our service", sender: "driver", time: "Yesterday" },
+  //       { id: 2, text: "Hope you enjoyed the ride!", sender: "driver", time: "Yesterday" }
+  //     ]
+  //   }
+  // ];
+
+  // const getStatusColor = (status) => {
+  //   switch (status) {
+  //     case 'active':
+  //       return 'bg-green-100 text-green-700';
+  //     case 'upcoming':
+  //       return 'bg-blue-100 text-blue-700';
+  //     case 'completed':
+  //       return 'bg-gray-100 text-gray-700';
+  //     default:
+  //       return 'bg-gray-100 text-gray-700';
+  //   }
+  // };
+
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
+
+  // useEffect(() => {
+  //   if (selectedConversation) {
+  //     scrollToBottom();
+  //   }
+  // }, [selectedConversation]);
+
+  // const handleSendMessage = () => {
+  //   if (message.trim() && selectedConversation) {
+  //     const newMessage = {
+  //       id: selectedConversation.messages.length + 1,
+  //       text: message,
+  //       sender: "student",
+  //       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  //     };
+
+  //     const updatedConversation = {
+  //       ...selectedConversation,
+  //       messages: [...selectedConversation.messages, newMessage]
+  //     };
+
+  //     setSelectedConversation(updatedConversation);
+  //     setMessage("");
+  //   }
+  // };
+
+  // const handleKeyPress = (e) => {
+  //   if (e.key === 'Enter') {
+  //     handleSendMessage();
+  //   }
+  // };
+
   const [contacts, setContacts] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -86,26 +149,31 @@ const StudentConversations = () => {
     role: "",
   });
   const [messages, setMessages] = useState("");
-  const [loadingContacts, setLoadingContacts] = useState(true);
-  const [loadingMessages, setLoadingMessages] = useState(false);
   const messagesEndRef = useRef(null);
   const socket = useRef();
 
   console.log(receiver, "recever");
 
   useEffect(() => {
-    const loadContacts = async () => {
-      setLoadingContacts(true);
+    const fetchContacts = async () => {
       try {
-        const contacts = await fetchContacts();
-        setContacts(contacts);
+        const res = await fetch(
+          "https://bus-line-backend.onrender.com/api/messages/contact",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await res.json();
+        console.log(data, "sss");
+        setContacts(data.contacts);
       } catch (error) {
-        setContacts([]);
-      } finally {
-        setLoadingContacts(false);
+        console.error("Error fetching contacts:", error);
       }
     };
-    loadContacts();
+
+    fetchContacts();
 
     socket.current = io("https://bus-line-backend.onrender.com", {
       withCredentials: true,
@@ -117,7 +185,6 @@ const StudentConversations = () => {
     socket.current.on("connect", () => {
       console.log("Socket connected:", socket.current.id);
     });
-
     socket.current.on("online-users", (users) => {
       setOnlineUsers(users);
     });
@@ -162,6 +229,8 @@ const StudentConversations = () => {
     };
   }, [selectedConversation]);
 
+  console.log(contacts);
+
   const getStatusColor = (status) => {
     switch (status) {
       case "active":
@@ -179,65 +248,43 @@ const StudentConversations = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Helper to get the correct tripId and userId for conversation fetch
-  const getContactConversationParams = (contact) => {
-    // If contact has tripId, use it; otherwise, fallback to first tripId in contact.trips
-    let tripId = contact.tripId;
-    if (!tripId && Array.isArray(contact.trips) && contact.trips.length > 0) {
-      tripId = contact.trips[0];
+  useEffect(() => {
+    if (selectedConversation) {
+      scrollToBottom();
     }
-    return { tripId, userId: contact.id };
-  };
+  }, [selectedConversation]);
 
-  const handleSelectConversation = async (contact) => {
-    setSelectedConversation(null);
-    setLoadingMessages(true);
-    try {
-      const { tripId, userId } = getContactConversationParams(contact);
-      if (!tripId || !userId) {
-        setSelectedConversation({ ...contact, messages: [] });
-        setLoadingMessages(false);
-        return;
-      }
-      const conv = await fetchConversation(tripId, userId);
-      setSelectedConversation({
-        ...contact,
-        ...conv,
-        tripId,
-        id: userId,
-        messages: conv.messages || [],
-      });
-      await Promise.all(
-        (conv.messages || [])
-          .filter(
-            (m) =>
-              !m.read && (m.receiver === user._id || m.receiverId === user._id)
-          )
-          .map((m) => markAsReadApi(m._id))
-      );
-    } catch {
-      setSelectedConversation({ ...contact, messages: [] });
-    } finally {
-      setLoadingMessages(false);
-    }
-  };
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (message.trim() && selectedConversation) {
-      const payload = {
-        receiverId: selectedConversation.receiverId,
+      console.log("Sending message:", {
         tripId: selectedConversation.tripId,
+        receiverId: selectedConversation.receiverId,
         content: message,
+      });
+      socket.current.emit("send-message", {
+        tripId: selectedConversation.tripId,
+        receiverId: selectedConversation.receiverId,
+        content: message,
+      });
+
+      const newMessage = {
+        id: Date.now(), // رقم مؤقت
+        content: message,
+        senderId: user._id,
+        createdAt: new Date(),
       };
-      try {
-        const sent = await sendMessageApi(payload);
-        setSelectedConversation((prev) => ({
-          ...prev,
-          messages: [...(prev.messages || []), sent],
-        }));
-        setMessage("");
-        scrollToBottom();
-      } catch {}
+
+      // إضافة الرسالة إلى المحادثة الحالية
+      setSelectedConversation((prev) => ({
+        ...prev,
+        messages: [...prev.messages, newMessage],
+      }));
+
+      // إفراغ حقل الإدخال
+      setMessage("");
+
+      // التمرير للأسفل
+      scrollToBottom();
     }
   };
 
@@ -246,21 +293,16 @@ const StudentConversations = () => {
       handleSendMessage();
     }
   };
-
-  // Helper to get sender/receiver id from message object
-  const getSenderId = (msg) =>
-    typeof msg.sender === "object" ? msg.sender._id : msg.sender;
-  const getReceiverId = (msg) =>
-    typeof msg.receiver === "object" ? msg.receiver._id : msg.receiver;
-
   return (
-    <div className="max-w-7xl p-4 mx-auto h-[calc(100vh-400px)]">
+    <div className="max-w-7xl mx-auto h-[calc(100vh-400px)]">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+        {/* Conversations List - Hidden on medium screens when chat is selected */}
         <div
           className={`lg:col-span-1 ${
             selectedConversation ? "hidden lg:block" : "block"
           }`}
         >
+          {/* Page Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -268,14 +310,9 @@ const StudentConversations = () => {
               </h1>
               <p className="text-gray-600">Chat with your drivers</p>
             </div>
-            {/* <div className="flex  ">
-              <Badge className="bg-blue-100 text-blue-700">
-                {conversations.reduce((total, conv) => total + conv.unread, 0)}{" "}
-                unread
-              </Badge>
-            </div> */}
           </div>
 
+          {/* Search Bar */}
           <Card className="bus-card border-0 mb-4">
             <CardContent className="p-4">
               <div className="relative">
@@ -289,7 +326,8 @@ const StudentConversations = () => {
             </CardContent>
           </Card>
 
-          <Card className="bus-card border-0 h-">
+          {/* Conversations List */}
+          <Card className="bus-card border-0 h-[calc(100%-200px)] overflow-hidden">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <MessageCircle className="h-5 w-5 mr-2 text-blue-600" />
@@ -300,12 +338,12 @@ const StudentConversations = () => {
             <CardContent className="p-0 h-full overflow-y-auto">
               <div className="space-y-0">
                 {contacts
+                  .filter((e) =>
+                    e.name.toLowerCase().includes(search.toLowerCase())
+                  )
                   ?.filter(
                     (contact, index, self) =>
                       index === self.findIndex((c) => c.id === contact.id)
-                  )
-                  ?.filter((e) =>
-                    e.name.toLowerCase().includes(search.toLowerCase())
                   )
                   ?.map((conversation, index) => (
                     <div key={conversation.id}>
@@ -368,7 +406,7 @@ const StudentConversations = () => {
                           </p>
                         </div>
                       </div>
-                      {index < contacts.length - 1 && <Separator />}
+                      {index < conversations.length - 1 && <Separator />}
                     </div>
                   ))}
               </div>
@@ -376,12 +414,14 @@ const StudentConversations = () => {
           </Card>
         </div>
 
+        {/* Chat Interface - Shows when conversation is selected */}
         {selectedConversation && (
           <div
             className={`lg:col-span-2 ${
               selectedConversation ? "block" : "hidden"
             } flex flex-col h-full`}
           >
+            {/* Chat Header */}
             <Card className="bus-card border-0 rounded-b-none">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
@@ -427,57 +467,49 @@ const StudentConversations = () => {
               </CardContent>
             </Card>
 
-            <Card className="flex-1 rounded-none overflow-hidden">
+            {/* Messages Area */}
+            <Card className="flex-1 rounded-none border-x border-gray-200 overflow-hidden">
               <CardContent className="p-0 h-full flex flex-col">
-                {loadingMessages ? (
-                  <div className="space-y-2 p-4">
-                    {[...Array(6)].map((_, i) => (
-                      <Skeleton key={i} className="h-8 w-2/3 rounded-xl" />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {selectedConversation?.messages?.map((msg) => (
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  {selectedConversation.messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`flex ${
+                        msg.senderId == user._id
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
                       <div
-                        key={msg._id || msg.id}
-                        className={`flex ${
-                          getSenderId(msg) == user._id
-                            ? "justify-end"
-                            : "justify-start"
+                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                          msg.senderId == user._id
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-100 text-gray-900"
                         }`}
                       >
-                        <div
-                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                            getSenderId(msg) == user._id
-                              ? "bg-blue-600 text-white"
-                              : "bg-gray-100 text-gray-900"
+                        <p className="text-sm">{msg.content}</p>
+                        <p
+                          className={`text-xs mt-1 ${
+                            msg.senderId == user._id
+                              ? "text-blue-100"
+                              : "text-gray-500"
                           }`}
                         >
-                          <p className="text-sm">{msg.content}</p>
-                          <p
-                            className={`text-xs mt-1 ${
-                              getSenderId(msg) == user._id
-                                ? "text-blue-100"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            {msg.createdAt
-                              ? new Date(msg.createdAt).toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })
-                              : ""}
-                          </p>
-                        </div>
+                          {new Date(msg.createdAt).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
                       </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                  </div>
-                )}
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="rounded-t-none">
+            {/* Message Input */}
+            <Card className="bus-card border-0 rounded-t-none border-t-0">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <Input
@@ -506,6 +538,19 @@ const StudentConversations = () => {
                 </div>
               </CardContent>
             </Card>
+          </div>
+        )}
+
+        {/* Empty State when no conversation is selected on large screens */}
+        {!selectedConversation && (
+          <div className="hidden lg:flex lg:col-span-2 items-center justify-center">
+            <div className="text-center text-gray-500">
+              <MessageCircle className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <h3 className="text-lg font-medium mb-2">
+                Select a conversation
+              </h3>
+              <p>Choose a conversation from the list to start chatting</p>
+            </div>
           </div>
         )}
       </div>
