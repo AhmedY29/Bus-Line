@@ -1,4 +1,4 @@
-# <img src="./public/Logo.png" alt="BusLine" width="40" height="40" style="vertical-align: middle; border-radius: 50%;"> خط الحافلات - منصة النقل الحديثة
+# <img src="./public/Logo.png" alt="BusLine" width="40" height="40" style="vertical-align: middle; border-radius: 50%;"> Bus Line - The Modern Transportation Platform
 
 <div dir="rtl">
 
