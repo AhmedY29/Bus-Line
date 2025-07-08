@@ -16,7 +16,7 @@ const TripsList = () => {
     departureTime: "",
     tripDateStart: "",
     tripDateEnd: "",
-    status: "pending",
+    status: "active",
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -97,7 +97,7 @@ const TripsList = () => {
       departureTime: trip.departureTime || "",
       tripDateStart: trip.tripDateStart ? trip.tripDateStart.split("T")[0] : "",
       tripDateEnd: trip.tripDateEnd ? trip.tripDateEnd.split("T")[0] : "",
-      status: trip.status || "pending",
+      status: trip.status || "active",
     });
     setShowModal(true);
   };
@@ -298,15 +298,8 @@ const TripsList = () => {
                   <td className="px-4 py-2">{trip.departureTime}</td>
                   <td className="px-4 py-2">
                     <span
-                      className={`px-2 py-1 rounded text-xs font-semibold ${
-                        trip.status === "active"
-                          ? "bg-green-200 text-green-800"
-                          : trip.status === "pending"
-                          ? "bg-yellow-200 text-yellow-800"
-                          : "bg-red-200 text-red-800"
-                      }`}
-                    >
-                      {trip.status}
+                      className="px-2 py-1 bg-green-200 text-green-800 rounded text-xs font-semibold"> 
+                    {trip.status}
                     </span>
                   </td>
                   <td className="px-4 py-2 flex gap-2">

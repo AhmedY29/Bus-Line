@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { IoSearchOutline } from "react-icons/io5";
 const TripRequests = () => {
   const [requests, setRequests] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -79,25 +79,27 @@ const TripRequests = () => {
         <h1 className="text-xl font-bold">Trip Requests</h1>
 
         <form
-          className="w-full max-w-xl"
+          className="w-full flex justify-around max-w-xl"
           onSubmit={(e) => {
             e.preventDefault();
             setCurrentPage(1);
           }}
         >
-          <div className="relative">
+           <div className="relative w-82">
             <input
               type="search"
+              id="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full p-3 ps-10 text-sm border rounded-lg bg-gray-50"
-              placeholder="Search by destination..."
+              placeholder="Search "
+              className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             />
             <button
               type="submit"
-              className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg"
+              className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-blue-800"
             >
-              Search
+              <IoSearchOutline size={20} />
+              <span className="sr-only">Search</span>
             </button>
           </div>
         </form>
@@ -130,13 +132,13 @@ const TripRequests = () => {
                 <td className="py-3 space-x-2">
                   <button
                     onClick={() => handleAccept(req._id)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                    className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded"
                   >
                     Accept
                   </button>
                   <button
                     onClick={() => handleReject(req._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                    className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
                   >
                     Reject
                   </button>

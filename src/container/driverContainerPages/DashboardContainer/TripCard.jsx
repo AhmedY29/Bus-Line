@@ -10,6 +10,7 @@ const TripCard = () => {
   const [tripId, setTripId] = useState("");
   const [trips, setTrips] = useState([]);
   const [pendingBooking, setPendingBooking] = useState([]);
+  const [tripPassengers, setTripPassengers] = useState([]);
   const [trackingStarted, setTrackingStarted] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -19,7 +20,6 @@ const TripCard = () => {
       try {
         const tripRes = await axios.get(
           "https://bus-line-backend.onrender.com/api/trips/driver-trips",
-// <<<<<<< HEAD
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setTrips(tripRes.data.trips);
@@ -30,32 +30,13 @@ const TripCard = () => {
         );
         setPendingBooking(pendingRes.data.bookings);
       } catch (err) {
+        toast.error("Error in fetch data");
         console.error("Error fetching trips or bookings", err);
-// =======
-//           {
-//             headers: { Authorization: `Bearer ${token}` },
-//           }
-//         );
-//         setTrips(tripRes.data?.trips || []);
-  
-//         const bookingRes = await axios.get(
-//           "https://bus-line-backend.onrender.com/api/bookings/booking-pending",
-//           {
-//             headers: { Authorization: `Bearer ${token}` },
-//           }
-//         );
-//         setPendingBooking(bookingRes.data?.bookings || []);
-        
-//       } catch (error) {
-//         toast.error("Error in fetch data");
-//         console.error(error);
-// >>>>>>> be6d73b (integrate driver files with backend)
       }
     };
-  
+
     if (token) fetchData();
   }, [token]);
-  
 
   useEffect(() => {
     const fetchTripData = async () => {
@@ -68,13 +49,30 @@ const TripCard = () => {
           }
         );
         setTrip(res.data.trip);
+
+        const passengersRes = await axios.get(
+          "https://bus-line-backend.onrender.com/api/bookings/booking-passengers",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const allPassengers = passengersRes.data.passengers || [];
+        const filtered = allPassengers.filter((p) => p.trip?._id === tripId);
+        setTripPassengers(filtered);
       } catch (error) {
-        toast.error("Error in Selected Trip");
+        toast.error("Error fetching trip/passenger data");
+        console.error(error);
       }
     };
 
     fetchTripData();
   }, [tripId, token]);
+
+  const handleStatusChange = (studentId, newStatus) => {
+    setTripPassengers((prev) =>
+      prev.map((p) =>
+        p._id === studentId ? { ...p, status: newStatus } : p
+      )
+    );
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4">
@@ -95,9 +93,9 @@ const TripCard = () => {
                 </tr>
               </thead>
               <tbody>
-                {pendingBooking && pendingBooking.length > 0 ? (
+                {pendingBooking.length > 0 ? (
                   pendingBooking.slice(0, 3).map((pendingBook) => (
-                    <tr key={pendingBook._id} className="border-b border-gray-200">
+                    <tr key={pendingBook._id} className="border-b">
                       <td className="px-4 py-2 text-center">
                         {pendingBook.userId?.name || "Unknown"}
                       </td>
@@ -202,6 +200,60 @@ const TripCard = () => {
           )}
         </div>
       </div>
+
+      {/* Passengers Section */}
+      {tripPassengers.length > 0 && (
+        <div className="bg-white shadow-md rounded-lg p-6 mt-6 w-full">
+          <h2 className="text-lg font-semibold mb-4 text-[#0165AD]">
+            Passengers for Trip: {trip.neighborhood} ➡️ {trip.destinationId?.title}
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-left">Student</th>
+                  <th className="px-4 py-2 text-left">Neighborhood</th>
+                  <th className="px-4 py-2 text-left">Email</th>
+                  <th className="px-4 py-2 text-left">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tripPassengers.map((p) => (
+                  <tr key={p._id} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-2">{p.name || "N/A"}</td>
+                    <td className="px-4 py-2">{p.address?.addressName || "N/A"}</td>
+                    <td className="px-4 py-2">{p.email || "N/A"}</td>
+                    <td className="px-4 py-2">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleStatusChange(p._id, "boarded")}
+                          className={`px-2 py-1 rounded ${
+                            p.status === "boarded"
+                              ? "bg-green-200 text-green-700"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          Boarded
+                        </button>
+                        <button
+                          onClick={() => handleStatusChange(p._id, "absent")}
+                          className={`px-2 py-1 rounded ${
+                            p.status === "absent"
+                              ? "bg-red-200 text-red-700"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          Absent
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -94,13 +94,13 @@ const TripReports = () => {
 
         <form className="w-82" onSubmit={e => e.preventDefault()}>
           <label htmlFor="search" className="sr-only">Search</label>
-          <div className="relative">
+          <div className="relative w-82">
             <input
               type="search"
               id="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by comment or user ID"
+              placeholder="Search "
               className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             />
             <button

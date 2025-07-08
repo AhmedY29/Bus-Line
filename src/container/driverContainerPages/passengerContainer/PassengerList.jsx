@@ -55,14 +55,23 @@ const PassengerList = () => {
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <IoSearchOutline className="w-4 h-4 text-gray-500" />
             </div>
+            <div className="relative w-82">
             <input
               type="search"
               id="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search "
               className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search by name..."
             />
+            <button
+              type="submit"
+              className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-blue-800"
+            >
+              <IoSearchOutline size={20} />
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
           </div>
         </form>
       </div>
