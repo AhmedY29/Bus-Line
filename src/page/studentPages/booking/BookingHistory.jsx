@@ -117,6 +117,24 @@ const BookingHistory = () => {
         return bookingList.map((booking) => <BookingCard key={booking._id} booking={booking} />);
     };
 
+    // // Use a timer to debounce search input, preventing excessive API calls
+    // const handler = setTimeout(() => {
+    //   setLoading(true);
+    //   setError(null);
+    //   const apiFilters = {
+    //     search: filters.search,
+    //     status: filters.status === 'all' ? '' : filters.status,
+    //   };
+    //   studentGetBookingHistory(apiFilters)
+    //     .then(response => setBookings(response.data))
+    //     .catch(err => {
+    //       setError("Failed to load booking history.");
+    //       console.error(err);
+    //     })
+    //     .finally(() => setLoading(false));
+    // }, 500); // Wait 500ms after user stops typing
+
+
     return (
         <div className="space-y-6 p-2">
             <div>
