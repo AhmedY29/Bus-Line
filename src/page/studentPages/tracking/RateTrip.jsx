@@ -30,28 +30,38 @@ const RateTrip = () => {
       }
 
       try {
-        const res = await fetch("https://bus-line-backend.onrender.com/api/bookings/booking-student", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          "https://bus-line-backend.onrender.com/api/bookings/booking-student",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         const data = await res.json();
+        console.log(data);
         const latestBooking = data.bookings?.[0];
 
-        if (!latestBooking || !latestBooking.trip || !latestBooking.trip.driver) {
+        if (
+          !latestBooking ||
+          !latestBooking.tripId ||
+          !latestBooking.tripId.driverId
+        ) {
           alert("No completed trip found.");
           return;
         }
 
         setTrip({
           bookingId: latestBooking._id,
-          tripId: latestBooking.tripId,
-          driverId: latestBooking.trip.driver._id,
-          driverName: latestBooking.trip.driver.name,
-          busNumber: latestBooking.trip.busNumber || "N/A",
-          departureTime: latestBooking.trip.departureTime,
-          arrivalTime: latestBooking.trip.estimatedArrival,
-          date: latestBooking.trip.date?.split("T")[0],
-          route: latestBooking.trip.route || "N/A",
+          tripId: latestBooking.tripId._id,
+          driverId: latestBooking.tripId.driverId._id,
+          driverName: latestBooking.tripId.driverId.name,
+          busNumber: "N/A",
+          departureTime: latestBooking.tripId.departureTime,
+          arrivalTime: latestBooking.tripId.arrivalTime,
+          date: latestBooking.createdAt?.split("T")[0],
+          route:
+            `${latestBooking.tripId.neighborhood} ➡️ ${latestBooking.tripId.destinationId.title}` ||
+            "N/A",
         });
 
         setLoading(false);
@@ -69,19 +79,22 @@ const RateTrip = () => {
     if (!token || !user || !trip) return;
 
     try {
-      const response = await fetch("https://bus-line-backend.onrender.com/api/rating/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          driverId: trip.driverId,
-          userId: user._id,
-          rating,
-          comment,
-        }),
-      });
+      const response = await fetch(
+        "https://bus-line-backend.onrender.com/api/rating/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            driverId: trip.driverId,
+            userId: user._id,
+            rating,
+            comment,
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to submit rating");
 
@@ -96,7 +109,9 @@ const RateTrip = () => {
   };
 
   if (loading) {
-    return <p className="text-center mt-10 text-gray-500">Loading trip details...</p>;
+    return (
+      <p className="text-center mt-10 text-gray-500">Loading trip details...</p>
+    );
   }
 
   if (isSubmitted) {
@@ -107,19 +122,27 @@ const RateTrip = () => {
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-12 h-12 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
-            <p className="text-gray-600 mb-4">Your rating has been submitted successfully</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Thank You!
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Your rating has been submitted successfully
+            </p>
             <div className="flex items-center justify-center space-x-1 mb-4">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
                   className={`w-6 h-6 ${
-                    star <= rating ? "text-yellow-500 fill-current" : "text-gray-300"
+                    star <= rating
+                      ? "text-yellow-500 fill-current"
+                      : "text-gray-300"
                   }`}
                 />
               ))}
             </div>
-            <p className="text-sm text-gray-500">Redirecting to booking history...</p>
+            <p className="text-sm text-gray-500">
+              Redirecting to booking history...
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -129,7 +152,11 @@ const RateTrip = () => {
   return (
     <div className="space-y-6 p-2">
       <div className="flex items-center space-x-4">
-        <Button variant="outline" size="sm" onClick={() => navigate("/student/bookings")}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate("/student/bookings")}
+        >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
@@ -185,7 +212,9 @@ const RateTrip = () => {
         <Card className="bus-card border-0">
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">How was your trip?</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                How was your trip?
+              </h3>
               <p className="text-gray-600">Rate your overall experience</p>
             </div>
 

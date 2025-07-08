@@ -1,52 +1,122 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router"; 
+import { Link } from "react-router";
 import {
-  Calendar, Clock, MapPin, Plus, TrendingUp, Bus,
-  CreditCard, Users, ArrowRight, Bell
+  Calendar,
+  Clock,
+  MapPin,
+  Plus,
+  TrendingUp,
+  Bus,
+  CreditCard,
+  Users,
+  ArrowRight,
+  Bell,
 } from "lucide-react";
 
-import { studentGetDashboardData } from "@/utils/student"; // API function import from utils
 import {
-  Card, CardContent, CardDescription, CardHeader, CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// A helper function to format dates nicely
-const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
-  return new Date(dateString).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
-};
-
 const StudentDashboard = () => {
-  // State for the logged-in user, dashboard data, loading, and errors
-  const [user] = useState(JSON.parse(localStorage.getItem("user")));
-  const [dashboardData, setDashboardData] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  ("");
 
   useEffect(() => {
-    // Fetch data when the component mounts
-    const fetchData = async () => {
+    const fetchTripsData = async () => {
       try {
-        const response = await studentGetDashboardData();
-        setDashboardData(response.data);
-      } catch (err) {
-        setError("Failed to load dashboard data. Please try again later.");
-        console.error(err);
+        const res = await axios.get(
+          `https://bus-line-backend.onrender.com/api/bookings/booking-student`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setTrips(res.data.bookings);
+        console.log(res.data.bookings, "ddd");
+      } catch (error) {
+        toast.error("Error in Getting Trips ");
       } finally {
         setLoading(false);
       }
     };
+    fetchTripsData();
+  }, []);
+  // Mock data for dashboard
+  const stats = {
+    totalTrips: trips.length,
+    monthlySpending: 180,
+    upcomingBookings: trips.filter((trip) => trip.status != "pending").length,
+    savedRoutes: 5,
+  };
 
-    fetchData();
-  }, []); // Empty array ensures this runs only once
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  const upcomingTrips = [
+    {
+      id: 1,
+      destination: "Cairo University",
+      date: "2024-01-15",
+      time: "07:30 AM",
+      busNumber: "BUS-001",
+      status: "confirmed",
+      price: 25,
+      driver: "Mohamed Ali",
+    },
+    {
+      id: 2,
+      destination: "New Administrative Capital",
+      date: "2024-01-16",
+      time: "09:00 AM",
+      busNumber: "BUS-003",
+      status: "pending",
+      price: 35,
+      driver: "Sarah Ahmed",
+    },
+  ];
+
+  const recentActivity = [
+    {
+      id: 1,
+      action: "Booking Confirmed",
+      destination: "Cairo University",
+      time: "2 hours ago",
+      status: "success",
+    },
+    {
+      id: 2,
+      action: "Payment Processed",
+      amount: "25 SAR",
+      time: "3 hours ago",
+      status: "success",
+    },
+    {
+      id: 3,
+      action: "Trip Completed",
+      destination: "Maadi District",
+      time: "1 day ago",
+      status: "completed",
+    },
+  ];
 
   if (loading) {
     return (
@@ -74,7 +144,7 @@ const StudentDashboard = () => {
         </div>
         {/* Stats Grid Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1,2,3].map(i => (
+          {[1, 2, 3].map((i) => (
             <Skeleton key={i} className="h-40 w-full rounded-2xl" />
           ))}
         </div>
@@ -112,13 +182,16 @@ const StudentDashboard = () => {
             <div className="mb-6 lg:mb-0">
               <div className="flex items-center space-x-2 mb-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-blue-100 text-sm font-medium">Good Morning</span>
+                <span className="text-blue-100 text-sm font-medium">
+                  Good Morning
+                </span>
               </div>
               <h1 className="text-3xl lg:text-4xl font-bold mb-3">
-                Welcome back, {user?.name || 'Student'}!
+                Welcome back, {user?.name || "Student"}!
               </h1>
               <p className="text-blue-100 text-lg max-w-md">
-                Ready for your next journey? Let's get you moving with our premium bus service.
+                Ready for your next journey? Let's get you moving with our
+                premium bus service.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -128,7 +201,10 @@ const StudentDashboard = () => {
                 </Button>
               </Link>
               <Link to="/student/tracking">
-                <Button variant="outline" className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm">
+                <Button
+                  variant="outline"
+                  className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm"
+                >
                   <Bus className="w-5 h-5 mr-2" /> Track Bus
                 </Button>
               </Link>
@@ -147,8 +223,12 @@ const StudentDashboard = () => {
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600 mb-1">Total Trips</p>
-              <p className="text-3xl font-bold text-gray-900">{dashboardData.stats.totalTrips}</p>
+              <p className="text-sm font-medium text-gray-600 mb-1">
+                Total Trips
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {stats.totalTrips}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -160,8 +240,12 @@ const StudentDashboard = () => {
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600 mb-1">Monthly Spending</p>
-              <p className="text-3xl font-bold text-gray-900">{dashboardData.stats.monthlySpending} SAR</p>
+              <p className="text-sm font-medium text-gray-600 mb-1">
+                Monthly Spending
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {stats.monthlySpending} SAR
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -173,8 +257,12 @@ const StudentDashboard = () => {
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600 mb-1">Upcoming Bookings</p>
-              <p className="text-3xl font-bold text-gray-900">{dashboardData.stats.upcomingBookings}</p>
+              <p className="text-sm font-medium text-gray-600 mb-1">
+                Upcoming Bookings
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {stats.upcomingBookings}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -188,18 +276,27 @@ const StudentDashboard = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-2xl font-bold flex items-center">
-                    <Calendar className="w-6 h-6 mr-2 text-blue-600" /> Upcoming Trips
+                    <Calendar className="w-6 h-6 mr-2 text-blue-600" /> Upcoming
+                    Trips
                   </CardTitle>
-                  <CardDescription className="mt-1">Your scheduled bookings for the next few days</CardDescription>
+                  <CardDescription className="mt-1">
+                    Your scheduled bookings for the next few days
+                  </CardDescription>
                 </div>
-                <Badge className="bg-blue-100 text-blue-700 px-3 py-1">{dashboardData.upcomingTrips.length} trips</Badge>
+                <Badge className="bg-blue-100 text-blue-700 px-3 py-1">
+                  {trips.filter((trip) => trip.status == "confirmed").length}{" "}
+                  trips
+                </Badge>
               </div>
             </CardHeader>
             <CardContent>
-              {dashboardData.upcomingTrips.length > 0 ? (
+              {trips.length > 0 ? (
                 <div className="space-y-4">
-                  {dashboardData.upcomingTrips.map((booking) => (
-                    <div key={booking._id} className="booking-card group transition-all duration-300 p-2 border-b">
+                  {trips.map((booking) => (
+                    <div
+                      key={booking._id}
+                      className="booking-card group transition-all duration-300 p-2 border-b"
+                    >
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex-1">
                           <div className="flex items-center space-x-3 mb-3">
@@ -207,62 +304,92 @@ const StudentDashboard = () => {
                               <Bus className="w-6 h-6 text-blue-600" />
                             </div>
                             <div>
-                              <h3 className="font-bold text-gray-900 text-lg">{booking.tripId.destinationId.title}</h3>
-                              <p className="text-sm text-gray-600">Driver: {booking.tripId.driverId.name}</p>
+                              <h3 className="font-bold text-gray-900 text-lg">
+                                {booking.tripId.destinationId?.title}
+                              </h3>
+                              <p className="text-sm text-gray-600">
+                                Driver: {booking.tripId.driverId.name}
+                              </p>
+                              <Badge
+                                className={`${
+                                  booking.status === "confirmed"
+                                    ? "bg-green-500 text-white"
+                                    : "bg-orange-500 text-white"
+                                } px-3 py-1 rounded-full`}
+                              >
+                                {booking.status === "confirmed"
+                                  ? "Confirmed"
+                                  : "Pending"}
+                              </Badge>
                             </div>
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg"><Calendar className="w-4 h-4 text-gray-500" /><span className="font-medium">{formatDate(booking.tripId.tripDateStart)}</span></div>
-                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg"><Clock className="w-4 h-4 text-gray-500" /><span className="font-medium">{booking.tripId.departureTime}</span></div>
-                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg"><Bus className="w-4 h-4 text-gray-500" /><span className="font-medium">{booking.tripId.busNumber || 'BUS-007'}</span></div>
+                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                              <Calendar className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">
+                                {formatDate(booking.tripId.tripDateStart)}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                              <Clock className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">
+                                {booking.tripId.departureTime}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                              <Bus className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">
+                                {booking.tripId.busNumber || "BUS-007"}
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
-                          <div><p className="text-2xl font-bold text-gray-900">{booking.tripId.tripPrice} SAR</p></div>
-                          <div className="flex space-x-2"><Button variant="outline" size="sm">View Details</Button><Button size="sm" className="gradient-button">Track</Button></div>
+                          <div>
+                            <p className="text-2xl font-bold text-gray-900">
+                              {booking.tripId.tripPrice} SAR
+                            </p>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Link to={"bookings"}>
+                              <Button
+                                className="cursor-pointer"
+                                variant="outline"
+                                size="sm"
+                              >
+                                View Details
+                              </Button>
+                            </Link>
+                            <Link to={"tracking"}>
+                              <Button
+                                size="sm"
+                                className="gradient-button cursor-pointer"
+                              >
+                                Track
+                              </Button>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-10 text-gray-500">No upcoming trips. Time to book a new one!</div>
+                <div className="text-center py-10 text-gray-500">
+                  No upcoming trips. Time to book a new one!
+                </div>
               )}
             </CardContent>
           </Card>
         </div>
-        <div>
-          <Card className="bus-card border-0">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold flex items-center"><Bell className="w-5 h-5 mr-2 text-green-600" /> Recent Activity</CardTitle>
-              <CardDescription className="mt-1">Your latest booking activities</CardDescription>
-            </CardHeader>
-            <CardContent>
-                {dashboardData.recentActivity.length > 0 ? (
-                  <div className="space-y-4">
-                    {dashboardData.recentActivity.map((activity, index) => (
-                      <div key={index} className="flex items-start space-x-4 p-3 hover:bg-gray-50 rounded-xl">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-green-100 text-green-600"><Bell className="w-5 h-5" /></div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-gray-900">{activity.action}</p>
-                          <p className="text-sm text-gray-600 mt-1">{activity.destination}</p>
-                          <p className="text-xs text-gray-400 mt-2 flex items-center"><Clock className="w-3 h-3 mr-1" />{formatDate(activity.time)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                    <div className="text-center py-10 text-gray-500">No recent activity to show.</div>
-                )}
-            </CardContent>
-          </Card>
-        </div>
       </div>
-        {/* Enhanced Quick Actions */}
+      {/* Enhanced Quick Actions */}
       <Card className="bus-card border-0">
         <CardHeader className="pb-6">
           <CardTitle className="text-2xl font-bold">Quick Actions</CardTitle>
-          <CardDescription>Common tasks and shortcuts to make your journey easier</CardDescription>
+          <CardDescription>
+            Common tasks and shortcuts to make your journey easier
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -274,28 +401,37 @@ const StudentDashboard = () => {
                 </Button>
               </div>
             </Link>
-            
+
             <Link to="/student/tracking">
               <div className="group">
-                <Button variant="outline" className="w-full h-24 flex-col space-y-3 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all duration-300 group-hover:scale-105">
+                <Button
+                  variant="outline"
+                  className="w-full h-24 flex-col space-y-3 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all duration-300 group-hover:scale-105"
+                >
                   <Bus className="w-8 h-8" />
                   <span className="font-semibold">Track Bus</span>
                 </Button>
               </div>
             </Link>
-            
+
             <Link to="/student/chat">
               <div className="group">
-                <Button variant="outline" className="w-full h-24 flex-col space-y-3 hover:bg-green-50 hover:text-green-600 hover:border-green-200 transition-all duration-300 group-hover:scale-105">
+                <Button
+                  variant="outline"
+                  className="w-full h-24 flex-col space-y-3 hover:bg-green-50 hover:text-green-600 hover:border-green-200 transition-all duration-300 group-hover:scale-105"
+                >
                   <Users className="w-8 h-8" />
                   <span className="font-semibold">Messages</span>
                 </Button>
               </div>
             </Link>
-            
+
             <Link to="/student/support">
               <div className="group">
-                <Button variant="outline" className="w-full h-24 flex-col space-y-3 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 transition-all duration-300 group-hover:scale-105">
+                <Button
+                  variant="outline"
+                  className="w-full h-24 flex-col space-y-3 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 transition-all duration-300 group-hover:scale-105"
+                >
                   <Users className="w-8 h-8" />
                   <span className="font-semibold">Get Support</span>
                 </Button>

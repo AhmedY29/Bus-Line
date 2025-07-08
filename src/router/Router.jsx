@@ -25,8 +25,66 @@ import ProtectedRoute from "./ProtectedRoute";
 import { FormProvider } from "../context/driverForm";
 import Destinations from "../page/adminPages/Destinations";
 import StudentConversations from "@/page/studentPages/conversations/StudentConversations";
+import toast from "react-hot-toast";
+import { io } from "socket.io-client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Layout({ role }) {
+  const [notifications, setNotifications] = useState([]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const socket = io("https://bus-line-backend.onrender.com", {
+      extraHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    socket.on("bus-nearby", (data) => {
+      toast.success(data.message || "🚍 الباص اقترب منك!");
+    });
+
+    socket.on("new-message", (msg) => {
+      toast(
+        `💬 رسالة جديدة من ${msg.sender?.name || "المستخدم"}: ${msg.content}`
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await axios.get(
+        "https://bus-line-backend.onrender.com/api/notifications",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setNotifications(res.data.notifications);
+    } catch (err) {
+      console.error("خطأ في جلب الإشعارات", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="  bg-[#F5F7FA]">
       <div className=" md:fixed  inset-y-0 left-0 z-50 shadow-md ">

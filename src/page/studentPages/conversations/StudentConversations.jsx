@@ -79,6 +79,7 @@ const StudentConversations = () => {
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [receiver, setReceiver] = useState({
     name: "",
@@ -89,6 +90,8 @@ const StudentConversations = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const messagesEndRef = useRef(null);
   const socket = useRef();
+
+  console.log(receiver, "recever");
 
   useEffect(() => {
     const loadContacts = async () => {
@@ -207,7 +210,8 @@ const StudentConversations = () => {
       await Promise.all(
         (conv.messages || [])
           .filter(
-            (m) => !m.read && (m.receiver === user._id || m.receiverId === user._id)
+            (m) =>
+              !m.read && (m.receiver === user._id || m.receiverId === user._id)
           )
           .map((m) => markAsReadApi(m._id))
       );
@@ -244,11 +248,13 @@ const StudentConversations = () => {
   };
 
   // Helper to get sender/receiver id from message object
-  const getSenderId = (msg) => typeof msg.sender === 'object' ? msg.sender._id : msg.sender;
-  const getReceiverId = (msg) => typeof msg.receiver === 'object' ? msg.receiver._id : msg.receiver;
+  const getSenderId = (msg) =>
+    typeof msg.sender === "object" ? msg.sender._id : msg.sender;
+  const getReceiverId = (msg) =>
+    typeof msg.receiver === "object" ? msg.receiver._id : msg.receiver;
 
   return (
-    <div className="h-[100vh-200px]">
+    <div className="max-w-7xl p-4 mx-auto h-[calc(100vh-400px)]">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
         <div
           className={`lg:col-span-1 ${
@@ -262,12 +268,12 @@ const StudentConversations = () => {
               </h1>
               <p className="text-gray-600">Chat with your drivers</p>
             </div>
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex  ">
               <Badge className="bg-blue-100 text-blue-700">
                 {conversations.reduce((total, conv) => total + conv.unread, 0)}{" "}
                 unread
               </Badge>
-            </div>
+            </div> */}
           </div>
 
           <Card className="bus-card border-0 mb-4">
@@ -275,6 +281,7 @@ const StudentConversations = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search conversations..."
                   className="pl-10"
                 />
@@ -292,83 +299,78 @@ const StudentConversations = () => {
             </CardHeader>
             <CardContent className="p-0 h-full overflow-y-auto">
               <div className="space-y-0">
-                {loadingContacts ? (
-                  <div className="space-y-2 p-4">
-                    {[...Array(4)].map((_, i) => (
-                      <Skeleton key={i} className="h-16 w-full rounded-xl" />
-                    ))}
-                  </div>
-                ) : (
-                  contacts
-                    ?.filter(
-                      (contact, index, self) =>
-                        index === self.findIndex((c) => c.id === contact.id)
-                    )
-                    ?.map((conversation, index) => (
-                      <div key={conversation.id}>
-                        <div
-                          className={`flex items-center space-x-4 p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
-                            selectedConversation?.id === conversation.id
-                              ? "bg-blue-50 border-r-4 border-blue-600"
-                              : ""
-                          }`}
-                          onClick={() => handleSelectConversation(conversation)}
-                        >
-                          <div className="relative">
-                            <Avatar className="h-12 w-12">
-                              <AvatarImage
-                                src="/placeholder.svg"
-                                alt={conversation.name}
-                              />
-                              <AvatarFallback className="bg-blue-100 text-blue-600">
-                                {conversation.name[0]}
-                              </AvatarFallback>
-                            </Avatar>
-                            {onlineUsers.includes(conversation.id) && (
-                              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-                            )}
-                          </div>
-
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-1">
-                              <h3 className="font-semibold text-gray-900 truncate">
-                                {conversation.name}
-                              </h3>
-                              <div className="flex items-center space-x-2">
-                                {conversation.unread > 0 && (
-                                  <Badge className="bg-red-100 text-red-600 text-xs">
-                                    {conversation.unread}
-                                  </Badge>
-                                )}
-                                <span className="text-xs text-gray-500">
-                                  {conversation.timestamp}
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm text-gray-600 truncate pr-2">
-                                {conversation.lastMessage}
-                              </p>
-                              <Badge
-                                variant="secondary"
-                                className={`text-xs ${getStatusColor(
-                                  conversation.status
-                                )}`}
-                              >
-                                {conversation.status}
-                              </Badge>
-                            </div>
-
-                            <p className="text-xs text-gray-500 mt-1">
-                              {conversation.role}
-                            </p>
-                          </div>
+                {contacts
+                  ?.filter(
+                    (contact, index, self) =>
+                      index === self.findIndex((c) => c.id === contact.id)
+                  )
+                  ?.filter((e) =>
+                    e.name.toLowerCase().includes(search.toLowerCase())
+                  )
+                  ?.map((conversation, index) => (
+                    <div key={conversation.id}>
+                      <div
+                        className={`flex items-center space-x-4 p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
+                          selectedConversation?.id === conversation.id
+                            ? "bg-blue-50 border-r-4 border-blue-600"
+                            : ""
+                        }`}
+                        onClick={() => setSelectedConversation(conversation)}
+                      >
+                        <div className="relative">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage
+                              src="/placeholder.svg"
+                              alt={conversation.name}
+                            />
+                            <AvatarFallback className="bg-blue-100 text-blue-600">
+                              {conversation.name[0]}
+                            </AvatarFallback>
+                          </Avatar>
+                          {onlineUsers.includes(conversation.id) && (
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                          )}
                         </div>
-                        {index < contacts.length - 1 && <Separator />}
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <h3 className="font-semibold text-gray-900 truncate">
+                              {conversation.name}
+                            </h3>
+                            <div className="flex items-center space-x-2">
+                              {conversation.unread > 0 && (
+                                <Badge className="bg-red-100 text-red-600 text-xs">
+                                  {conversation.unread}
+                                </Badge>
+                              )}
+                              <span className="text-xs text-gray-500">
+                                {conversation.timestamp}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm text-gray-600 truncate pr-2">
+                              {conversation.lastMessage}
+                            </p>
+                            <Badge
+                              variant="secondary"
+                              className={`text-xs ${getStatusColor(
+                                conversation.status
+                              )}`}
+                            >
+                              {conversation.status}
+                            </Badge>
+                          </div>
+
+                          <p className="text-xs text-gray-500 mt-1">
+                            {conversation.role}
+                          </p>
+                        </div>
                       </div>
-                    ))
-                )}
+                      {index < contacts.length - 1 && <Separator />}
+                    </div>
+                  ))}
               </div>
             </CardContent>
           </Card>
@@ -438,12 +440,33 @@ const StudentConversations = () => {
                     {selectedConversation?.messages?.map((msg) => (
                       <div
                         key={msg._id || msg.id}
-                        className={`flex ${getSenderId(msg) == user._id ? "justify-end" : "justify-start"}`}
+                        className={`flex ${
+                          getSenderId(msg) == user._id
+                            ? "justify-end"
+                            : "justify-start"
+                        }`}
                       >
-                        <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${getSenderId(msg) == user._id ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-900"}`}>
+                        <div
+                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            getSenderId(msg) == user._id
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-100 text-gray-900"
+                          }`}
+                        >
                           <p className="text-sm">{msg.content}</p>
-                          <p className={`text-xs mt-1 ${getSenderId(msg) == user._id ? "text-blue-100" : "text-gray-500"}`}>
-                            {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}
+                          <p
+                            className={`text-xs mt-1 ${
+                              getSenderId(msg) == user._id
+                                ? "text-blue-100"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {msg.createdAt
+                              ? new Date(msg.createdAt).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })
+                              : ""}
                           </p>
                         </div>
                       </div>
@@ -491,4 +514,3 @@ const StudentConversations = () => {
 };
 
 export default StudentConversations;
-

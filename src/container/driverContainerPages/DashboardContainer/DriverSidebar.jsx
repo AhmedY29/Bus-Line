@@ -63,6 +63,7 @@ function DriverSidebar() {
             return (
               <li key={index}>
                 <Link
+                  onClick={() => setIsMobileMenuOpen(false)}
                   to={`/driver/${item.label.toLowerCase()}`}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors  gap-2 pr-6 ${
                     isActive
