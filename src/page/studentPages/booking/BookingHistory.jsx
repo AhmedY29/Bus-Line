@@ -9,22 +9,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Helper to get token from localStorage
-const getToken = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return user?.token || user?.accessToken || "";
-};
+// Helper to get token
+const getToken = () => localStorage.getItem("token");
 
-// Helper to fetch bookings
+// Fetch bookings
 const fetchMyBookings = async () => {
   const token = getToken();
   const res = await axios.get("https://bus-line-backend.onrender.com/api/bookings/booking-student", {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    headers: { Authorization: `Bearer ${token}` },
   });
   return Array.isArray(res.data.bookings) ? res.data.bookings : [];
 };
 
-// Helper to cancel booking
+// Cancel booking
 const cancelBooking = async (bookingId) => {
   const token = getToken();
   await axios.patch(`https://bus-line-backend.onrender.com/api/bookings/${bookingId}/cancel`, {}, {
@@ -32,12 +29,10 @@ const cancelBooking = async (bookingId) => {
   });
 };
 
-// BookingCard Component
+// Booking Card Component
 const BookingCard = ({ booking, onCancel }) => {
   const trip = booking.tripId;
-  if (!trip) {
-    return null;
-  }
+  if (!trip || !trip.destinationId) return null;
 
   const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
@@ -45,7 +40,7 @@ const BookingCard = ({ booking, onCancel }) => {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case 'confirmed': return 'bg-blue-100 text-blue-700'; // 'confirmed' is treated as 'Active'
+      case 'confirmed': return 'bg-blue-100 text-blue-700';
       case 'completed': return 'bg-green-100 text-green-700';
       case 'cancelled': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
@@ -73,14 +68,8 @@ const BookingCard = ({ booking, onCancel }) => {
           </div>
           <div className="flex flex-col items-start lg:items-end justify-between pt-4 lg:pt-0 border-t lg:border-none">
             <span className="text-2xl font-bold text-gray-900 mb-2 lg:mb-0">{trip.tripPrice} SAR</span>
-            {booking.status === 'completed' && !booking.rating && (
-              <Button variant="outline" size="sm">Rate Trip</Button>
-            )}
             {booking.status === 'confirmed' && (
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm">Track Live</Button>
-                <Button variant="destructive" size="sm" onClick={() => onCancel(booking._id)}>Cancel</Button>
-              </div>
+              <Button variant="destructive" size="sm" onClick={() => onCancel(booking._id)}>Cancel</Button>
             )}
           </div>
         </div>
@@ -96,7 +85,6 @@ const BookingHistory = () => {
   const [error, setError] = useState(null);
   const [cancelingId, setCancelingId] = useState(null);
 
-  // Fetch bookings on mount and when canceling
   const loadBookings = async () => {
     setLoading(true);
     setError(null);
@@ -114,7 +102,6 @@ const BookingHistory = () => {
     loadBookings();
   }, []);
 
-  // Cancel booking handler
   const handleCancel = async (bookingId) => {
     setCancelingId(bookingId);
     try {
@@ -127,37 +114,6 @@ const BookingHistory = () => {
     }
   };
 
-  //  Fetch data whenever filters change
-  useEffect(() => {
-    // First, check if user is logged in
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setError("You must be logged in to view your history.");
-      setLoading(false);
-      return;
-    }
-
-    // Use a timer to debounce search input, preventing excessive API calls
-    const handler = setTimeout(() => {
-      setLoading(true);
-      setError(null);
-      const apiFilters = {
-        search: filters.search,
-        status: filters.status === 'all' ? '' : filters.status,
-      };
-      studentGetBookingHistory(apiFilters)
-        .then(response => setBookings(response.data))
-        .catch(err => {
-          setError("Failed to load booking history.");
-          console.error(err);
-        })
-        .finally(() => setLoading(false));
-    }, 500); // Wait 500ms after user stops typing
-
-    return () => clearTimeout(handler); // Cleanup timer
-  }, [filters]);
-
-  // Memoize the grouped lists to prevent re-calculation on every render
   const groupedBookings = useMemo(() => ({
     confirmed: bookings.filter(b => b.status === 'confirmed'),
     completed: bookings.filter(b => b.status === 'completed'),
@@ -166,16 +122,10 @@ const BookingHistory = () => {
 
   const renderBookingList = (bookingList) => {
     if (loading) {
-      return (
-        <div className="space-y-4">
-          {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="h-32 w-full rounded-xl" />
-          ))}
-        </div>
-      );
+      return <div className="space-y-4">{[...Array(3)].map((_, i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}</div>;
     }
     if (bookingList.length === 0) {
-      return <div className="text-center py-12 text-gray-500">No bookings found in this category.</div>;
+      return <div className="text-center py-12 text-gray-500">No bookings found.</div>;
     }
     return bookingList.map((booking) => <BookingCard key={booking._id} booking={booking} onCancel={handleCancel} />);
   };
@@ -202,7 +152,7 @@ const BookingHistory = () => {
           <Select value={filters.status} onValueChange={(value) => setFilters(f => ({ ...f, status: value }))}>
             <SelectTrigger className="w-full md:w-48"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Bookings</SelectItem>
+              <SelectItem value="all">All</SelectItem>
               <SelectItem value="confirmed">Active</SelectItem>
               <SelectItem value="completed">Completed</SelectItem>
               <SelectItem value="cancelled">Cancelled</SelectItem>
@@ -212,25 +162,19 @@ const BookingHistory = () => {
       </Card>
 
       {error && <p className="text-center text-red-500">{error}</p>}
-      
+
       <Tabs defaultValue="all" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">All ({bookings.length})</TabsTrigger>
-          <TabsTrigger value="active">Active ({groupedBookings.confirmed.length})</TabsTrigger>
+          <TabsTrigger value="confirmed">Active ({groupedBookings.confirmed.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({groupedBookings.completed.length})</TabsTrigger>
           <TabsTrigger value="cancelled">Cancelled ({groupedBookings.cancelled.length})</TabsTrigger>
         </TabsList>
 
-        {loading ? (
-          <div className="text-center py-12">Loading...</div>
-        ) : (
-          <>
-            <TabsContent value="all" className="space-y-4">{renderBookingList(bookings)}</TabsContent>
-            <TabsContent value="active" className="space-y-4">{renderBookingList(groupedBookings.confirmed)}</TabsContent>
-            <TabsContent value="completed" className="space-y-4">{renderBookingList(groupedBookings.completed)}</TabsContent>
-            <TabsContent value="cancelled" className="space-y-4">{renderBookingList(groupedBookings.cancelled)}</TabsContent>
-          </>
-        )}
+        <TabsContent value="all">{renderBookingList(bookings)}</TabsContent>
+        <TabsContent value="confirmed">{renderBookingList(groupedBookings.confirmed)}</TabsContent>
+        <TabsContent value="completed">{renderBookingList(groupedBookings.completed)}</TabsContent>
+        <TabsContent value="cancelled">{renderBookingList(groupedBookings.cancelled)}</TabsContent>
       </Tabs>
     </div>
   );
