@@ -42,7 +42,7 @@ const StudentDashboard = () => {
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
   const [destinations, setDestinations] = useState([]);
-  const [upcomingTrips, setUpcomingTrips] = useState([]);
+  const [activeTrips, setActiveTrips] = useState([]); // To store active trips
   const [recentActivity, setRecentActivity] = useState([]);
   const [stats, setStats] = useState({
     totalTrips: 0,
@@ -65,13 +65,8 @@ const StudentDashboard = () => {
         ]);
 
         setDestinations(destinationsData);
-        // Filter trips with status "confirmed"
-        setUpcomingTrips(tripsData.filter(trip => trip.status === "confirmed"));  // Only "confirmed" trips
-        // setRecentActivity([
-        //   { id: 1, action: "Booking Confirmed", destination: "Cairo University", time: "2 hours ago", status: "success" },
-        //   { id: 2, action: "Payment Processed", amount: "25 SAR", time: "3 hours ago", status: "success" },
-        //   { id: 3, action: "Trip Completed", destination: "Maadi District", time: "1 day ago", status: "completed" }
-        // ]);
+        // Filter active trips
+        setActiveTrips(tripsData.filter((trip) => trip.status === "active")); // Only active trips
 
         // Stats Calculation
         setStats({
@@ -207,12 +202,12 @@ const StudentDashboard = () => {
                   </CardTitle>
                   <CardDescription className="mt-1">Your scheduled bookings for the next few days</CardDescription>
                 </div>
-                <Badge className="bg-blue-100 text-blue-700 px-3 py-1">{upcomingTrips.length} trips</Badge>
+                <Badge className="bg-blue-100 text-blue-700 px-3 py-1">{activeTrips.length} trips</Badge>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingTrips.map((trip) => (
+                {activeTrips.map((trip) => (
                   <div key={trip.id} className="booking-card group transition-all duration-300 p-2">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                       <div className="flex-1">
@@ -236,11 +231,11 @@ const StudentDashboard = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                           <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
                             <Calendar className="w-4 h-4 text-gray-500" />
-                            <span className="font-medium">{trip.date}</span>
+                            <span className="font-medium">{trip.tripDateStart}</span>
                           </div>
                           <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
                             <Clock className="w-4 h-4 text-gray-500" />
-                            <span className="font-medium">{trip.time}</span>
+                            <span className="font-medium">{trip.arrivalTime}</span>
                           </div>
                           <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
                             <Bus className="w-4 h-4 text-gray-500" />
@@ -251,7 +246,7 @@ const StudentDashboard = () => {
 
                       <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-gray-900">{trip.price} SAR</p>
+                          <p className="text-2xl font-bold text-gray-900">{trip.tripPrice} SAR</p>
                         </div>
                         <div className="flex space-x-2 mt-12 mx-7">
                           <Button variant="outline" size="sm" className="hover:bg-blue-50 hover:border-blue-200">View Details</Button>
