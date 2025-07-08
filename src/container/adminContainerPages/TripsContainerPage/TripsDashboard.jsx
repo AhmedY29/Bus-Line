@@ -5,6 +5,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { HiX } from "react-icons/hi";
 import { MdOutlineDelete } from "react-icons/md";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 function TripsDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
@@ -47,6 +49,7 @@ function TripsDashboard() {
       setTrips(response.data.trips);
     } catch (error) {
       console.error("Error fetching trips:", error);
+      toast.error("Failed to fetch trips. Please try again.");
     }
   };
 
@@ -145,7 +148,7 @@ function TripsDashboard() {
 
       // Validate required fields
       if (!formData.neighborhood.trim()) {
-        setError("Neighborhood is required");
+        toast.error("Neighborhood is required");
         return;
       }
 
@@ -154,22 +157,22 @@ function TripsDashboard() {
         isNaN(formData.tripPrice) ||
         parseFloat(formData.tripPrice) <= 0
       ) {
-        setError("Valid trip price is required");
+        toast.error("Valid trip price is required");
         return;
       }
 
       if (!formData.arrivalTime.trim()) {
-        setError("Arrival time is required");
+        toast.error("Arrival time is required");
         return;
       }
 
       if (!formData.departureTime.trim()) {
-        setError("Departure time is required");
+        toast.error("Departure time is required");
         return;
       }
 
       if (!formData.status) {
-        setError("Status is required");
+        toast.error("Status is required");
         return;
       }
 
@@ -194,45 +197,87 @@ function TripsDashboard() {
         },
       });
 
-      setSuccess("Trip updated successfully!");
+      toast.success("Trip updated successfully!");
       await fetchTrips();
-
-      setTimeout(() => {
-        handleCloseModal();
-      }, 1500);
+      handleCloseModal();
     } catch (error) {
       console.error("Error updating trip:", error);
-      setError(error.response?.data?.message || "Failed to update trip");
+      toast.error(error.response?.data?.message || "Failed to update trip");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteTrip = async (trip) => {
-    try {
-      const confirmDelete = window.confirm(
-        `Are you sure you want to delete trip to "${trip.destinationId?.title}" in ${trip.neighborhood}? This action cannot be undone.`
-      );
-      if (!confirmDelete) return;
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center">
+            <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
+            <h1 className="font-bold">Warning!</h1>
+          </div>
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
+          <p className="text-xs md:text-base lg:text-lg text-gray-900">
+            Are you sure you want to delete trip to "
+            {trip.destinationId?.title || "Unknown"}" in {trip.neighborhood}?
+          </p>
 
-      await axios.delete(`${API}/trips/${trip._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  const token = localStorage.getItem("token");
+                  if (!token) {
+                    throw new Error("No authentication token found");
+                  }
+
+                  await axios.delete(`${API}/trips/${trip._id}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                  });
+
+                  console.log("Trip deleted:", trip.neighborhood);
+                  toast.success(
+                    `Trip to "${
+                      trip.destinationId?.title || "destination"
+                    }" deleted successfully`
+                  );
+                  await fetchTrips();
+                } catch (error) {
+                  console.error("Error deleting trip:", error);
+                  toast.error(
+                    error.response?.data?.message || "Failed to delete trip"
+                  );
+                }
+              }}
+              className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+        style: {
+          background: "white",
+          color: "black",
+          border: "1px solid #e5e7eb",
+          padding: "16px",
+          borderRadius: "8px",
+          maxWidth: "400px",
         },
-      });
-
-      console.log("Trip deleted:", trip.neighborhood);
-      await fetchTrips();
-    } catch (error) {
-      console.error("Error deleting trip:", error);
-      alert(error.response?.data?.message || "Failed to delete trip");
-    }
+      }
+    );
   };
 
   return (
@@ -633,6 +678,16 @@ function TripsDashboard() {
           </div>
         </div>
       )}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+        }}
+      />
     </div>
   );
 }

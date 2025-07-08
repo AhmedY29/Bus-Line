@@ -3,6 +3,8 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -26,33 +28,42 @@ function Register() {
 
   const handleRegister = async () => {
     if (!formData.email.trim()) {
-      alert("Please Enter Your Email");
+      toast.error("Please Enter Your Email");
       return;
     }
     const emailRgex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const correctEmail = emailRgex.test(formData.email);
     if (!correctEmail) {
-      alert("Please Enter Valid Email EX: example@example.com");
+      toast.error("Please Enter Valid Email EX: example@example.com");
       return;
     }
-    if (!formData.password.trim()) {
-      alert("Please Enter Your Password");
-      return;
-    }
+
     if (!formData.name.trim()) {
-      alert("Please Enter Your Username");
+      toast.error("Please Enter Your Username");
       return;
     }
     if (!formData.role.trim()) {
-      alert("Please Enter Your Role");
+      toast.error("Please Enter Your Role");
+      return;
+    }
+    if (!formData.password.trim()) {
+      toast.error("Please Enter Your Password");
+      return;
+    }
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
       return;
     }
     if (!confirmPassword.trim()) {
-      alert("Please Enter Your Confirm Password");
+      toast.error("Please Enter Your Confirm Password");
       return;
     }
     if (confirmPassword.trim() != formData.password) {
-      alert("Password Doesn't Match");
+      toast.error("Password Doesn't Match");
+      return;
+    }
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
       return;
     }
 
@@ -90,6 +101,31 @@ function Register() {
 
   return (
     <>
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+          success: {
+            duration: 2000,
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            duration: 2000,
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
       <nav className="h-[10vh] bg-white flex justify-start items-center px-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-3 mr-2">

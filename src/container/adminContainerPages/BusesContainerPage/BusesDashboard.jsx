@@ -5,6 +5,8 @@ import { HiX } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdOutlineDelete } from "react-icons/md";
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 function BusesDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
@@ -146,22 +148,22 @@ function BusesDashboard() {
 
       // Validate required fields
       if (!formData.name.trim()) {
-        setError("Bus name is required");
+        toast.error("Bus name is required");
         return;
       }
 
       if (!formData.model.trim()) {
-        setError("Model is required");
+        toast.error("Model is required");
         return;
       }
 
       if (!formData.color.trim()) {
-        setError("Color is required");
+        toast.error("Color is required");
         return;
       }
 
       if (!formData.plateNumber.trim()) {
-        setError("Plate number is required");
+        toast.error("Plate number is required");
         return;
       }
 
@@ -170,7 +172,7 @@ function BusesDashboard() {
         isNaN(formData.capacity) ||
         parseInt(formData.capacity) <= 0
       ) {
-        setError("Valid capacity is required");
+        toast.error("Valid capacity is required");
         return;
       }
 
@@ -190,45 +192,83 @@ function BusesDashboard() {
         },
       });
 
-      setSuccess("Bus updated successfully!");
+      toast.success("Bus updated successfully!");
       await fetchBuses();
-
-      setTimeout(() => {
-        handleCloseModal();
-      }, 1500);
+      handleCloseModal();
     } catch (error) {
       console.error("Error updating bus:", error);
-      setError(error.response?.data?.message || "Failed to update bus");
+      toast.error(error.response?.data?.message || "Failed to update bus");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteBus = async (bus) => {
-    try {
-      const confirmDelete = window.confirm(
-        `Are you sure you want to delete bus "${bus.name}" (${bus.plateNumber})? This action cannot be undone.`
-      );
-      if (!confirmDelete) return;
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center">
+            <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500 cursor-pointer" />
+            <h1 className="font-bold">Warning!</h1>
+          </div>
+          <div>
+            <h1 className="text-xs md:text-base lg:text-lg text-gray-900">
+              Are you sure you want to delete bus "{bus.name}"? This action
+              cannot be undone.
+            </h1>
+          </div>
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded hover:bg-gray-300 cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  const token = localStorage.getItem("token");
+                  if (!token) {
+                    throw new Error("No authentication token found");
+                  }
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
+                  await axios.delete(`${API}/admin/vehicle/${bus._id}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                  });
 
-      await axios.delete(`${API}/admin/vehicle/${bus._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+                  console.log("Bus deleted:", bus.name);
+                  toast.success(`Bus "${bus.name}" deleted successfully`);
+                  await fetchBuses();
+                } catch (error) {
+                  console.error("Error deleting bus:", error);
+                  toast.error(
+                    error.response?.data?.message || "Failed to delete bus"
+                  );
+                }
+              }}
+              className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+        style: {
+          background: "white",
+          color: "black",
+          border: "1px solid #e5e7eb",
+          padding: "16px",
+          borderRadius: "8px",
+          maxWidth: "400px",
         },
-      });
-
-      console.log("Bus deleted:", bus.name);
-      await fetchBuses();
-    } catch (error) {
-      console.error("Error deleting bus:", error);
-      alert(error.response?.data?.message || "Failed to delete bus");
-    }
+      }
+    );
   };
 
   return (
@@ -558,6 +598,16 @@ function BusesDashboard() {
           </div>
         </div>
       )}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+        }}
+      />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import api from "./api"; 
 
+
 //  New Booking Page Functions 
 
 /**
@@ -7,8 +8,8 @@ import api from "./api";
  * @param {object} filters - The search and filter criteria.
  * @returns {Promise<object>}
  */
-export const studentGetAvailableTrips = (filters) => {
-  return api.get("/student/trips", { params: filters });
+export const studentGetAvailableTrips = () => {
+  return api.get("/trips");
 };
 
 /**
@@ -16,7 +17,7 @@ export const studentGetAvailableTrips = (filters) => {
  * @returns {Promise<object>}
  */
 export const studentGetDestinations = () => {
-  return api.get("/student/destinations");
+  return api.get("/destination/");
 };
 
 /**
@@ -82,7 +83,7 @@ export const studentRateTrip = (bookingId, ratingData) => {
 
 
 
-//  Conversations Page Functions 
+// Conversations Page Functions 
 
 /**
  * Fetches the student's conversations with drivers.

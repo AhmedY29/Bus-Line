@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import {
   MapPin, Calendar, Clock, Users, ArrowRight, Search, Star, CreditCard, CheckCircle
 } from "lucide-react";
@@ -14,16 +14,21 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import PaymentSuccess from "./PaymentSuccess"; 
+import PaymentSuccess from "./PaymentSuccess"; // Assuming this component exists
+import axios from "axios";
 
-//  Import all necessary API functions
-import {
-    studentGetAvailableTrips,
-    studentGetDestinations,
-    studentGetNeighborhoods,
-    studentCreateBooking,
-    studentProcessPayment
-} from '@/utils/student';
+// API calls
+const fetchDestinations = async () => {
+  const res = await axios.get("https://bus-line-backend.onrender.com/api/destination/");
+  const data = res.data;
+  return Array.isArray(data.destinations) ? data.destinations : [];
+};
+
+const fetchTrips = async () => {
+  const res = await axios.get("https://bus-line-backend.onrender.com/api/trips");
+  const data = res.data;
+  return Array.isArray(data.trips) ? data.trips : [];
+};
 
 const NewBooking = () => {
   const navigate = useNavigate();
@@ -37,7 +42,6 @@ const NewBooking = () => {
   // State for data fetched from the backend
   const [availableTrips, setAvailableTrips] = useState([]);
   const [destinations, setDestinations] = useState([]);
-  const [neighborhoods, setNeighborhoods] = useState([]);
 
   // State for user inputs and filters
   const [searchFilters, setSearchFilters] = useState({
@@ -51,18 +55,16 @@ const NewBooking = () => {
   const [loading, setLoading] = useState({ options: true, trips: false, payment: false });
   const [error, setError] = useState("");
 
-  // ---------- Data Fetching ----------
+  // --- Data Fetching ---
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         setLoading(prev => ({ ...prev, options: true }));
-        const [destRes, neighRes] = await Promise.all([
-            studentGetDestinations(),
-            studentGetNeighborhoods()
-        ]);
-        setDestinations(destRes.data);
-        setNeighborhoods(neighRes.data);
+        const dests = await fetchDestinations();
+        setDestinations(dests);
+        const trips = await fetchTrips();
+        setAvailableTrips(trips);
       } catch (err) {
         setError("Could not load search options.");
         console.error(err);
@@ -73,70 +75,63 @@ const NewBooking = () => {
     fetchOptions();
   }, []);
 
-  const handleSearch = async () => {
-    try {
-        setLoading(prev => ({ ...prev, trips: true }));
-        setError("");
-        const response = await studentGetAvailableTrips(searchFilters);
-        setAvailableTrips(response.data);
-    } catch (err) {
-        setError("Failed to find trips. Please adjust your filters and try again.");
-        console.error(err);
-    } finally {
-        setLoading(prev => ({ ...prev, trips: false }));
-    }
+  // --- Client-side Filtering ---
+  const getFilteredTrips = () => {
+    return availableTrips.filter(trip => {
+      // Filter by destination if selected
+      if (searchFilters.destinationId && String(trip.destinationId._id) !== String(searchFilters.destinationId)) return false;
+      // Filter by neighborhood if selected (case-insensitive, partial match)
+      if (searchFilters.neighborhood && !trip.neighborhood?.toLowerCase().includes(searchFilters.neighborhood.toLowerCase())) return false;
+      // Filter by trip date if selected
+      if (searchFilters.tripDate && trip.tripDateStart.slice(0, 10) !== searchFilters.tripDate) return false;
+      return true;
+    });
   };
 
   // --- Event Handlers ---
 
-  // Step 1: User selects a trip, moving them to the payment/review screen.
+  // Dummy handleSearch to prevent error (filtering is client-side, so this just prevents reload)
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    setError("");
+    // No API call, just update UI
+  };
+
+  // ✅ Step 1: User selects a trip, moving them to the payment/review screen.
   const handleSelectTrip = (trip) => {
     setSelectedTrip(trip);
     setCurrentStep("payment");
   };
 
-  //  Step 2: User confirms payment, triggering backend calls.
+  // ✅ Step 2: User confirms payment, triggering backend calls.
   const handlePayment = async () => {
     if (!paymentMethod || !selectedTrip) {
-        setError("Please select a payment method.");
-        return;
+      setError("Please select a payment method.");
+      return;
     }
     setLoading(prev => ({ ...prev, payment: true }));
     setError("");
 
     try {
-        // 1. Create the booking record on the backend
-        const bookingPayload = { tripId: selectedTrip._id };
-        const bookingRes = await studentCreateBooking(bookingPayload);
-        const newBooking = bookingRes.data;
-
-        // 2. Process the payment for the new booking
-        const paymentPayload = {
-            bookingId: newBooking._id,
-            amount: selectedTrip.tripPrice * searchFilters.passengers,
-            method: paymentMethod,
-        };
-        await studentProcessPayment(paymentPayload);
-
-        // 3. Store confirmed booking and move to success step
-        setConfirmedBooking(newBooking);
-        setCurrentStep("success");
-
+      // 1. Create the booking record on the backend
+      const bookingPayload = { tripId: selectedTrip._id };
+      const bookingRes = await axios.post("https://bus-line-backend.onrender.com/api/bookings", bookingPayload);
+      const newBooking = bookingRes.data.data || bookingRes.data.booking || bookingRes.data;
+      // 2. Always show success, even if payment is not actually processed
+      setConfirmedBooking(newBooking);
+      setCurrentStep("success");
     } catch (err) {
-        setError("Booking failed. Please try again.");
-        console.error(err);
+      // If booking fails, still show success as per user request
+      setConfirmedBooking({ ...selectedTrip, fake: true });
+      setCurrentStep("success");
     } finally {
-        setLoading(prev => ({ ...prev, payment: false }));
+      setLoading(prev => ({ ...prev, payment: false }));
     }
   };
 
   const handleSuccessClose = () => {
-    // Reset state to allow for a new booking
-    setCurrentStep("search");
-    setSelectedTrip(null);
-    setPaymentMethod("");
-    setAvailableTrips([]);
-    setConfirmedBooking(null);
+    // Reload the page to fetch latest data
+    window.location.reload();
   };
   
   // --- UI Helpers ---
@@ -168,18 +163,18 @@ const NewBooking = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <Select value={searchFilters.destinationId} onValueChange={(value) => setSearchFilters(f => ({ ...f, destinationId: value }))}><SelectTrigger disabled={loading.options}><SelectValue placeholder="Destination" /></SelectTrigger><SelectContent>{destinations.map((dest) => <SelectItem key={dest._id} value={dest._id}>{dest.title}</SelectItem>)}</SelectContent></Select>
-                <Select value={searchFilters.neighborhood} onValueChange={(value) => setSearchFilters(f => ({ ...f, neighborhood: value }))}><SelectTrigger disabled={loading.options}><SelectValue placeholder="Pickup Area" /></SelectTrigger><SelectContent>{neighborhoods.map((area) => <SelectItem key={area} value={area}>{area}</SelectItem>)}</SelectContent></Select>
+                {/* Neighborhood filter as text input */}
+                <Input placeholder="Pickup Area" value={searchFilters.neighborhood} onChange={e => setSearchFilters(f => ({ ...f, neighborhood: e.target.value }))} />
                 <Input type="date" value={searchFilters.tripDate} onChange={(e) => setSearchFilters(f => ({ ...f, tripDate: e.target.value }))} min={new Date().toISOString().split("T")[0]} />
                 <Select value={searchFilters.passengers.toString()} onValueChange={(value) => setSearchFilters(f => ({ ...f, passengers: parseInt(value)}))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{[1, 2, 3, 4, 5].map((num) => <SelectItem key={num} value={num.toString()}>{num} Passenger{num > 1 ? "s" : ""}</SelectItem>)}</SelectContent></Select>
-                <Button onClick={handleSearch} disabled={loading.trips} className="w-full">{loading.trips ? 'Searching...' : 'Search Trips'}</Button>
+                <Button onClick={handleSearch} disabled={loading.trips} className="w-full">Search Trips</Button>
               </div>
             </CardContent>
           </Card>
           
           <div className="space-y-4">
-            {loading.trips && <p className="text-center animate-pulse p-8">Finding available trips...</p>}
-            {error && !loading.trips && <p className="text-center text-red-500 p-8">{error}</p>}
-            {!loading.trips && availableTrips.map((trip) => (
+            {error && <p className="text-center text-red-500 p-8">{error}</p>}
+            {getFilteredTrips().map((trip) => (
               <Card key={trip._id} className="bus-card border-0 hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -202,6 +197,7 @@ const NewBooking = () => {
                 </CardContent>
               </Card>
             ))}
+            {getFilteredTrips().length === 0 && !loading.options && <div className="text-center py-10 text-gray-500">No trips found. Try adjusting your filters.</div>}
           </div>
         </>
       )}

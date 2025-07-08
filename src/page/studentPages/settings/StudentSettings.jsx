@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { studentGetSettings, studentUpdateSettings } from "@/utils/student"; // Your API functions
+import { studentGetSettings, studentUpdateSettings } from "@/utils/student"; 
 
 // A component to show the saving status (loading, saved, or error)
 const SaveStatusIndicator = ({ status }) => {

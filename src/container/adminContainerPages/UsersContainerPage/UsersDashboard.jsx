@@ -4,6 +4,10 @@ import { FaUserFriends } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 import AdminCard from "../../../components/AdminCard";
 import AdminTable from "../../../components/AdminTable";
+import { LuBus } from "react-icons/lu";
+import { RiParentFill } from "react-icons/ri";
+import toast, { Toaster } from "react-hot-toast";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 function UsersDashboard() {
   const API = "https://bus-line-backend.onrender.com/api";
@@ -146,30 +150,69 @@ function UsersDashboard() {
       );
 
       console.log("User updated:", response.data);
-      setSuccess("User updated successfully!");
+      toast.success("User updated successfully!");
       await fetchUsers();
       setTimeout(() => {
         handleCloseModal();
       }, 1500);
     } catch (error) {
       console.error("Error updating user:", error);
-      setError(error.response?.data?.message || "Failed to update user");
+      toast.error(error.response?.data?.message || "Failed to update user");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteUser = async (user) => {
-    try {
-      const confirmDelete = window.confirm(
-        `Are you sure you want to delete user "${user.name}"?`
+    const confirmDelete = await new Promise((resolve) => {
+      toast(
+        (t) => (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center">
+              <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
+              <h1 className="font-bold">Warning!</h1>
+            </div>
+            <div className="text-xs md:text-base lg:text-lg text-gray-900">
+              Are you sure you want to delete user "{user.name}"?
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => {
+                  toast.dismiss(t.id);
+                  resolve(false);
+                }}
+                className="bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-400 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  toast.dismiss(t.id);
+                  resolve(true);
+                }}
+                className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 cursor-pointer"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        ),
+        {
+          duration: Infinity,
+          position: "top-center",
+        }
       );
-      if (!confirmDelete) return;
+    });
 
+    if (!confirmDelete) return;
+
+    try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("No authentication token found");
       }
+
+      const loadingToast = toast.loading(`Deleting user "${user.name}"...`);
 
       await axios.delete(`${API}/admin/user/${user._id}`, {
         headers: {
@@ -180,29 +223,55 @@ function UsersDashboard() {
 
       console.log("User deleted:", user.name);
 
+      // Dismiss loading and show success
+      toast.dismiss(loadingToast);
+      toast.success(`User "${user.name}" deleted successfully!`);
+
       // Refresh the users list
       await fetchUsers();
     } catch (error) {
       console.error("Error deleting user:", error);
-      alert(error.response?.data?.message || "Failed to delete user");
+      toast.error(error.response?.data?.message || "Failed to delete user");
     }
   };
   return (
     <div className="flex flex-col items-center justify-center h-full w-full  md:px-5 p-2 ">
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+
       {/* Header Section Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-5 lg:gap-10 py-4 w-full ">
-        <AdminCard
-          icon={FaUserFriends}
-          title="Drivers"
-          count={drivers.length}
-        />
+        <AdminCard icon={LuBus} title="Drivers" count={drivers.length} />
         <AdminCard
           icon={FaUserFriends}
           title="Student"
           count={users.filter((user) => user.role === "student").length}
         />
         <AdminCard
-          icon={FaUserFriends}
+          icon={RiParentFill}
           title="Parent"
           count={users.filter((user) => user.role === "parent").length}
         />

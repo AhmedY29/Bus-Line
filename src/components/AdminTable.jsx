@@ -105,11 +105,15 @@ function AdminTable({
 
             <div className="flex items-center gap-1 md:gap-4 border-l-2 border-gray-200 pl-1 md:pl-4   h-full w-3/12 md:w-2/12   ">
               <FaUserPen
-                className="cursor-pointer text-2xl text-blue-600 transition-colors"
+                className={`cursor-pointer text-2xl text-blue-600 transition-colors ${
+                  item.role === "admin" ? "hidden " : ""
+                }`}
                 onClick={() => onEdit && onEdit(item)}
               />
               <MdOutlineDelete
-                className="cursor-pointer text-2xl text-red-600 transition-colors"
+                className={`cursor-pointer text-2xl text-red-600 transition-colors ${
+                  item.role === "admin" ? "hidden " : ""
+                }`}
                 onClick={() => onDelete && onDelete(item)}
               />
             </div>
