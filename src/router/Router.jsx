@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "driver-register",
+    path: "/driver-register",
     element: (
       <FormProvider>
         <MultiStepForm />

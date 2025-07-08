@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, Send, ArrowLeft, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,30 +12,92 @@ const RateTrip = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [trip, setTrip] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock completed trip data
-  const completedTrip = {
-    id: "BK001",
-    busNumber: "BUS-001",
-    destination: "Cairo University",
-    departureTime: "07:30 AM",
-    arrivalTime: "09:15 AM",
-    date: "2024-01-15",
-    driverName: "Ahmed Mahmoud",
-    route: "Maadi → Cairo University",
-    price: 25
+  // Fetch latest completed trip
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      const userData = JSON.parse(localStorage.getItem("user"));
+      setUser(userData);
+
+      if (!token || !userData) {
+        alert("Please login again.");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch("https://bus-line-backend.onrender.com/api/bookings/booking-student", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+        const latestBooking = data.bookings?.[0];
+
+        if (!latestBooking || !latestBooking.trip || !latestBooking.trip.driver) {
+          alert("No completed trip found.");
+          return;
+        }
+
+        setTrip({
+          bookingId: latestBooking._id,
+          tripId: latestBooking.tripId,
+          driverId: latestBooking.trip.driver._id,
+          driverName: latestBooking.trip.driver.name,
+          busNumber: latestBooking.trip.busNumber || "N/A",
+          departureTime: latestBooking.trip.departureTime,
+          arrivalTime: latestBooking.trip.estimatedArrival,
+          date: latestBooking.trip.date?.split("T")[0],
+          route: latestBooking.trip.route || "N/A",
+        });
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching trip:", error);
+        alert("Error loading trip data.");
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  const handleSubmitRating = async () => {
+    const token = localStorage.getItem("token");
+    if (!token || !user || !trip) return;
+
+    try {
+      const response = await fetch("https://bus-line-backend.onrender.com/api/rating/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          driverId: trip.driverId,
+          userId: user._id,
+          rating,
+          comment,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to submit rating");
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        navigate("/student/bookings");
+      }, 2000);
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
-  const handleSubmitRating = () => {
-    // Here you would submit to your API
-    console.log("Rating submitted:", { rating, comment, tripId: completedTrip.id });
-    setIsSubmitted(true);
-    
-    // Redirect after 2 seconds
-    setTimeout(() => {
-      navigate('/student/bookings');
-    }, 2000);
-  };
+  if (loading) {
+    return <p className="text-center mt-10 text-gray-500">Loading trip details...</p>;
+  }
 
   if (isSubmitted) {
     return (
@@ -53,7 +114,7 @@ const RateTrip = () => {
                 <Star
                   key={star}
                   className={`w-6 h-6 ${
-                    star <= rating ? 'text-yellow-500 fill-current' : 'text-gray-300'
+                    star <= rating ? "text-yellow-500 fill-current" : "text-gray-300"
                   }`}
                 />
               ))}
@@ -67,9 +128,8 @@ const RateTrip = () => {
 
   return (
     <div className="space-y-6 p-2">
-      {/* Header */}
       <div className="flex items-center space-x-4">
-        <Button variant="outline" size="sm" onClick={() => navigate('/student/bookings')}>
+        <Button variant="outline" size="sm" onClick={() => navigate("/student/bookings")}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
@@ -90,29 +150,31 @@ const RateTrip = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Trip ID:</span>
-                  <Badge variant="outline">{completedTrip.id}</Badge>
+                  <Badge variant="outline">{trip.tripId}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Bus:</span>
-                  <span className="font-semibold">{completedTrip.busNumber}</span>
+                  <span className="font-semibold">{trip.busNumber}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Driver:</span>
-                  <span className="font-semibold">{completedTrip.driverName}</span>
+                  <span className="font-semibold">{trip.driverName}</span>
                 </div>
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Date:</span>
-                  <span className="font-semibold">{completedTrip.date}</span>
+                  <span className="font-semibold">{trip.date}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Time:</span>
-                  <span className="font-semibold">{completedTrip.departureTime} - {completedTrip.arrivalTime}</span>
+                  <span className="font-semibold">
+                    {trip.departureTime} - {trip.arrivalTime}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Route:</span>
-                  <span className="font-semibold">{completedTrip.route}</span>
+                  <span className="font-semibold">{trip.route}</span>
                 </div>
               </div>
             </div>
@@ -127,7 +189,6 @@ const RateTrip = () => {
               <p className="text-gray-600">Rate your overall experience</p>
             </div>
 
-            {/* Star Rating */}
             <div className="flex items-center justify-center space-x-2 mb-8">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -140,15 +201,14 @@ const RateTrip = () => {
                   <Star
                     className={`w-12 h-12 ${
                       star <= (hoverRating || rating)
-                        ? 'text-yellow-500 fill-current'
-                        : 'text-gray-300'
+                        ? "text-yellow-500 fill-current"
+                        : "text-gray-300"
                     } transition-colors`}
                   />
                 </button>
               ))}
             </div>
 
-            {/* Rating Labels */}
             <div className="text-center mb-8">
               {rating > 0 && (
                 <p className="text-lg font-semibold text-gray-700">
@@ -161,7 +221,6 @@ const RateTrip = () => {
               )}
             </div>
 
-            {/* Comment Section */}
             <div className="space-y-4">
               <label className="block text-lg font-semibold text-gray-900">
                 Tell us more about your experience (Optional)
@@ -174,7 +233,6 @@ const RateTrip = () => {
               />
             </div>
 
-            {/* Submit Button */}
             <div className="mt-8 text-center">
               <Button
                 onClick={handleSubmitRating}

@@ -154,7 +154,7 @@ const StudentTrackingMap = ({ tripId, token }) => {
 
   return (
     <>
-      dd
+
       <div
         ref={mapContainerRef}
         style={{ width: "100%", height: "400px", borderRadius: "8px" }}
