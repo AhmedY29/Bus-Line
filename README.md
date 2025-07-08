@@ -1,276 +1,278 @@
-# 🚌 BusLine - Modern Bus Transportation Platform
+# <img src="./public/Logo.png" alt="BusLine" width="40" height="40" style="vertical-align: middle; border-radius: 50%;"> خط الحافلات - منصة النقل الحديثة
 
-A comprehensive bus transportation web application built with React, featuring role-based dashboards for admins, drivers, and students with real-time booking, trip management, and advanced UI/UX.
+في ظل التحديات اليومية التي يواجهها العديد من الطلاب والطالبات في الوصول إلى مدارسهم وجامعاتهم، خاصة في المناطق التي لا تغطيها وسائل النقل العام، ظهرت الحاجة إلى حل تقني ينظم خدمات النقل التعاقدي الخاص، ويسهل الربط بين الركاب وسائقي الحافلات الخاصة بناءً على الأحياء السكنية والوجهات المحددة (مثل الجامعات، المدارس). المنصة تستهدف تقنين الخدمة، ضمان الأمان، وتوفير حلول مرنة وسهلة.
 
-## 📋 Table of Contents
+تطبيق شامل لنقل الحافلات مبني بـ React، يتضمن لوحات تحكم قائمة على الأدوار للمشرفين والسائقين والطلاب مع الحجز في الوقت الفعلي وإدارة الرحلات وواجهة مستخدم متقدمة.
 
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Screenshots](#-screenshots)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Authentication](#-authentication)
-- [Dashboards](#-dashboards)
-- [Styling & Design](#-styling--design)
-- [Features in Detail](#-features-in-detail)
-- [Performance Optimizations](#-performance-optimizations)
-- [Contributing](#contributing)
-- [Acknowledgments](#-acknowledgments)
-- [Team](#-team)
+## 📋 جدول المحتويات
 
-## ✨ Features
+- [الميزات](#-الميزات)
+- [المكتبات والتقنيات](#-المكتبات-والتقنيات)
+- [لقطات الشاشة](#-لقطات-الشاشة)
+- [التثبيت](#-التثبيت)
+- [الاستخدام](#-الاستخدام)
+- [المصادقة](#-المصادقة)
+- [لوحات التحكم](#-لوحات-التحكم)
+- [التصميم والستايل](#-التصميم-والستايل)
+- [الميزات بالتفصيل](#-الميزات-بالتفصيل)
+- [تحسينات الأداء](#-تحسينات-الأداء)
+- [المساهمة](#المساهمة)
+- [شكر وتقدير](#-شكر-وتقدير)
+- [الفريق](#-الفريق)
 
-### 🎯 Core Features
+## ✨ الميزات
 
-- **Multi-Role Authentication**: Admin, Driver, and Student login systems
-- **Real-time Booking**: Interactive booking system with live trip updates
-- **Admin Dashboard**: Complete CRUD operations for users, drivers, buses, trips, and destinations
-- **Driver Dashboard**: Trip management, passenger tracking, and earnings overview
-- **Student Dashboard**: Book trips, view history, and track buses
-- **Modern UI/UX**: Professional, responsive design with smooth animations
+### 🎯 الميزات الأساسية
 
-### 🚀 Advanced Features
+- **مصادقة متعددة الأدوار**: أنظمة تسجيل دخول للمشرف والسائق والطالب
+- **الحجز في الوقت الفعلي**: نظام حجز تفاعلي مع تحديثات الرحلات المباشرة
+- **لوحة تحكم المشرف**: عمليات CRUD كاملة للمستخدمين والسائقين والحافلات والرحلات والوجهات
+- **لوحة تحكم السائق**: إدارة الرحلات وتتبع الركاب ونظرة عامة على الأرباح
+- **لوحة تحكم الطالب**: حجز الرحلات وعرض التاريخ وتتبع الحافلات
+- **واجهة مستخدم عصرية**: تصميم مهني ومتجاوب مع رسوم متحركة سلسة
 
-- **Google Maps Integration**: Interactive maps with destination plotting
-- **Toast Notifications**: Modern, user-friendly feedback system
-- **Search & Filtering**: Advanced search and sorting across all dashboards
-- **Reviews System**: Customer testimonials and rating system
-- **Real-time Updates**: Live trip status and booking confirmations
+### 🚀 الميزات المتقدمة
 
-## 🛠 Tech Stack
+- **تكامل خرائط جوجل**: خرائط تفاعلية مع رسم الوجهات
+- **إشعارات Toast**: نظام ردود فعل عصري وسهل الاستخدام
+- **البحث والتصفية**: بحث وفرز متقدم عبر جميع لوحات التحكم
+- **نظام المراجعات**: شهادات العملاء ونظام التقييم
+- **التحديثات المباشرة**: حالة الرحلة المباشرة وتأكيدات الحجز
 
-### Frontend
+## 🛠 المكتبات والتقنيات
 
-- **React 19** - Modern React with latest features
-- **Vite** - Lightning-fast build tool
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Advanced animations and transitions
-- **React Router** - Client-side routing
-- **React Hot Toast** - Modern notification system
+### الواجهة الأمامية
 
-### Backend
+- **React 19** - React حديث مع أحدث الميزات
+- **Vite** - أداة بناء سريعة البرق
+- **Tailwind CSS** - إطار عمل CSS يركز على الأدوات
+- **Framer Motion** - رسوم متحركة وانتقالات متقدمة
+- **React Router** - توجيه من جانب العميل
+- **React Hot Toast** - نظام إشعارات حديث
 
-- **Repository**: [Bus-Line Backend](https://github.com/AhmedY29/Bus-Line-Backend)
-- **Technology**: Node.js with TypeScript
-- **Express** - Fast, unopinionated web framework
-- **bcrypt** - Secure password hashing for authentication
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JWT-based authentication system
-- **API**: RESTful API endpoints
-- **File Upload**: Cloudinary integration for image management
-- **Socket.io** - Real-time bidirectional event-based communication and tracking
+### الواجهة الخلفية
 
-### UI Libraries
+- **المستودع**: [Bus-Line Backend](https://github.com/AhmedY29/Bus-Line-Backend)
+- **التقنية**: Node.js مع TypeScript
+- **Express** - إطار عمل ويب سريع وغير متحيز
+- **bcrypt** - تشفير كلمات المرور الآمن للمصادقة
+- **قاعدة البيانات**: MongoDB مع Mongoose ODM
+- **المصادقة**: نظام مصادقة قائم على JWT
+- **API**: نقاط نهاية RESTful API
+- **رفع الملفات**: تكامل Cloudinary لإدارة الصور
+- **Socket.io** - اتصال ثنائي الاتجاه في الوقت الفعلي وتتبع
 
-- **React Icons** - Comprehensive icon library
-- **Lucide React** - Beautiful & consistent icons
-- **Tailwind Scrollbar Hide** - Custom scrollbar styling
+### مكتبات واجهة المستخدم
 
-### Maps & Integration
+- **React Icons** - مكتبة أيقونات شاملة
+- **Lucide React** - أيقونات جميلة ومتسقة
+- **Tailwind Scrollbar Hide** - تصميم شريط التمرير المخصص
 
-- **Mapbox GL JS** - Interactive maps and navigation
-- **Axios** - HTTP client for API requests
-- **Socket.io Client** - Real-time communication
-- **Cloudinary** - Image and asset management platform
+### الخرائط والتكامل
 
-### Deployment & Hosting
+- **Mapbox GL JS** - خرائط تفاعلية وملاحة
+- **Axios** - عميل HTTP لطلبات API
+- **Socket.io Client** - اتصال في الوقت الفعلي
+- **Cloudinary** - منصة إدارة الصور والأصول
 
-- **Render** - Cloud platform for hosting server-side and full-stack applications
+### النشر والاستضافة
 
-## 📸 Screenshots
+- **Render** - منصة سحابية لاستضافة تطبيقات الخادم وكامل المكدس
 
-### 🏠 Landing Page
+## 📸 لقطات الشاشة
 
-![Landing Page](./public/HomePage.png)
-_Modern, clean homepage with trip booking and driver registration options_
+### 🏠 الصفحة الرئيسية
 
-### 🎓 Student Dashboard
+![الصفحة الرئيسية](./public/HomePage.png)
+_صفحة رئيسية عصرية ونظيفة مع حجز الرحلات وخيارات تسجيل السائق_
 
-![Student Dashboard](./public/StudentPage.png)
-_Comprehensive student portal with booking management, trip history, and real-time tracking_
+### 🎓 لوحة تحكم الطالب
 
-### 🚗 Driver Dashboard
+![لوحة تحكم الطالب](./public/StudentPage.png)
+_بوابة طالب شاملة مع إدارة الحجوزات وتاريخ الرحلات والتتبع في الوقت الفعلي_
 
-![Driver Dashboard](./public/DriverPage.png)
-_Professional driver interface with trip management, passenger details, and performance metrics_
+### 🚗 لوحة تحكم السائق
 
-### 👨‍💼 Admin Dashboard - Users Management
+![لوحة تحكم السائق](./public/DriverPage.png)
+_واجهة سائق مهنية مع إدارة الرحلات وتفاصيل الركاب ومقاييس الأداء_
 
-![Admin Users Dashboard](./public/AdminPage.png)
-_Complete user management system with role-based access control and CRUD operations_
+### 👨‍💼 لوحة تحكم المشرف - إدارة المستخدمين
 
-### 🚌 Admin Dashboard - Drivers Management
+![لوحة تحكم المشرف للمستخدمين](./public/AdminPage.png)
+_نظام إدارة مستخدمين كامل مع التحكم في الوصول القائم على الأدوار وعمليات CRUD_
 
-_Advanced driver management with application approval, document verification, and performance tracking_
+### 🚌 لوحة تحكم المشرف - إدارة السائقين
 
-### 🗺️ Admin Dashboard - Destinations Management
+_إدارة سائقين متقدمة مع موافقة التطبيق والتحقق من الوثائق وتتبع الأداء_
 
-_Interactive destination management with Google Maps integration and coordinate extraction_
+### 🗺️ لوحة تحكم المشرف - إدارة الوجهات
 
-### 📱 Responsive Design
+_إدارة وجهات تفاعلية مع تكامل خرائط جوجل واستخراج الإحداثيات_
 
-_Mobile-optimized interface ensuring seamless experience across all devices_
+### 📱 التصميم المتجاوب
 
-### 🔐 Authentication System
+_واجهة محسنة للجوال تضمن تجربة سلسة عبر جميع الأجهزة_
 
-_Secure login and registration with role-based redirection_
+### 🔐 نظام المصادقة
 
-## 🚀 Installation
+_تسجيل دخول آمن وتسجيل مع إعادة توجيه قائمة على الأدوار_
 
-### Prerequisites
+## 🚀 التثبيت
 
-- Node.js (v18 or higher)
-- npm or yarn package manager
+### المتطلبات المسبقة
+
+- Node.js (الإصدار 18 أو أحدث)
+- npm أو yarn مدير الحزم
 - Git
 
-## 📖 Usage
+## 📖 الاستخدام
 
-### Getting Started
+### البدء
 
-1. **Home Page**: Browse available trips and view travel packages
-2. **Authentication**: Register as a student or driver, or login as admin
-3. **Booking**: Select trips, payment, and complete bookings
-4. **Dashboard**: Access role-specific features and management tools
+1. **الصفحة الرئيسية**: تصفح الرحلات المتاحة وعرض حزم السفر
+2. **المصادقة**: التسجيل كطالب أو سائق، أو تسجيل الدخول كمشرف
+3. **الحجز**: اختيار الرحلات والدفع وإكمال الحجوزات
+4. **لوحة التحكم**: الوصول إلى الميزات وأدوات الإدارة الخاصة بالدور
 
-### User Roles
+### أدوار المستخدمين
 
-#### 👨‍💼 Admin
+#### 👨‍💼 المشرف
 
-- Manage users, drivers, buses, trips, and destinations
-- View analytics and generate reports
-- Approve/reject driver applications
-- System-wide configuration
+- إدارة المستخدمين والسائقين والحافلات والرحلات والوجهات
+- عرض التحليلات وإنشاء التقارير
+- الموافقة/رفض طلبات السائقين
+- تكوين النظام الكامل
 
-#### 🚗 Driver
+#### 🚗 السائق
 
-- View assigned trips and passenger lists
-- Update trip status and manage earnings
-- Upload driver licenses
+- عرض الرحلات المعينة وقوائم الركاب
+- تحديث حالة الرحلة وإدارة الأرباح
+- رفع رخص السائقين
 
-#### 🎓 Student
+#### 🎓 الطالب
 
-- Browse and book available trips
-- View booking history and trip details
-- Track buses in real-time
-- Leave reviews and ratings
+- تصفح وحجز الرحلات المتاحة
+- عرض تاريخ الحجوزات وتفاصيل الرحلات
+- تتبع الحافلات في الوقت الفعلي
+- ترك المراجعات والتقييمات
 
-## 🔐 Authentication
+## 🔐 المصادقة
 
-The application uses JWT-based authentication with role-based access control:
+يستخدم التطبيق مصادقة قائمة على JWT مع التحكم في الوصول القائم على الأدوار:
 
-- **JWT Tokens**: Stored in localStorage
-- **Role Validation**: Client-side route protection
-- **Protected Routes**: Admin, driver, and student specific pages
-- **Auto-redirect**: Based on user roles after login
+- **رموز JWT**: مخزنة في localStorage
+- **التحقق من الدور**: حماية المسار من جانب العميل
+- **المسارات المحمية**: صفحات محددة للمشرف والسائق والطالب
+- **إعادة التوجيه التلقائي**: بناءً على أدوار المستخدمين بعد تسجيل الدخول
 
-### Login Credentials
+### بيانات تسجيل الدخول
 
 ```javascript
-// Admin
+// مشرف
 email: "admin@busline.com";
 password: "admin123";
 
-// Driver
+// سائق
 email: "driver@busline.com";
 password: "driver123";
 
-// Student
+// طالب
 email: "student@busline.com";
 password: "student123";
 ```
 
-## 📊 Dashboards
+## 📊 لوحات التحكم
 
-### Admin Dashboard Features
+### ميزات لوحة تحكم المشرف
 
-- **Users Management**: CRUD operations with search/filter
-- **Drivers Management**: Approve/reject applications, manage documents
-- **Buses Management**: Vehicle registration, maintenance tracking
-- **Trips Management**: Route planning, schedule management
-- **Destinations Management**: Google Maps integration, coordinate extraction
+- **إدارة المستخدمين**: عمليات CRUD مع البحث/التصفية
+- **إدارة السائقين**: الموافقة/رفض الطلبات وإدارة الوثائق
+- **إدارة الحافلات**: تسجيل المركبات وتتبع الصيانة
+- **إدارة الرحلات**: تخطيط المسارات وإدارة الجداول
+- **إدارة الوجهات**: تكامل خرائط جوجل واستخراج الإحداثيات
 
-### Driver Dashboard Features
+### ميزات لوحة تحكم السائق
 
-- **Trip Overview**: Assigned trips and passenger details
-- **Earnings Tracker**: Revenue reports and payment history
-- **Vehicle Management**: Document uploads, inspection status
+- **نظرة عامة على الرحلات**: الرحلات المعينة وتفاصيل الركاب
+- **متتبع الأرباح**: تقارير الإيرادات وتاريخ الدفعات
+- **إدارة المركبات**: رفع الوثائق وحالة التفتيش
 
-### Student Dashboard Features
+### ميزات لوحة تحكم الطالب
 
-- **Trip Booking**: Search, filter, and book available trips
-- **Booking History**: Past and upcoming trip details
-- **Live Tracking**: Real-time bus location tracking
-- **Reviews & Ratings**: Leave feedback for completed trips
+- **حجز الرحلات**: البحث والتصفية وحجز الرحلات المتاحة
+- **تاريخ الحجوزات**: تفاصيل الرحلات الماضية والقادمة
+- **التتبع المباشر**: تتبع موقع الحافلة في الوقت الفعلي
+- **المراجعات والتقييمات**: ترك ملاحظات للرحلات المكتملة
 
-## 🎨 Styling & Design
+## 🎨 التصميم والستايل
 
-### Design System
+### نظام التصميم
 
-- **Color Scheme**: Blue primary (#0165AD), professional grays
-- **Typography**: Modern, readable font hierarchy
-- **Spacing**: Consistent padding and margins
-- **Animations**: Smooth transitions and micro-interactions
+- **مخطط الألوان**: الأزرق الأساسي (#0165AD)، الرمادي المهني
+- **الطباعة**: تسلسل خطوط حديث وقابل للقراءة
+- **المسافات**: حشو وهوامش متسقة
+- **الرسوم المتحركة**: انتقالات سلسة وتفاعلات دقيقة
 
-### Responsive Design
+### التصميم المتجاوب
 
-- **Mobile-first**: Optimized for mobile devices
-- **Tablet Support**: Medium screen adaptations
-- **Desktop**: Full-featured desktop experience
-- **Accessibility**: WCAG compliant components
+- **الجوال أولاً**: محسن للأجهزة المحمولة
+- **دعم الأجهزة اللوحية**: تكيفات الشاشة المتوسطة
+- **سطح المكتب**: تجربة سطح مكتب كاملة الميزات
+- **إمكانية الوصول**: مكونات متوافقة مع WCAG
 
-## 📱 Features in Detail
+## 📱 الميزات بالتفصيل
 
-### Google Maps Integration
+### تكامل خرائط جوجل
 
-- **Destination Plotting**: Add destinations via Google Maps URLs
-- **Coordinate Extraction**: Auto-extract lat/lng from various URL formats
-- **Short URL Support**: Handle maps.app.goo.gl links
-- **Interactive Maps**: Real-time bus tracking and route visualization
+- **رسم الوجهات**: إضافة وجهات عبر روابط خرائط جوجل
+- **استخراج الإحداثيات**: استخراج تلقائي للإحداثيات من تنسيقات الروابط المختلفة
+- **دعم الروابط القصيرة**: التعامل مع روابط maps.app.goo.gl
+- **خرائط تفاعلية**: تتبع الحافلات في الوقت الفعلي وتصور المسارات
 
-### Image Upload System
+### نظام رفع الصور
 
-- **File Validation**: Type and size checking
-- **Progress Indicators**: Upload status feedback
-- **Preview Functionality**: Image thumbnails
-- **Error Handling**: Comprehensive error messages
+- **التحقق من الملفات**: فحص النوع والحجم
+- **مؤشرات التقدم**: ردود فعل حالة الرفع
+- **وظيفة المعاينة**: صور مصغرة للصور
+- **معالجة الأخطاء**: رسائل خطأ شاملة
 
-### Toast Notification System
+### نظام إشعارات Toast
 
-- **Modern Design**: Custom styled notifications
-- **Multiple Types**: Success, error, warning, info
-- **Confirmation Dialogs**: Replace browser alerts
-- **Auto-dismiss**: Configurable timeout settings
+- **تصميم حديث**: إشعارات مصممة خصيصاً
+- **أنواع متعددة**: نجاح، خطأ، تحذير، معلومات
+- **حوارات تأكيد**: استبدال تنبيهات المتصفح
+- **الإغلاق التلقائي**: إعدادات مهلة زمنية قابلة للتكوين
 
-## 🚀 Performance Optimizations
+## 🚀 تحسينات الأداء
 
-- **Code Splitting**: Route-based code splitting
-- **Lazy Loading**: Component lazy loading
-- **Image Optimization**: Compressed assets
-- **Bundle Analysis**: Optimized build size
-- **Caching Strategy**: Efficient API response caching
+- **تقسيم الكود**: تقسيم الكود القائم على المسار
+- **التحميل البطيء**: تحميل المكونات البطيء
+- **تحسين الصور**: أصول مضغوطة
+- **تحليل الحزمة**: حجم بناء محسن
+- **استراتيجية التخزين المؤقت**: تخزين مؤقت فعال لاستجابات API
 
-### Code Quality
+### جودة الكود
 
-- **ESLint**: Configured for React and modern JavaScript
-- **Prettier**: Code formatting (recommended)
-- **Git Hooks**: Pre-commit quality checks
-- **Component Testing**: Jest and React Testing Library
+- **ESLint**: مكون لـ React و JavaScript الحديث
+- **Prettier**: تنسيق الكود (مستحسن)
+- **Git Hooks**: فحوصات الجودة قبل الالتزام
+- **اختبار المكونات**: Jest و React Testing Library
 
-### Contribution Guidelines
+### إرشادات المساهمة
 
-- Follow existing code style and conventions
-- Add tests for new features
-- Update documentation as needed
-- Ensure all checks pass before submitting
+- اتبع نمط الكود والاتفاقيات الموجودة
+- أضف اختبارات للميزات الجديدة
+- قم بتحديث الوثائق حسب الحاجة
+- تأكد من نجاح جميع الفحوصات قبل الإرسال
 
-## 🙏 Acknowledgments
+## 🙏 شكر وتقدير
 
-- React team for the amazing framework
-- Tailwind CSS for utility-first styling
-- Mapbox for mapping services
-- All open-source contributors
+- فريق React للإطار الرائع
+- Tailwind CSS للستايل القائم على الأدوات
+- Mapbox لخدمات الخرائط
+- جميع المساهمين في المصادر المفتوحة
 
-## 👥 Team
+## 👥 الفريق
 
 - **أحمد الصالح**
 - **ذكرى الجغثمي**
