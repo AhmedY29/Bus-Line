@@ -19,6 +19,7 @@ const TripCard = () => {
       try {
         const tripRes = await axios.get(
           "https://bus-line-backend.onrender.com/api/trips/driver-trips",
+// <<<<<<< HEAD
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setTrips(tripRes.data.trips);
@@ -30,11 +31,31 @@ const TripCard = () => {
         setPendingBooking(pendingRes.data.bookings);
       } catch (err) {
         console.error("Error fetching trips or bookings", err);
+// =======
+//           {
+//             headers: { Authorization: `Bearer ${token}` },
+//           }
+//         );
+//         setTrips(tripRes.data?.trips || []);
+  
+//         const bookingRes = await axios.get(
+//           "https://bus-line-backend.onrender.com/api/bookings/booking-pending",
+//           {
+//             headers: { Authorization: `Bearer ${token}` },
+//           }
+//         );
+//         setPendingBooking(bookingRes.data?.bookings || []);
+        
+//       } catch (error) {
+//         toast.error("Error in fetch data");
+//         console.error(error);
+// >>>>>>> be6d73b (integrate driver files with backend)
       }
     };
-
-    fetchData();
+  
+    if (token) fetchData();
   }, [token]);
+  
 
   useEffect(() => {
     const fetchTripData = async () => {
