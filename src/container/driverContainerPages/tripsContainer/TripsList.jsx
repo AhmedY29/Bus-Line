@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { IoSearchOutline } from "react-icons/io5";
+import { Trash2  } from "lucide-react";
+import { SquarePen  } from "lucide-react";
 
 
 const TripsList = () => {
@@ -142,10 +144,7 @@ const TripsList = () => {
 
         await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
 
-// <<<<<<< HEAD
-// =======
-//         await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
-// >>>>>>> 582cf62 (update driver profile)
+
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -315,13 +314,13 @@ const TripsList = () => {
                       onClick={() => handleEditTrip(trip)}
                       className="text-blue-600 hover:underline"
                     >
-                      Edit
+                <SquarePen />
                     </button>
                     <button
                       onClick={() => handleDelete(trip._id)}
                       className="text-red-600 hover:underline"
                     >
-                      Delete
+                    <Trash2/>
                     </button>
                   </td>
                 </tr>
