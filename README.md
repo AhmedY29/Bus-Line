@@ -2,8 +2,6 @@
 
 A comprehensive bus transportation web application built with React, featuring role-based dashboards for admins, drivers, and students with real-time booking, trip management, and advanced UI/UX.
 
-![BusLine](./public/LogoPng.png)
-
 ## 📋 Table of Contents
 
 - [Features](#-features)
