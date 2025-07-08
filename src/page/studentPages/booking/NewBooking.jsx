@@ -219,9 +219,9 @@ const NewBooking = () => {
                     <SelectValue placeholder="Destination" />
                   </SelectTrigger>
                   <SelectContent>
-                    {destinations?.map((dest) => (
+                    {destinations.map((dest) => (
                       <SelectItem key={dest._id} value={dest._id}>
-                        {dest?.title}
+                        {dest.title}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -286,7 +286,7 @@ const NewBooking = () => {
                     <div>
                       <div className="flex items-center gap-3 mb-3">
                         <Badge variant="outline">
-                          {trip.driverId.name || "BUS-00X"}
+                          {trip.busNumber || "BUS-00X"}
                         </Badge>
                         <div className="flex items-center gap-1">
                           {renderStars(trip.driverId.rating)}

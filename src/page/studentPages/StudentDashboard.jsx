@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
 import {
   Calendar,
   Clock,
@@ -7,10 +9,10 @@ import {
   Bus,
   CreditCard,
   Users,
-  Star,
   ArrowRight,
   Bell,
 } from "lucide-react";
+
 import {
   Card,
   CardContent,
@@ -21,8 +23,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Link } from "react-router";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -177,7 +177,6 @@ const StudentDashboard = () => {
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-600 to-indigo-600 rounded-3xl p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
-
         <div className="relative z-10">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-6 lg:mb-0">
@@ -188,30 +187,25 @@ const StudentDashboard = () => {
                 </span>
               </div>
               <h1 className="text-3xl lg:text-4xl font-bold mb-3">
-                {/* Welcome back {user.name}! */}
-                Welcome back, {user.name}!
+                Welcome back, {user?.name || "Student"}!
               </h1>
               <p className="text-blue-100 text-lg max-w-md">
                 Ready for your next journey? Let's get you moving with our
                 premium bus service.
               </p>
             </div>
-
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/student/new-booking">
                 <Button className="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-                  <Plus className="w-5 h-5 mr-2" />
-                  New Booking
+                  <Plus className="w-5 h-5 mr-2" /> New Booking
                 </Button>
               </Link>
               <Link to="/student/tracking">
                 <Button
                   variant="outline"
                   className="border-white text-blue-600 px-8 py-4 rounded-2xl backdrop-blur-sm"
-                  // className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-2xl backdrop-blur-sm"
                 >
-                  <Bus className="w-5 h-5 mr-2" />
-                  Track Bus
+                  <Bus className="w-5 h-5 mr-2" /> Track Bus
                 </Button>
               </Link>
             </div>
@@ -227,10 +221,6 @@ const StudentDashboard = () => {
               <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Bus className="w-7 h-7 text-white" />
               </div>
-              <Badge className="bg-blue-100 text-blue-700 border-blue-200">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +12%
-              </Badge>
             </div>
             <div>
               <p className="text-sm font-medium text-gray-600 mb-1">
@@ -239,22 +229,15 @@ const StudentDashboard = () => {
               <p className="text-3xl font-bold text-gray-900">
                 {stats.totalTrips}
               </p>
-              <p className="text-sm text-green-600 font-medium">
-                from last month
-              </p>
             </div>
           </CardContent>
         </Card>
-
         <Card className="bus-card border-0 hover:shadow-xl transition-all duration-300 group">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <CreditCard className="w-7 h-7 text-white" />
               </div>
-              <Badge className="bg-orange-100 text-orange-700 border-orange-200">
-                Monthly subscription
-              </Badge>
             </div>
             <div>
               <p className="text-sm font-medium text-gray-600 mb-1">
@@ -263,26 +246,15 @@ const StudentDashboard = () => {
               <p className="text-3xl font-bold text-gray-900">
                 {stats.monthlySpending} SAR
               </p>
-              <div className="mt-3">
-                <Progress value={75} className="h-2 bg-orange-100" />
-                <p className="text-xs text-gray-500 mt-1">
-                  {/* 75% of monthly budget */}
-                </p>
-              </div>
             </div>
           </CardContent>
         </Card>
-
         <Card className="bus-card border-0 hover:shadow-xl transition-all duration-300 group">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Calendar className="w-7 h-7 text-white" />
               </div>
-              <Badge className="bg-green-100 text-green-700 border-green-200">
-                <Clock className="w-3 h-3 mr-1" />
-                Soon
-              </Badge>
             </div>
             <div>
               <p className="text-sm font-medium text-gray-600 mb-1">
@@ -290,9 +262,6 @@ const StudentDashboard = () => {
               </p>
               <p className="text-3xl font-bold text-gray-900">
                 {stats.upcomingBookings}
-              </p>
-              <p className="text-sm text-blue-600 font-medium">
-                Next: Tomorrow 7:30 AM
               </p>
             </div>
           </CardContent>
@@ -414,7 +383,6 @@ const StudentDashboard = () => {
           </Card>
         </div>
       </div>
-
       {/* Enhanced Quick Actions */}
       <Card className="bus-card border-0">
         <CardHeader className="pb-6">

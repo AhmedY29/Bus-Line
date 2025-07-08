@@ -244,12 +244,9 @@ const StudentNotifications = () => {
   );
   return (
     <div className="space-y-6 p-2">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Notifications
-          </h1>
+          <h1 className="text-3xl font-bold">Notifications</h1>
           <p className="text-gray-600">
             Stay updated with your trips and bookings
           </p>
@@ -261,48 +258,8 @@ const StudentNotifications = () => {
         )}
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bus-card border-0">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Unread</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {unreadCount}
-                </p>
-              </div>
-              <Bell className="w-8 h-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bus-card border-0">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Today</p>
-                <p className="text-2xl font-bold text-green-600">3</p>
-              </div>
-              <Clock className="w-8 h-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bus-card border-0">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">This Week</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  {notifications.length}
-                </p>
-              </div>
-              <Bell className="w-8 h-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {error && <p className="text-center text-red-500">{error}</p>}
 
-      {/* Notifications Tabs */}
       <Tabs defaultValue="all" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">All ({notifications.length})</TabsTrigger>
@@ -316,71 +273,19 @@ const StudentNotifications = () => {
             Reminders ({reminderNotifications.length})
           </TabsTrigger>
         </TabsList>
-
         <TabsContent value="all" className="space-y-3">
-          {notifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              notification={notification}
-              onMarkAsRead={markAsRead}
-              onDelete={deleteNotification}
-              getTypeColor={getTypeColor}
-              getTypeLabel={getTypeLabel}
-            />
-          ))}
+          {renderTabContent(notifications)}
         </TabsContent>
-
         <TabsContent value="trips" className="space-y-3">
-          {tripNotifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              notification={notification}
-              onMarkAsRead={markAsRead}
-              onDelete={deleteNotification}
-              getTypeColor={getTypeColor}
-              getTypeLabel={getTypeLabel}
-            />
-          ))}
+          {renderTabContent(tripNotifications)}
         </TabsContent>
-
         <TabsContent value="payments" className="space-y-3">
-          {paymentNotifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              notification={notification}
-              onMarkAsRead={markAsRead}
-              onDelete={deleteNotification}
-              getTypeColor={getTypeColor}
-              getTypeLabel={getTypeLabel}
-            />
-          ))}
+          {renderTabContent(paymentNotifications)}
         </TabsContent>
-
         <TabsContent value="reminders" className="space-y-3">
-          {reminderNotifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              notification={notification}
-              onMarkAsRead={markAsRead}
-              onDelete={deleteNotification}
-              getTypeColor={getTypeColor}
-              getTypeLabel={getTypeLabel}
-            />
-          ))}
+          {renderTabContent(reminderNotifications)}
         </TabsContent>
       </Tabs>
-
-      {notifications.length === 0 && (
-        <div className="text-center py-12">
-          <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            No notifications
-          </h3>
-          <p className="text-gray-600">
-            You're all caught up! Check back later for updates.
-          </p>
-        </div>
-      )}
     </div>
   );
 };
