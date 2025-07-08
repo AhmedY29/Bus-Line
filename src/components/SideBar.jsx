@@ -26,11 +26,6 @@ function SideBar() {
     { icon: HiMap, label: "Trips" },
   ];
 
-  const adminBottomItems = [
-    { icon: HiOutlineChatAlt2, label: "Messages" },
-    { icon: HiCog, label: "Settings" },
-  ];
-
   return (
     <div className="flex flex-col w-full md:w-60 lg:w-60 bg-white text-neutral-900 border-r border-gray-200">
       <div className="flex items-center h-[10vh] px-4 ">
@@ -83,21 +78,6 @@ function SideBar() {
 
         {/* Bottom Items */}
         <ul className="flex flex-col gap-2 px-3 py-4">
-          {adminBottomItems.map((item, index) => {
-            const IconComponent = item.icon;
-
-            return (
-              <li key={index}>
-                <Link
-                  to={`/admin/${item.label.toLowerCase()}`}
-                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors  gap-2 pr-6 ${"text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`}
-                >
-                  <IconComponent className="text-xl" />
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
           <li
             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 pr-6 cursor-pointer"
             onClick={() => {
