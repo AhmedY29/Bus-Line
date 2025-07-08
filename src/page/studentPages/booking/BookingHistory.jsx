@@ -145,7 +145,6 @@ const BookingHistory = () => {
         search: filters.search,
         status: filters.status === 'all' ? '' : filters.status,
       };
-      // Assuming `studentGetBookingHistory` works to filter bookings by status and search
       studentGetBookingHistory(apiFilters)
         .then(response => setBookings(response.data))
         .catch(err => {

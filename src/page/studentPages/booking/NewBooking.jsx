@@ -90,20 +90,20 @@ const NewBooking = () => {
 
   // --- Event Handlers ---
 
-  // Dummy handleSearch to prevent error (filtering is client-side, so this just prevents reload)
+  // handleSearch to prevent error (filtering is client-side, so this just prevents reload)
   const handleSearch = (e) => {
     if (e) e.preventDefault();
     setError("");
     // No API call, just update UI
   };
 
-  // ✅ Step 1: User selects a trip, moving them to the payment/review screen.
+  // Step 1: User selects a trip, moving them to the payment/review screen.
   const handleSelectTrip = (trip) => {
     setSelectedTrip(trip);
     setCurrentStep("payment");
   };
 
-  // ✅ Step 2: User confirms payment, triggering backend calls.
+  // Step 2: User confirms payment, triggering backend calls.
   const handlePayment = async () => {
     if (!paymentMethod || !selectedTrip) {
       setError("Please select a payment method.");
