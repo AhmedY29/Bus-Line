@@ -1,12 +1,29 @@
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Camera, Edit, Mail, Phone, MapPin, Calendar, User, Save } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import toast, { Toaster } from "react-hot-toast";
+import {
+  Camera,
+  Edit,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  User,
+  Save,
+  Loader2,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
 
 const StudentProfile = () => {
   const [studentData, setStudentData] = useState({
@@ -14,16 +31,125 @@ const StudentProfile = () => {
     email: "",
     phone: "",
     address: "",
+    coordinate: "",
     totalTrips: 0,
     activeBookings: 0,
     joinDate: "",
     status: "Active",
   });
-
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    setLoadingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const coordinateString = `${latitude.toFixed(6)}, ${longitude.toFixed(
+          6
+        )}`;
+        setStudentData((prev) => ({
+          ...prev,
+          coordinate: coordinateString,
+        }));
+        toast.success("Location updated successfully!");
+        setLoadingLocation(false);
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        toast.error("Failed to get current location. Please enter manually.");
+        setLoadingLocation(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  };
+
+  const parseCoordinate = (coordinateStr) => {
+    if (!coordinateStr) return { lat: 0, lng: 0 };
+
+    // Handle Google Maps link format
+    const googleMapsMatch = coordinateStr.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (googleMapsMatch) {
+      return {
+        lat: parseFloat(googleMapsMatch[1]),
+        lng: parseFloat(googleMapsMatch[2]),
+      };
+    }
+
+    // Handle comma-separated coordinates
+    const coords = coordinateStr.split(",").map((coord) => coord.trim());
+    if (coords.length === 2) {
+      const lat = parseFloat(coords[0]);
+      const lng = parseFloat(coords[1]);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        return { lat, lng };
+      }
+    }
+
+    return { lat: 0, lng: 0 };
+  };
+
+  const fetchStudentTrips = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Authentication token not found. Please log in again.");
+        return;
+      }
+
+      const response = await axios.get(
+        "https://bus-line-backend.onrender.com/api/bookings/booking-student",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      console.log("Fetched Trips Data:", data.bookings);
+
+      // Update student data with trip counts
+      setStudentData((prev) => ({
+        ...prev,
+        totalTrips: data.bookings?.length || 0,
+        activeBookings:
+          data.bookings?.filter((booking) => booking.status === "confirmed")
+            .length || 0,
+      }));
+      console.log("Updated Student Data:", {
+        totalTrips: data.bookings?.length || 0,
+        activeBookings:
+          data.bookings?.filter((booking) => booking.status === "confirmed")
+            .length || 0,
+      });
+
+      if (response.status === 200) {
+        // Process the trip data as needed
+      } else {
+        toast.error(data.message || "Failed to fetch trips");
+      }
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+      toast.error("Network error. Please try again.");
+    }
+  };
+  useEffect(() => {
+    fetchStudentTrips();
+  }, []);
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
@@ -31,8 +157,10 @@ const StudentProfile = () => {
         setStudentData({
           name: parsedUser.name || "",
           email: parsedUser.email || "",
-          phone: parsedUser.phone || "+966",
           address: parsedUser.address?.addressName || "",
+          coordinate: parsedUser.address?.coordinate
+            ? `${parsedUser.address.coordinate.lat}, ${parsedUser.address.coordinate.lng}`
+            : "",
           totalTrips: parsedUser.totalTrips || 0,
           activeBookings: parsedUser.activeBookings || 0,
           joinDate: new Date(parsedUser.createdAt).toLocaleDateString("en-US", {
@@ -47,38 +175,124 @@ const StudentProfile = () => {
     }
   }, []);
 
-  const handleSave = () => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        const updatedUser = {
-          ...parsedUser,
-          name: studentData.name,
-          email: studentData.email,
-          phone: studentData.phone,
-          address: {
-            ...parsedUser.address,
-            addressName: studentData.address,
-          },
-        };
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-        setEditMode(false);
+  const handleSave = async () => {
+    // Validate required fields
+    if (!studentData.name.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+    if (!studentData.email.trim()) {
+      toast.error("Email is required");
+      return;
+    }
 
-        Swal.fire({
-          icon: "success",
-          title: "تم الحفظ",
-          text: "تم تحديث بياناتك بنجاح!",
-          confirmButtonColor: "#2563eb",
-        });
-      } catch (error) {
-        console.error("Error updating profile", error);
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(studentData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    // Validate coordinates if provided
+    if (studentData.coordinate.trim()) {
+      const coordinateObj = parseCoordinate(studentData.coordinate);
+      if (
+        coordinateObj.lat === 0 &&
+        coordinateObj.lng === 0 &&
+        studentData.coordinate.trim() !== "0, 0"
+      ) {
+        toast.error(
+          "Please enter valid coordinates or paste a Google Maps link"
+        );
+        return;
       }
+    }
+
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Authentication token not found. Please log in again.");
+        setLoading(false);
+        return;
+      }
+
+      const coordinateObj = parseCoordinate(studentData.coordinate);
+
+      const updatedData = {
+        name: studentData.name,
+        email: studentData.email,
+        address: {
+          addressName: studentData.address,
+          coordinate: coordinateObj,
+        },
+      };
+
+      const response = await axios.patch(
+        "https://bus-line-backend.onrender.com/api/auth/edit-user",
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data;
+
+      if (response.status === 200) {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          const updatedUser = {
+            ...parsedUser,
+            ...data.user,
+          };
+          localStorage.setItem("user", JSON.stringify(updatedUser));
+        }
+
+        setEditMode(false);
+        toast.success("Profile updated successfully!");
+      } else {
+        toast.error(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="p-4 space-y-6">
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "bg-white",
+            color: "text-neutral-900",
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
       {/* Profile Header */}
       <Card className="bus-card border-0">
         <CardContent className="p-6">
@@ -100,7 +314,9 @@ const StudentProfile = () => {
 
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-2">
-                <h1 className="text-2xl font-bold text-gray-900">{studentData.name}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {studentData.name}
+                </h1>
                 <Badge className="bg-green-100 text-green-700 w-fit mx-auto md:mx-0">
                   {studentData.status}
                 </Badge>
@@ -113,17 +329,25 @@ const StudentProfile = () => {
                   <span>Joined {studentData.joinDate}</span>
                 </div>
                 <div className="flex items-center justify-center md:justify-start space-x-2">
-                  <span className="font-semibold">{studentData.totalTrips}</span>
+                  <span className="font-semibold">
+                    {studentData.totalTrips}
+                  </span>
                   <span>Total Trips</span>
                 </div>
                 <div className="flex items-center justify-center md:justify-start space-x-2">
-                  <span className="font-semibold">{studentData.activeBookings}</span>
+                  <span className="font-semibold">
+                    {studentData.activeBookings}
+                  </span>
                   <span>Active Bookings</span>
                 </div>
               </div>
             </div>
 
-            <Button onClick={() => setEditMode(true)} className="gradient-button">
+            <Button
+              onClick={() => setEditMode(true)}
+              className="gradient-button"
+              disabled={loading}
+            >
               <Edit className="h-4 w-4 mr-2" />
               Edit Profile
             </Button>
@@ -138,117 +362,125 @@ const StudentProfile = () => {
             <User className="h-5 w-5 mr-2 text-blue-600" />
             Personal Information
           </CardTitle>
-          <CardDescription>View or edit your personal information</CardDescription>
+          <CardDescription>
+            View or edit your personal information
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-gray-600">Full Name</label>
+            <label className="text-sm font-medium text-gray-600">
+              Full Name <span className="text-red-500">*</span>
+            </label>
             <Input
               disabled={!editMode}
               value={studentData.name}
-              onChange={(e) => setStudentData({ ...studentData, name: e.target.value })}
+              onChange={(e) =>
+                setStudentData({ ...studentData, name: e.target.value })
+              }
+              className={
+                !studentData.name.trim() && editMode ? "border-red-300" : ""
+              }
             />
           </div>
           <Separator />
           <div>
-            <label className="text-sm font-medium text-gray-600">Email</label>
+            <label className="text-sm font-medium text-gray-600">
+              Email <span className="text-red-500">*</span>
+            </label>
             <Input
               type="email"
               disabled={!editMode}
               value={studentData.email}
-              onChange={(e) => setStudentData({ ...studentData, email: e.target.value })}
+              onChange={(e) =>
+                setStudentData({ ...studentData, email: e.target.value })
+              }
+              className={
+                !studentData.email.trim() && editMode ? "border-red-300" : ""
+              }
             />
           </div>
-          <Separator />
-          <div>
-            <label className="text-sm font-medium text-gray-600">Phone</label>
-            <Input
-              type="tel"
-              disabled={!editMode}
-              value={studentData.phone}
-              onChange={(e) => setStudentData({ ...studentData, phone: e.target.value })}
-            />
-          </div>
-          <Separator />
+
           <div>
             <label className="text-sm font-medium text-gray-600">Address</label>
             <Input
               disabled={!editMode}
               value={studentData.address}
-              onChange={(e) => setStudentData({ ...studentData, address: e.target.value })}
+              onChange={(e) =>
+                setStudentData({ ...studentData, address: e.target.value })
+              }
             />
+          </div>
+          <Separator />
+          <div>
+            <label className="text-sm font-medium text-gray-600">
+              Coordinate (Latitude, Longitude)
+            </label>
+            <div className="flex gap-2 mt-1">
+              <Input
+                disabled={!editMode}
+                value={studentData.coordinate}
+                onChange={(e) =>
+                  setStudentData({ ...studentData, coordinate: e.target.value })
+                }
+                placeholder="Enter coordinates (e.g., 31.9539, 35.9106) or paste Google Maps link"
+              />
+              {editMode && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={getCurrentLocation}
+                  disabled={loadingLocation}
+                  className="whitespace-nowrap"
+                >
+                  {loadingLocation ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <MapPin className="h-4 w-4 mr-2" />
+                  )}
+                  {loadingLocation ? "Getting..." : "Current Location"}
+                </Button>
+              )}
+              {!editMode && studentData.coordinate && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    window.open(
+                      `https://maps.google.com/?q=${studentData.coordinate}`,
+                      "_blank"
+                    )
+                  }
+                  className="whitespace-nowrap"
+                >
+                  <MapPin className="h-4 w-4 mr-2" />
+                  View on Map
+                </Button>
+              )}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              You can paste a Google Maps link or enter coordinates manually
+            </p>
           </div>
 
           {editMode && (
-            <div className="flex justify-end">
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setEditMode(false)}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4 mr-2" />
+                )}
+                {loading ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           )}
-        </CardContent>
-      </Card>
-
-      {/* Account Stats */}
-      <Card className="bus-card border-0">
-        <CardHeader>
-          <CardTitle>Account Statistics</CardTitle>
-          <CardDescription>Your activity summary</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <p className="text-2xl font-bold text-blue-600">{studentData.totalTrips}</p>
-              <p className="text-sm text-gray-600">Total Trips</p>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <p className="text-2xl font-bold text-green-600">{studentData.activeBookings}</p>
-              <p className="text-sm text-gray-600">Active Bookings</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">This Month</span>
-              <span className="font-semibold">12 trips</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Favorite Route</span>
-              <span className="font-semibold">Yarmok → Downtown</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Average Rating</span>
-              <div className="flex items-center space-x-1">
-                <span className="font-semibold">4.8</span>
-                <span className="text-yellow-500">★</span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Quick Actions */}
-      <Card className="bus-card border-0">
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Manage your account and preferences</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="h-12">
-              <Edit className="h-5 w-5 mr-2" />
-              Edit Personal Info
-            </Button>
-            <Button variant="outline" className="h-12">
-              <Phone className="h-5 w-5 mr-2" />
-              Change Phone
-            </Button>
-            <Button variant="outline" className="h-12">
-              <MapPin className="h-5 w-5 mr-2" />
-              Update Address
-            </Button>
-          </div>
         </CardContent>
       </Card>
     </div>
