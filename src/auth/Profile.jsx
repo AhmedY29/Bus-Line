@@ -51,7 +51,7 @@ const DriverProfile = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch("https://bus-line-backend.onrender.com/api/auth/edit-user", {
-        method: "PUT", // أو PATCH حسب ما يدعمه السيرفر
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -68,17 +68,43 @@ const DriverProfile = () => {
 
       Swal.fire({
         icon: "success",
-        title: "تم تحديث البيانات بنجاح",
+        title: "Profile updated successfully",
         showConfirmButton: false,
         timer: 2000,
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "فشل التحديث",
-        text: error.message || "حدث خطأ ما",
+        title: " Failed update",
+        text: error.message || "Error",
       });
     }
+  };
+
+  const handleCancelEdit = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "All unsaved changes will be discarded.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, cancel",
+      cancelButtonText: "Keep Editing",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          const parsed = JSON.parse(storedUser);
+          setUser(parsed);
+        }
+        setIsEditing(false);
+        Swal.fire({
+          icon: "info",
+          title: "Canceled Success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
 
   if (!user) return <div className="p-6 text-center text-gray-500">Loading...</div>;
@@ -302,9 +328,12 @@ const DriverProfile = () => {
       </div>
 
       {isEditing && (
-        <div className="text-center">
-          <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white mt-4">
+        <div className="text-center flex justify-center gap-4 mt-4">
+          <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white">
             Submit Changes
+          </Button>
+          <Button variant="outline" onClick={handleCancelEdit}>
+            Cancel
           </Button>
         </div>
       )}
