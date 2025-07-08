@@ -190,43 +190,6 @@ const StudentProfile = () => {
         </CardContent>
       </Card>
 
-      {/* Account Stats */}
-      <Card className="bus-card border-0">
-        <CardHeader>
-          <CardTitle>Account Statistics</CardTitle>
-          <CardDescription>Your activity summary</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <p className="text-2xl font-bold text-blue-600">{studentData.totalTrips}</p>
-              <p className="text-sm text-gray-600">Total Trips</p>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <p className="text-2xl font-bold text-green-600">{studentData.activeBookings}</p>
-              <p className="text-sm text-gray-600">Active Bookings</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">This Month</span>
-              <span className="font-semibold">12 trips</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Favorite Route</span>
-              <span className="font-semibold">Yarmok → Downtown</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Average Rating</span>
-              <div className="flex items-center space-x-1">
-                <span className="font-semibold">4.8</span>
-                <span className="text-yellow-500">★</span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Quick Actions */}
       <Card className="bus-card border-0">
