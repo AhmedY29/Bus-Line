@@ -20,12 +20,13 @@ const PassengerList = () => {
         }
       );
 
-      const data = Array.isArray(response.data.bookings)
-        ? response.data.bookings
-        : response.data.data || [];
+      console.log("API Response:", response.data);
 
-      const accepted = data.filter(p => p.status === 'accepted');
-      setPassengers(accepted);
+      const data = Array.isArray(response.data.passengers)
+        ? response.data.passengers
+        : [];
+
+      setPassengers(data);
     } catch (error) {
       console.error('Error fetching passengers:', error);
     }
@@ -35,20 +36,8 @@ const PassengerList = () => {
     fetchPassengers();
   }, []);
 
-  const parseTimeToDate = (timeStr) => {
-    if (!timeStr) return new Date(0);
-    const [hours, minutes] = timeStr.split(':');
-    const date = new Date();
-    date.setHours(+hours);
-    date.setMinutes(+minutes);
-    return date;
-  };
-
   const filteredPassengers = passengers
-    .filter(p => p.userId?.name?.toLowerCase().includes(searchQuery.toLowerCase()))
-    .sort((a, b) =>
-      parseTimeToDate(b.tripId?.departureTime) - parseTimeToDate(a.tripId?.departureTime)
-    );
+    .filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const totalPages = Math.ceil(filteredPassengers.length / itemsPerPage);
   const currentPassengers = filteredPassengers.slice(
@@ -60,7 +49,7 @@ const PassengerList = () => {
     <div className="bg-white shadow-md m-6 rounded-lg p-4 md:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-2xl font-bold">Accepted Passengers</h1>
+        <h1 className="text-2xl font-bold">Passengers</h1>
         <form className="w-full max-w-sm" onSubmit={(e) => e.preventDefault()}>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -85,25 +74,17 @@ const PassengerList = () => {
             <tr className="text-gray-500 bg-gray-100">
               <th className="px-4 py-2 text-left">Name</th>
               <th className="px-4 py-2 text-left">Location</th>
-              <th className="px-4 py-2 text-left">Departure Time</th>
               <th className="px-4 py-2 text-left">Email</th>
-              <th className="px-4 py-2 text-left">Destination</th>
               <th className="px-4 py-2 text-left">Status</th>
             </tr>
           </thead>
           <tbody>
             {currentPassengers.map((p, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="border-t px-4 py-2">{p.userId?.name || 'N/A'}</td>
-                <td className="border-t px-4 py-2">{p.userId?.address?.addressName || 'N/A'}</td>
-                <td className="border-t px-4 py-2">{p.tripId?.departureTime || 'N/A'}</td>
-                <td className="border-t px-4 py-2">{p.userId?.email || 'N/A'}</td>
-                <td className="border-t px-4 py-2">{p.tripId?.destinationId?.title || 'N/A'}</td>
-                <td className="border-t px-4 py-2">
-                  <span className="inline-block px-2 py-1 rounded text-xs bg-green-200 text-green-700">
-                    Accepted
-                  </span>
-                </td>
+                <td className="border-t px-4 py-2">{p.name || 'N/A'}</td>
+                <td className="border-t px-4 py-2">{p.address?.addressName || 'N/A'}</td>
+                <td className="border-t px-4 py-2">{p.email || 'N/A'}</td>
+                <td className='border-t px-4 py-2 text-green-600'> Active </td>
               </tr>
             ))}
           </tbody>
@@ -115,15 +96,11 @@ const PassengerList = () => {
         {currentPassengers.map((p, index) => (
           <div key={index} className="border border-gray-200 rounded p-4">
             <div className="flex justify-between">
-              <strong>{p.userId?.name || 'N/A'}</strong>
-              <span className="inline-block px-2 py-1 rounded text-xs bg-green-200 text-green-700">
-                Accepted
-              </span>
+              <strong>{p.name || 'N/A'}</strong>
+              <span className="text-xs text-green-600"> Active</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">📍 {p.userId?.address?.addressName || 'N/A'}</p>
-            <p className="text-sm text-gray-600">🕒 {p.tripId?.departureTime || 'N/A'}</p>
-            <p className="text-sm text-gray-600">✉️ {p.userId?.email || 'N/A'}</p>
-            <p className="text-sm text-gray-600">🎯 {p.tripId?.destinationId?.title || 'N/A'}</p>
+            <p className="text-sm text-gray-600 mt-1">📍 {p.address?.addressName || 'N/A'}</p>
+            <p className="text-sm text-gray-600">✉️ {p.email || 'N/A'}</p>
           </div>
         ))}
       </div>
@@ -131,11 +108,11 @@ const PassengerList = () => {
       {/* Pagination */}
       <div className="flex flex-wrap justify-between items-center mt-4 gap-4">
         <p className="text-sm text-gray-500">
-          Showing {currentPassengers.length} of {filteredPassengers.length} accepted students
+          Showing {currentPassengers.length} of {filteredPassengers.length} passengers
         </p>
         <nav className="flex space-x-2">
           <button
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
             className="px-3 py-1 rounded bg-gray-200 text-gray-700"
           >
@@ -153,7 +130,7 @@ const PassengerList = () => {
             </button>
           ))}
           <button
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 rounded bg-gray-200 text-gray-700"
           >
