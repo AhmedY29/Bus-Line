@@ -91,9 +91,9 @@ const LiveTracking = () => {
                 <Navigation className="w-6 h-6 mr-2 text-blue-600" />
                 Live Location
               </CardTitle>
-              <CardDescription>
+              {/* <CardDescription>
                 Bus {activeTrip.busNumber} to {activeTrip.destination}
-              </CardDescription>
+              </CardDescription> */}
             </div>
             <Badge className="status-badge status-active animate-pulse">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
