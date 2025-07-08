@@ -50,9 +50,9 @@
 
 ### الواجهة الأمامية
 
-- **.React 19** - React حديث مع أحدث الميزات
-- ** Vite** - أداة بناء سريعة البرق
-- **ءTailwind CSS** - إطار عمل CSS يركز على الأدوات
+- **React 19** - React حديث مع أحدث الميزات
+- **Vite** - أداة بناء سريعة البرق
+- **Tailwind CSS** - إطار عمل CSS يركز على الأدوات
 - **Framer Motion** - رسوم متحركة وانتقالات متقدمة
 - **React Router** - توجيه من جانب العميل
 - **React Hot Toast** - نظام إشعارات حديث
@@ -243,7 +243,6 @@ password: "student123";
 - **الجوال أولاً**: محسن للأجهزة المحمولة
 - **دعم الأجهزة اللوحية**: تكيفات الشاشة المتوسطة
 - **سطح المكتب**: تجربة سطح مكتب كاملة الميزات
-- **إمكانية الوصول**: مكونات متوافقة مع WCAG
 
 </div>
 
@@ -297,10 +296,12 @@ password: "student123";
 
 <div dir="rtl">
 
-- **أحمد الصالح**
-- **ذكرى الجغثمي**
-- **سليمان الفوزان**
-- **سحر فارس**
+| الاسم | LinkedIn | GitHub |
+|-------|----------|--------|
+| **أحمد الصالح** | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmed-y-alsaleh/) | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/AhmedY29) |
+| **ذكرى الجغثمي** | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/thekra-aljagthmi/) | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/ItsThekra) |
+| **سليمان الفوزان** | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sulaiman-alfawzan/) | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/Sulaiman-F) |
+| **سحر فارس** | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sahar-mansour-/) | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/SaharFaris1) |
 
 </div>
 
