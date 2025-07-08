@@ -6,7 +6,7 @@ A comprehensive bus transportation web application built with React, featuring r
 
 ## 📋 Table of Contents
 
-- [Features](#features)
+- [Features](#Features)
 - [Tech Stack](#tech-stack)
 - [Usage](#usage)
 - [Authentication](#authentication)
