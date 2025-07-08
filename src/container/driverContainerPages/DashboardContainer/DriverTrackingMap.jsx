@@ -175,7 +175,6 @@ const DriverTrackingMap = ({ tripId, token, trackingStarted }) => {
         passengerMarkersRef.current.push(marker);
       });
     });
-
     // إرسال الموقع الحالي
     if ("geolocation" in navigator) {
       watchIdRef.current = navigator.geolocation.watchPosition(
