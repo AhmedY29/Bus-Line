@@ -22,17 +22,53 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const StudentDashboard = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [trips, setTrips] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  ("");
 
+  useEffect(() => {
+    const fetchTripsData = async () => {
+      try {
+        const res = await axios.get(
+          `https://bus-line-backend.onrender.com/api/bookings/booking-student`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setTrips(res.data.bookings);
+        console.log(res.data.bookings, "ddd");
+      } catch (error) {
+        toast.error("Error in Getting Trips ");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTripsData();
+  }, []);
   // Mock data for dashboard
   const stats = {
-    totalTrips: 24,
+    totalTrips: trips.length,
     monthlySpending: 180,
-    upcomingBookings: 2,
+    upcomingBookings: trips.filter((trip) => trip.status != "pending").length,
     savedRoutes: 5,
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   const upcomingTrips = [
@@ -81,6 +117,59 @@ const StudentDashboard = () => {
       status: "completed",
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        {/* Welcome Section Skeleton */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-600 to-indigo-600 rounded-3xl p-8 text-white">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+          <div className="relative z-10">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="mb-6 lg:mb-0">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <Skeleton className="w-24 h-4 rounded" />
+                </div>
+                <Skeleton className="h-10 w-64 mb-3 rounded" />
+                <Skeleton className="h-6 w-80" />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Skeleton className="h-14 w-40 rounded-2xl" />
+                <Skeleton className="h-14 w-40 rounded-2xl" />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Stats Grid Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-40 w-full rounded-2xl" />
+          ))}
+        </div>
+        {/* Main Content Grid Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <Skeleton className="h-96 w-full rounded-2xl" />
+          </div>
+          <div>
+            <Skeleton className="h-96 w-full rounded-2xl" />
+          </div>
+        </div>
+        {/* Quick Actions Skeleton */}
+        <Skeleton className="h-40 w-full rounded-2xl" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-red-50 text-red-600 rounded-lg p-4">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -212,187 +301,115 @@ const StudentDashboard = () => {
 
       {/* Enhanced Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Enhanced Upcoming Trips */}
-<div className="lg:col-span-2">
-  <Card className="bus-card border-0">
-    <CardHeader className="pb-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <CardTitle className="text-2xl font-bold flex items-center">
-            <Calendar className="w-6 h-6 mr-2 text-blue-600" />
-            Upcoming Trips
-          </CardTitle>
-          <CardDescription className="mt-1">
-            Your scheduled bookings for the next few days
-          </CardDescription>
-        </div>
-        <Badge className="bg-blue-100 text-blue-700 px-3 py-1">
-          {upcomingTrips.length} trips
-        </Badge>
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-4">
-        {upcomingTrips.map((trip) => (
-          <div
-            key={trip.id}
-            className="booking-card group transition-all duration-300 p-2"
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
-                      <Bus className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 text-lg">
-                        {trip.destination}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        Driver: {trip.driver}
-                      </p>
-
-                      {/* Badge with dynamic color based on status */}
-                      <Badge
-                        className={`${
-                          trip.status === "confirmed"
-                            ? "bg-green-500 text-white"
-                            : "bg-orange-500 text-white"
-                        } px-3 py-1 rounded-full`}
-                      >
-                        {trip.status === "confirmed" ? "Confirmed" : "Pending"}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                  <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
-                    <Calendar className="w-4 h-4 text-gray-500" />
-                    <span className="font-medium">{trip.date}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
-                    <Clock className="w-4 h-4 text-gray-500" />
-                    <span className="font-medium">{trip.time}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
-                    <Bus className="w-4 h-4 text-gray-500" />
-                    <span className="font-medium">
-                      {trip.busNumber}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-gray-900">
-                    {trip.price} SAR
-                  </p>
-                </div>
-                <div className="flex space-x-2 mt-12 mx-7">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="hover:bg-blue-50 hover:border-blue-200"
-                  >
-                    View Details
-                  </Button>
-                  <Button
-                    size="sm"
-                    className={`${
-                      trip.status === "confirmed"
-                        ? "bg-blue-500 text-white hover:bg-blue-600"
-                        : "bg-gray-400 text-white hover:bg-gray-500"
-                    } gradient-button`}
-                  >
-                    {trip.status === "confirmed" ? "Track" : "Pending"}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-8 text-center">
-        <Link to="/student/bookings">
-          <Button
-            variant="outline"
-            className="px-8 py-3 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
-          >
-            View All Bookings
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        </Link>
-      </div>
-    </CardContent>
-  </Card>
-</div>
-
-
-        {/* Enhanced Recent Activity */}
-        <div>
+        <div className="lg:col-span-2">
           <Card className="bus-card border-0">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-xl font-bold flex items-center">
-                    <Bell className="w-5 h-5 mr-2 text-green-600" />
-                    Recent Activity
+                  <CardTitle className="text-2xl font-bold flex items-center">
+                    <Calendar className="w-6 h-6 mr-2 text-blue-600" /> Upcoming
+                    Trips
                   </CardTitle>
                   <CardDescription className="mt-1">
-                    Your latest booking activities
+                    Your scheduled bookings for the next few days
                   </CardDescription>
                 </div>
+                <Badge className="bg-blue-100 text-blue-700 px-3 py-1">
+                  {trips.filter((trip) => trip.status == "confirmed").length}{" "}
+                  trips
+                </Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start space-x-4 p-3 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-                  >
+              {trips.length > 0 ? (
+                <div className="space-y-4">
+                  {trips.map((booking) => (
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                        activity.status === "success"
-                          ? "bg-gradient-to-br from-green-400 to-green-600"
-                          : activity.status === "completed"
-                          ? "bg-gradient-to-br from-blue-400 to-blue-600"
-                          : "bg-gradient-to-br from-yellow-400 to-orange-500"
-                      }`}
+                      key={booking._id}
+                      className="booking-card group transition-all duration-300 p-2 border-b"
                     >
-                      {index + 1}
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-3">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                              <Bus className="w-6 h-6 text-blue-600" />
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-gray-900 text-lg">
+                                {booking.tripId.destinationId?.title}
+                              </h3>
+                              <p className="text-sm text-gray-600">
+                                Driver: {booking.tripId.driverId.name}
+                              </p>
+                              <Badge
+                                className={`${
+                                  booking.status === "confirmed"
+                                    ? "bg-green-500 text-white"
+                                    : "bg-orange-500 text-white"
+                                } px-3 py-1 rounded-full`}
+                              >
+                                {booking.status === "confirmed"
+                                  ? "Confirmed"
+                                  : "Pending"}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                              <Calendar className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">
+                                {formatDate(booking.tripId.tripDateStart)}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                              <Clock className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">
+                                {booking.tripId.departureTime}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
+                              <Bus className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">
+                                {booking.tripId.busNumber || "BUS-007"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-4 lg:mt-0 flex items-center justify-between lg:flex-col lg:items-end space-y-2">
+                          <div>
+                            <p className="text-2xl font-bold text-gray-900">
+                              {booking.tripId.tripPrice} SAR
+                            </p>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Link to={"bookings"}>
+                              <Button
+                                className="cursor-pointer"
+                                variant="outline"
+                                size="sm"
+                              >
+                                View Details
+                              </Button>
+                            </Link>
+                            <Link to={"tracking"}>
+                              <Button
+                                size="sm"
+                                className="gradient-button cursor-pointer"
+                              >
+                                Track
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-900">
-                        {activity.action}
-                      </p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {activity.destination || activity.amount}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-2 flex items-center">
-                        <Clock className="w-3 h-3 mr-1" />
-                        {activity.time}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6">
-                <Link to="/student/notifications">
-                  <Button
-                    variant="ghost"
-                    className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 py-3"
-                  >
-                    View All Activity
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </Link>
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-10 text-gray-500">
+                  No upcoming trips. Time to book a new one!
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

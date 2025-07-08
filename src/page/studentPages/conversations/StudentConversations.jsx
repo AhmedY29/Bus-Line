@@ -23,125 +23,13 @@ import { useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const StudentConversations = () => {
-  // const [selectedConversation, setSelectedConversation] = useState(null);
-  // const [message, setMessage] = useState("");
-  // const messagesEndRef = useRef(null);
-
-  // const conversations = [
-  //   {
-  //     id: 1,
-  //     driverName: "Mohamed Ali",
-  //     lastMessage: "I'll be there in 5 minutes",
-  //     timestamp: "2 min ago",
-  //     unread: 2,
-  //     tripRoute: "Maadi → Downtown",
-  //     status: "active",
-  //     avatar: "MA",
-  //     messages: [
-  //       { id: 1, text: "Good morning! I'll be your driver today.", sender: "driver", time: "07:15 AM" },
-  //       { id: 2, text: "Good morning! Thank you.", sender: "student", time: "07:16 AM" },
-  //       { id: 3, text: "I'll be there in 5 minutes", sender: "driver", time: "08:20 AM" }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     driverName: "Ahmed Khaled",
-  //     lastMessage: "Have a safe trip!",
-  //     timestamp: "1 hour ago",
-  //     unread: 0,
-  //     tripRoute: "New Cairo → Heliopolis",
-  //     status: "completed",
-  //     avatar: "AK",
-  //     messages: [
-  //       { id: 1, text: "Trip completed successfully!", sender: "driver", time: "06:15 PM" },
-  //       { id: 2, text: "Thank you for the ride!", sender: "student", time: "06:16 PM" },
-  //       { id: 3, text: "Have a safe trip!", sender: "driver", time: "06:17 PM" }
-  //     ]
-  //   },
-  //   {
-  //     id: 3,
-  //     driverName: "Omar Hassan",
-  //     lastMessage: "Trip will be delayed by 10 minutes",
-  //     timestamp: "3 hours ago",
-  //     unread: 1,
-  //     tripRoute: "Zamalek → Maadi",
-  //     status: "upcoming",
-  //     avatar: "OH",
-  //     messages: [
-  //       { id: 1, text: "Hello! Your trip is scheduled for tomorrow.", sender: "driver", time: "02:15 PM" },
-  //       { id: 2, text: "Trip will be delayed by 10 minutes", sender: "driver", time: "02:30 PM" }
-  //     ]
-  //   },
-  //   {
-  //     id: 4,
-  //     driverName: "Mahmoud Saad",
-  //     lastMessage: "Thank you for choosing our service",
-  //     timestamp: "Yesterday",
-  //     unread: 0,
-  //     tripRoute: "6th October → Giza",
-  //     status: "completed",
-  //     avatar: "MS",
-  //     messages: [
-  //       { id: 1, text: "Thank you for choosing our service", sender: "driver", time: "Yesterday" },
-  //       { id: 2, text: "Hope you enjoyed the ride!", sender: "driver", time: "Yesterday" }
-  //     ]
-  //   }
-  // ];
-
-  // const getStatusColor = (status) => {
-  //   switch (status) {
-  //     case 'active':
-  //       return 'bg-green-100 text-green-700';
-  //     case 'upcoming':
-  //       return 'bg-blue-100 text-blue-700';
-  //     case 'completed':
-  //       return 'bg-gray-100 text-gray-700';
-  //     default:
-  //       return 'bg-gray-100 text-gray-700';
-  //   }
-  // };
-
-  // const scrollToBottom = () => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // useEffect(() => {
-  //   if (selectedConversation) {
-  //     scrollToBottom();
-  //   }
-  // }, [selectedConversation]);
-
-  // const handleSendMessage = () => {
-  //   if (message.trim() && selectedConversation) {
-  //     const newMessage = {
-  //       id: selectedConversation.messages.length + 1,
-  //       text: message,
-  //       sender: "student",
-  //       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  //     };
-
-  //     const updatedConversation = {
-  //       ...selectedConversation,
-  //       messages: [...selectedConversation.messages, newMessage]
-  //     };
-
-  //     setSelectedConversation(updatedConversation);
-  //     setMessage("");
-  //   }
-  // };
-
-  // const handleKeyPress = (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleSendMessage();
-  //   }
-  // };
-
   const [contacts, setContacts] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [receiver, setReceiver] = useState({
     name: "",
@@ -152,123 +40,7 @@ const StudentConversations = () => {
   const socket = useRef();
 
   console.log(receiver, "recever");
-  // const conversations = [
-  //   {
-  //     id: 1,
-  //     driverName: "Mohamed Ali",
-  //     lastMessage: "I'll be there in 5 minutes",
-  //     timestamp: "2 min ago",
-  //     unread: 2,
-  //     tripRoute: "Maadi → Downtown",
-  //     status: "active",
-  //     avatar: "MA",
-  //     messages: [
-  //       {
-  //         id: 1,
-  //         text: "Good morning! I'll be your driver today.",
-  //         sender: "driver",
-  //         time: "07:15 AM",
-  //       },
-  //       {
-  //         id: 2,
-  //         text: "Good morning! Thank you.",
-  //         sender: "student",
-  //         time: "07:16 AM",
-  //       },
-  //       {
-  //         id: 3,
-  //         text: "I'll be there in 5 minutes",
-  //         sender: "driver",
-  //         time: "08:20 AM",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     driverName: "Ahmed Khaled",
-  //     lastMessage: "Have a safe trip!",
-  //     timestamp: "1 hour ago",
-  //     unread: 0,
-  //     tripRoute: "New Cairo → Heliopolis",
-  //     status: "completed",
-  //     avatar: "AK",
-  //     messages: [
-  //       {
-  //         id: 1,
-  //         text: "Trip completed successfully!",
-  //         sender: "driver",
-  //         time: "06:15 PM",
-  //       },
-  //       {
-  //         id: 2,
-  //         text: "Thank you for the ride!",
-  //         sender: "student",
-  //         time: "06:16 PM",
-  //       },
-  //       {
-  //         id: 3,
-  //         text: "Have a safe trip!",
-  //         sender: "driver",
-  //         time: "06:17 PM",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     driverName: "Omar Hassan",
-  //     lastMessage: "Trip will be delayed by 10 minutes",
-  //     timestamp: "3 hours ago",
-  //     unread: 1,
-  //     tripRoute: "Zamalek → Maadi",
-  //     status: "upcoming",
-  //     avatar: "OH",
-  //     messages: [
-  //       {
-  //         id: 1,
-  //         text: "Hello! Your trip is scheduled for tomorrow.",
-  //         sender: "driver",
-  //         time: "02:15 PM",
-  //       },
-  //       {
-  //         id: 2,
-  //         text: "Trip will be delayed by 10 minutes",
-  //         sender: "driver",
-  //         time: "02:30 PM",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 4,
-  //     driverName: "Mahmoud Saad",
-  //     lastMessage: "Thank you for choosing our service",
-  //     timestamp: "Yesterday",
-  //     unread: 0,
-  //     tripRoute: "6th October → Giza",
-  //     status: "completed",
-  //     avatar: "MS",
-  //     messages: [
-  //       {
-  //         id: 1,
-  //         text: "Thank you for choosing our service",
-  //         sender: "driver",
-  //         time: "Yesterday",
-  //       },
-  //       {
-  //         id: 2,
-  //         text: "Hope you enjoyed the ride!",
-  //         sender: "driver",
-  //         time: "Yesterday",
-  //       },
-  //     ],
-  //   },
-  // ];
 
-  // const socket = io("http://localhost:3000", {
-  //   transports: ["websocket"],
-  //   Authorization: {
-  //     token: "Bearer " + localStorage.getItem("token"),
-  //   },
-  // });
   useEffect(() => {
     // جلب المستخدمين المتاحين
     const fetchContacts = async () => {
@@ -466,12 +238,12 @@ const StudentConversations = () => {
               </h1>
               <p className="text-gray-600">Chat with your drivers</p>
             </div>
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex  ">
               <Badge className="bg-blue-100 text-blue-700">
                 {conversations.reduce((total, conv) => total + conv.unread, 0)}{" "}
                 unread
               </Badge>
-            </div>
+            </div> */}
           </div>
 
           {/* Search Bar */}
@@ -480,6 +252,7 @@ const StudentConversations = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search conversations..."
                   className="pl-10"
                 />
@@ -502,6 +275,9 @@ const StudentConversations = () => {
                   ?.filter(
                     (contact, index, self) =>
                       index === self.findIndex((c) => c.id === contact.id)
+                  )
+                  ?.filter((e) =>
+                    e.name.toLowerCase().includes(search.toLowerCase())
                   )
                   ?.map((conversation, index) => (
                     <div key={conversation.id}>

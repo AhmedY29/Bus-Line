@@ -27,9 +27,67 @@ import { Button } from "@/components/ui/button";
 import { BellIcon } from "lucide-react";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function StudentLayout() {
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const socket = io("https://bus-line-backend.onrender.com", {
+      extraHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    socket.on("bus-nearby", (data) => {
+      toast.success(data.message || "🚍 الباص اقترب منك!");
+    });
+
+    socket.on("new-message", (msg) => {
+      toast(
+        `💬 رسالة جديدة من ${msg.sender?.name || "المستخدم"}: ${msg.content}`
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await axios.get(
+        "https://bus-line-backend.onrender.com/api/notifications",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setNotifications(res.data.notifications);
+    } catch (err) {
+      console.error("خطأ في جلب الإشعارات", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <SidebarProvider>
       {/* Container should take full viewport height and be flex */}
@@ -66,15 +124,26 @@ export default function StudentLayout() {
                   <Button variant="ghost" className="relative p-2">
                     <BellIcon className="h-5 w-5 text-muted-foreground" />
                     <span className="sr-only">Notifications</span>
-                    <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
+                    {notifications.some((n) => !n.isRead) && (
+                      <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-72">
                   <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>🚌 Your trip has started</DropdownMenuItem>
+                  {/* <DropdownMenuItem>🚌 Your trip has started</DropdownMenuItem>
                   <DropdownMenuItem>✅ Booking confirmed</DropdownMenuItem>
-                  <DropdownMenuItem>⚠️ Bus delay reported</DropdownMenuItem>
+                  <DropdownMenuItem>⚠️ Bus delay reported</DropdownMenuItem> */}
+                  {notifications
+                    .filter((notification) => notification.isRead == false)
+                    ?.map((notification) => (
+                      <Link key={notification._id} to={"notifications"}>
+                        <DropdownMenuItem>
+                          {notification.title}
+                        </DropdownMenuItem>
+                      </Link>
+                    ))}
                 </DropdownMenuContent>
               </DropdownMenu>
 

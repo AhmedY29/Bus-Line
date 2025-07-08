@@ -34,6 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogOut, Settings, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router";
+import { io } from "socket.io-client";
 const data = {
   user: {
     name: "shadcn",
@@ -113,6 +114,29 @@ const data = {
 
 export function AppSidebar({ ...props }) {
   const navigate = useNavigate();
+  const [socket, setSocket] = React.useState(null);
+  const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const newSocket = io("https://bus-line-backend.onrender.com", {
+      extraHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setSocket(newSocket);
+
+    newSocket.on("new-message", () => {
+      setUnreadMessagesCount((c) => c + 1);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -149,9 +173,11 @@ export function AppSidebar({ ...props }) {
               <MessageCircle className="mr-2 h-4 w-4" />
               Messages
               {/* Badge */}
-              <span className="absolute top-3 right-3 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-semibold text-white">
-                3
-              </span>
+              {unreadMessagesCount > 0 && (
+                <span className="absolute right-0 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  {unreadMessagesCount}
+                </span>
+              )}
             </Button>
           </Link>
 

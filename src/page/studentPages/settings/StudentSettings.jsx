@@ -1,6 +1,18 @@
-
-import { Bell, Shield, Moon, Globe, CreditCard, Smartphone } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Bell,
+  Shield,
+  Moon,
+  Globe,
+  CreditCard,
+  Smartphone,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
@@ -11,7 +23,9 @@ const StudentSettings = () => {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-        <p className="text-gray-600">Manage your account preferences and privacy settings</p>
+        <p className="text-gray-600">
+          Manage your account preferences and privacy settings
+        </p>
       </div>
 
       {/* Notifications Settings */}
@@ -21,13 +35,17 @@ const StudentSettings = () => {
             <Bell className="h-5 w-5 mr-2 text-blue-600" />
             Notifications
           </CardTitle>
-          <CardDescription>Control how you receive notifications</CardDescription>
+          <CardDescription>
+            Control how you receive notifications
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Push Notifications</h3>
-              <p className="text-sm text-gray-600">Receive notifications on your device</p>
+              <p className="text-sm text-gray-600">
+                Receive notifications on your device
+              </p>
             </div>
             <Switch defaultChecked />
           </div>
@@ -35,7 +53,9 @@ const StudentSettings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">SMS Notifications</h3>
-              <p className="text-sm text-gray-600">Get booking updates via SMS</p>
+              <p className="text-sm text-gray-600">
+                Get booking updates via SMS
+              </p>
             </div>
             <Switch defaultChecked />
           </div>
@@ -43,7 +63,9 @@ const StudentSettings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Email Notifications</h3>
-              <p className="text-sm text-gray-600">Receive trip confirmations by email</p>
+              <p className="text-sm text-gray-600">
+                Receive trip confirmations by email
+              </p>
             </div>
             <Switch />
           </div>
@@ -51,7 +73,9 @@ const StudentSettings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Trip Reminders</h3>
-              <p className="text-sm text-gray-600">Get reminded before your trip</p>
+              <p className="text-sm text-gray-600">
+                Get reminded before your trip
+              </p>
             </div>
             <Switch defaultChecked />
           </div>
@@ -65,13 +89,17 @@ const StudentSettings = () => {
             <Shield className="h-5 w-5 mr-2 text-blue-600" />
             Privacy & Security
           </CardTitle>
-          <CardDescription>Manage your privacy and security preferences</CardDescription>
+          <CardDescription>
+            Manage your privacy and security preferences
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Share Location</h3>
-              <p className="text-sm text-gray-600">Allow sharing your location with drivers</p>
+              <p className="text-sm text-gray-600">
+                Allow sharing your location with drivers
+              </p>
             </div>
             <Switch defaultChecked />
           </div>
@@ -79,7 +107,9 @@ const StudentSettings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Profile Visibility</h3>
-              <p className="text-sm text-gray-600">Make your profile visible to drivers</p>
+              <p className="text-sm text-gray-600">
+                Make your profile visible to drivers
+              </p>
             </div>
             <Switch defaultChecked />
           </div>
@@ -105,7 +135,9 @@ const StudentSettings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Dark Mode</h3>
-              <p className="text-sm text-gray-600">Use dark theme for better night viewing</p>
+              <p className="text-sm text-gray-600">
+                Use dark theme for better night viewing
+              </p>
             </div>
             <Switch />
           </div>
@@ -129,13 +161,17 @@ const StudentSettings = () => {
             <CreditCard className="h-5 w-5 mr-2 text-blue-600" />
             Payment Settings
           </CardTitle>
-          <CardDescription>Manage your payment methods and preferences</CardDescription>
+          <CardDescription>
+            Manage your payment methods and preferences
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Auto-Pay</h3>
-              <p className="text-sm text-gray-600">Automatically pay for bookings</p>
+              <p className="text-sm text-gray-600">
+                Automatically pay for bookings
+              </p>
             </div>
             <Switch />
           </div>
@@ -151,7 +187,9 @@ const StudentSettings = () => {
                     <p className="text-sm text-gray-600">Expires 12/26</p>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm">Edit</Button>
+                <Button variant="ghost" size="sm">
+                  Edit
+                </Button>
               </div>
               <Button variant="outline" className="w-full">
                 Add Payment Method
@@ -182,7 +220,9 @@ const StudentSettings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Auto-Update</h3>
-              <p className="text-sm text-gray-600">Automatically update the app</p>
+              <p className="text-sm text-gray-600">
+                Automatically update the app
+              </p>
             </div>
             <Switch defaultChecked />
           </div>

@@ -1,260 +1,456 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 import { IoSearchOutline } from "react-icons/io5";
 
 const TripsList = () => {
-  const [trips, setTrips] = useState([
-    {
-      destination: 'Princess Noura',
-      neighborhood: 'ANY N',
-      departureTime: '8:30 AM',
-      trip: 'King Saud U',
-      status: 'Active',
-    },
-    {
-      destination: 'King Saud U',
-      neighborhood: 'ANY N',
-      departureTime: '8:30 AM',
-      trip: 'Princess Noura',
-      status: 'Inactive',
-    },
-    {
-      destination: 'King Saud U',
-      neighborhood: 'ANY N',
-      departureTime: '8:30 AM',
-      trip: 'Princess Noura',
-      status: 'Inactive',
-    },
-  ]);
+  const API = "https://bus-line-backend.onrender.com/api";
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [trips, setTrips] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+  const [formData, setFormData] = useState({
+    neighborhood: "",
+    destinationId: "",
+    tripPrice: "",
+    arrivalTime: "",
+    departureTime: "",
+    tripDateStart: "",
+    tripDateEnd: "",
+    status: "active",
+  });
+  const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingTripId, setEditingTripId] = useState(null);
 
+  useEffect(() => {
+    fetchTrips();
+    fetchDestinations();
+  }, []);
 
-  const filteredTrips = trips.filter((trip) =>
-    trip.destination.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const fetchTrips = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${API}/trips/driver-trips`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+      const updatedTrips = response.data.trips.map((trip) => {
+        const today = new Date().toISOString().split("T")[0];
+        const startDate = trip.tripDateStart?.split("T")[0];
+        if (trip.status === "pending" && startDate <= today) {
+          return { ...trip, status: "active" };
+        }
+        return trip;
+      });
+
+      setTrips(updatedTrips);
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+    }
+  };
+
+  const fetchDestinations = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${API}/destination`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setDestinations(response.data.destinations || []);
+    } catch (error) {
+      console.error("Error fetching destinations:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setIsEditing(false);
+    setEditingTripId(null);
+    setFormData({
+      neighborhood: "",
+      destinationId: "",
+      tripPrice: "",
+      arrivalTime: "",
+      departureTime: "",
+      tripDateStart: "",
+      tripDateEnd: "",
+      status: "pending",
+    });
+  };
+
+  const handleEditTrip = (trip) => {
+    setIsEditing(true);
+    setEditingTripId(trip._id);
+    setFormData({
+      neighborhood: trip.neighborhood || "",
+      destinationId:
+        typeof trip.destinationId === "object"
+          ? trip.destinationId._id
+          : trip.destinationId,
+      tripPrice: trip.tripPrice?.toString() || "",
+      arrivalTime: trip.arrivalTime || "",
+      departureTime: trip.departureTime || "",
+      tripDateStart: trip.tripDateStart ? trip.tripDateStart.split("T")[0] : "",
+      tripDateEnd: trip.tripDateEnd ? trip.tripDateEnd.split("T")[0] : "",
+      status: trip.status || "active",
+    });
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    const driverId = user?._id;
+    if (!token || !driverId) return;
+
+    const updateData = {
+      neighborhood: formData.neighborhood,
+      destinationId: formData.destinationId,
+      tripPrice: parseFloat(formData.tripPrice),
+      arrivalTime: formData.arrivalTime,
+      departureTime: formData.departureTime,
+      tripDateStart: formData.tripDateStart
+        ? new Date(formData.tripDateStart).toISOString()
+        : undefined,
+      tripDateEnd: formData.tripDateEnd
+        ? new Date(formData.tripDateEnd).toISOString()
+        : undefined,
+      status: formData.status,
+      driverId,
+    };
+
+    try {
+      if (isEditing && editingTripId) {
+        const result = await Swal.fire({
+          title: "Are you sure you want to update this trip?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Yes, update it!",
+          cancelButtonText: "Cancel",
+        });
+        if (!result.isConfirmed) return;
+        await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
+          // <<<<<<< HEAD
+          // =======
+          //         await axios.patch(`${API}/trips/${editingTripId}`, updateData, {
+          // >>>>>>> 582cf62 (update driver profile)
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "Trip updated successfully",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } else {
+        await axios.post(`${API}/trips`, updateData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "Trip added successfully",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+
+      fetchTrips();
+      handleCloseModal();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: isEditing ? "Failed to update trip" : "Failed to add trip",
+        text:
+          error.response?.data?.message || error.message || "An error occurred",
+      });
+      console.error("Error submitting trip:", error);
+    }
+  };
+
+  const handleDelete = async (tripId) => {
+    const token = localStorage.getItem("token");
+
+    const result = await Swal.fire({
+      title: "Are you sure you want to delete this trip?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await axios.delete(`${API}/trips/${tripId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Trip deleted successfully",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      fetchTrips();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed to delete trip",
+        text:
+          error.response?.data?.message || error.message || "An error occurred",
+      });
+      console.error("Error deleting trip:", error);
+    }
+  };
+
+  const filteredTrips = trips.filter((trip) => {
+    const destination = destinations.find(
+      (d) =>
+        d._id ===
+        (typeof trip.destinationId === "object"
+          ? trip.destinationId._id
+          : trip.destinationId)
+    );
+    const destinationName = destination?.title?.toLowerCase() || "";
+    return destinationName.includes(searchQuery.toLowerCase());
+  });
 
   return (
     <div className="bg-white shadow-md m-6 rounded-lg p-4 md:p-6">
-      
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-xl font-bold">Trips</h1>
+        <h1 className="text-xl font-bold">My Trips</h1>
 
-      
-  
-        <form className="w-82">
-   
-   <div className="relative">
-     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-       <svg
-         className="w-4 h-4 text-gray-500 dark:text-gray-400"
-         aria-hidden="true"
-         xmlns="http://www.w3.org/2000/svg"
-         fill="none"
-         viewBox="0 0 20 20"
-       >
-         <path
-   
-           strokeLinecap="round"
-           strokeLinejoin="round"
-           strokeWidth="2"
-           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-         />
-       </svg>
-     </div>
-     <input
- type="search"
- id="default-search"
- value={searchQuery}
- onChange={(e) => setSearchQuery(e.target.value)}
- className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
- placeholder="Search..."
- required
-/>
-<button type="submit" className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-[#0165add8] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-               <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-               </svg>
-               <span className="sr-only">Search</span>
-           </button>
-   </div>
- </form>
-
-          {/* Add Trip Button */}
+        <div className="relative w-82">
+          <input
+            type="search"
+            id="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by comment or user ID"
+            className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+          />
           <button
-            onClick={handleOpenModal}
-            className="bg-[#0165AD] hover:bg-[#0165addf] text-white font-bold py-2 px-4 rounded whitespace-nowrap"
+            type="submit"
+            className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#0165AD] rounded-e-lg border border-[#0165AD] hover:bg-blue-800"
           >
-            Add Trip +
+            <IoSearchOutline size={20} />
+            <span className="sr-only">Search</span>
           </button>
- 
+        </div>
+
+        <button
+          onClick={() => {
+            setIsEditing(false);
+            setEditingTripId(null);
+            setShowModal(true);
+          }}
+          className="bg-[#0165AD] hover:bg-[#0165addf] text-white font-bold py-2 px-4 rounded"
+        >
+          Add Trip +
+        </button>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto sm:block">
         <table className="w-full table-auto border-collapse">
           <thead className="border-b text-gray-500 text-sm hidden sm:table-header-group">
             <tr>
-              <th className="px-4 py-3 text-left">Trip Destination</th>
+              <th className="px-4 py-3 text-left">Destination</th>
               <th className="px-4 py-3 text-left">Neighborhood</th>
-              <th className="px-4 py-3 text-left">Departure Time</th>
-              <th className="px-4 py-3 text-left">Trip</th>
+              <th className="px-4 py-3 text-left">Departure</th>
               <th className="px-4 py-3 text-left">Status</th>
+              <th className="px-4 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody className="text-sm font-medium text-gray-700">
-            {filteredTrips.map((trip, index) => (
-              <tr
-                key={index}
-                className="flex flex-col border-b-gray-500  sm:table-row hover:bg-gray-50 transition-colors"
-              >
-                <td className="px-4 py-2  sm:py-3 border-t sm:border-none">
-                  <span className="font-semibold sm:hidden mr-2">Destination:</span>
-                  {trip.destination}
-                </td>
-                <td className="px-4 py-2 sm:py-3 border-t border-gray-200 sm:border-none">
-                  <span className="font-semibold sm:hidden mr-2">Neighborhood:</span>
-                  {trip.neighborhood}
-                </td>
-                <td className="px-4 border-gray-500 py-2 sm:py-3 border-t  sm:border-none">
-                  <span className="font-semibold sm:hidden mr-2">Departure:</span>
-                  {trip.departureTime}
-                </td>
-                <td className="px-4 py-2 sm:py-3 border-t border-gray-200 sm:border-none">
-                  <span className="font-semibold sm:hidden mr-2">Trip:</span>
-                  {trip.trip}
-                </td>
-                <td className="px-4 py-2 sm:py-3 border-t border-gray-200 sm:border-none">
-                  <span className="font-semibold sm:hidden mr-2">Status:</span>
-                  <span
-                    className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
-                      trip.status === 'Active'
-                        ? 'bg-green-200 text-green-800'
-                        : 'bg-red-200 text-red-800'
-                    }`}
-                  >
-                    {trip.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {filteredTrips.map((trip) => {
+              const destinationId =
+                typeof trip.destinationId === "object"
+                  ? trip.destinationId._id
+                  : trip.destinationId;
+
+              const destination = destinations.find(
+                (d) => d._id === destinationId
+              );
+
+              return (
+                <tr
+                  key={trip._id}
+                  className="flex flex-col sm:table-row border-b"
+                >
+                  <td className="px-4 py-2">
+                    {destination?.title || "Unknown"}
+                  </td>
+                  <td className="px-4 py-2">{trip.neighborhood}</td>
+                  <td className="px-4 py-2">{trip.departureTime}</td>
+                  <td className="px-4 py-2">
+                    <span className="px-2 py-1 bg-green-200 text-green-800 rounded text-xs font-semibold">
+                      {trip.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2 flex gap-2">
+                    <button
+                      onClick={() => handleEditTrip(trip)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(trip._id)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">      
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">New Trip</h2>
-            
-            </div>
-
-            <form>
-          
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label htmlFor="neighborhood" className="block text-gray-700 font-medium mb-2">
-                    Neighborhood
-                  </label>
-                  {/* <div className="mb-6">
-      
-      <select
-        id="trip"
-        value={trip}
-        onChange={(e) => setTrip(e.target.value)}
-        className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900 appearance-none dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"  >
-        <option value="">Select Trip</option>
-        {trips.map((city, index) => (
-          <option key={index} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
-    </div> */}
-
-                  <select
-                    id="neighborhood"
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">
+              {isEditing ? "Edit Trip" : "New Trip"}
+            </h2>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <label className="flex flex-col">
+                  Neighborhood
+                  <input
+                    type="text"
                     name="neighborhood"
-                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
-                     >
+                    value={formData.neighborhood}
+                    onChange={handleInputChange}
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                    required
+                  />
+                </label>
 
-                    <option value="">Select</option>
-                    <option value="Neighborhood 1">Neighborhood 1</option>
-                    <option value="Neighborhood 2">Neighborhood 2</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="destination" className="block text-gray-700 font-medium mb-2">
-                    Destination
-                  </label>
+                <label className="flex flex-col">
+                  Destination
                   <select
-                    id="destination"
-                    name="destination"
-                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" >
+                    name="destinationId"
+                    value={formData.destinationId}
+                    onChange={handleInputChange}
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                    // className="border border-gray-300 rounded-md p-2"
 
+                    required
+                  >
                     <option value="">Select</option>
-                    <option value="Destination 1">Destination 1</option>
-                    <option value="Destination 2">Destination 2</option>
+                    {destinations.map((dest) => (
+                      <option key={dest._id} value={dest._id}>
+                        {dest.title}
+                      </option>
+                    ))}
                   </select>
-                </div>
+                </label>
               </div>
 
+              <label className="flex flex-col mb-4">
+                Trip Start Date
+                <input
+                  type="date"
+                  name="tripDateStart"
+                  value={formData.tripDateStart}
+                  onChange={handleInputChange}
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                  // className="border border-gray-300 rounded-md p-2"
+
+                  required
+                />
+              </label>
+
+              <label className="flex flex-col mb-4">
+                Trip End Date
+                <input
+                  type="date"
+                  name="tripDateEnd"
+                  value={formData.tripDateEnd}
+                  onChange={handleInputChange}
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                  // className="border border-gray-300 rounded-md p-2"
+
+                  required
+                />
+              </label>
 
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label htmlFor="departureTime" className="block text-gray-700 font-medium mb-2">
-                    Departure Time
-                  </label>
+                <label className="flex flex-col">
+                  Arrival Time
                   <input
                     type="time"
-                    id="departureTime"
-                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
-                    />
-                </div>
-                <div>
-                  <label htmlFor="arrivalTime" className="block text-gray-700 font-medium mb-2">
-                    Arrival Time
-                  </label>
+                    name="arrivalTime"
+                    value={formData.arrivalTime}
+                    onChange={handleInputChange}
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                    // className="border border-gray-300 rounded-md p-2"
+
+                    required
+                  />
+                </label>
+
+                <label className="flex flex-col">
+                  Departure Time
                   <input
                     type="time"
-                    id="arrivalTime"
-                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
-                    />
-                </div>
+                    name="departureTime"
+                    value={formData.departureTime}
+                    onChange={handleInputChange}
+                    className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                    // className="border border-gray-300 rounded-md p-2"
+
+                    required
+                  />
+                </label>
               </div>
 
-              {/* Price */}
-              <div className="mb-4">
-                <label htmlFor="price" className="block text-gray-700 font-medium mb-2">
-                  Price
-                </label>
+              <label className="flex flex-col mb-4">
+                Trip Price
                 <input
                   type="number"
-                  id="price"
-                  placeholder="Enter price"
-                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-500  dark:text-gray-900 dark:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" 
-                  />
-              </div>
+                  name="tripPrice"
+                  value={formData.tripPrice}
+                  onChange={handleInputChange}
+                  className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-900  dark:text-gray-900 dark:border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-900 peer"
+                  // className="border border-gray-300 rounded-md p-2"
 
-              {/* Buttons */}
-              <div className="flex justify-end space-x-2">
+                  required
+                  min="0"
+                />
+              </label>
+
+              <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="bg-transparent hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 border border-gray-200 rounded"
+                  className="bg-gray-200 px-4 py-2 rounded"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                  className="bg-blue-600 text-white px-4 py-2 rounded"
                 >
-                  Add
+                  {isEditing ? "Update Trip" : "Add Trip"}
                 </button>
               </div>
             </form>

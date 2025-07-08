@@ -1,68 +1,110 @@
 import React, { useEffect, useState } from "react";
 import StatCard from "./StatCard";
 import { FaBus } from "react-icons/fa";
-import { MdGroups2 } from "react-icons/md";
-import { MdGroupOff } from "react-icons/md";
 import { MdStarRate } from "react-icons/md";
+import { FaUserGroup } from "react-icons/fa6";
 import axios from "axios";
 
 const StatsCards = () => {
-  const [passengers, setPassengers] = useState([]);
-  const [trips, setTrips] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [passengersCount, setPassengersCount] = useState(0);
+  const [activeTripsCount, setActiveTripsCount] = useState(0);
+  const [averageRating, setAverageRating] = useState("0.0");
+
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const API = "https://bus-line-backend.onrender.com/api";
 
   useEffect(() => {
-    const fetchMyPassengers = async () => {
-      const res = await axios.get(
-        "https://bus-line-backend.onrender.com/api/bookings/booking-passengers",
-        {
+    const fetchStats = async () => {
+      try {
+        // Fetch Passengers
+        const passengerRes = await axios.get(
+          `${API}/bookings/booking-passengers`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const passengerData = Array.isArray(passengerRes.data.passengers)
+          ? passengerRes.data.passengers
+          : [];
+        setPassengersCount(passengerData.length);
+
+        // Fetch Trips
+        const tripRes = await axios.get(`${API}/trips/driver-trips`, {
           headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log(res.data.passengers.length, "ddd");
-      setPassengers(res.data.passengers);
-    };
-    const fetchMyTrips = async () => {
-      const res = await axios.get(
-        "https://bus-line-backend.onrender.com/api/trips/driver-trips",
-        {
+        });
+        const trips = tripRes.data.trips || [];
+
+        const today = new Date().toISOString().split("T")[0];
+        const activeTrips = trips.filter((trip) => {
+          const startDate = trip.tripDateStart?.split("T")[0];
+          return (
+            trip.status === "active" ||
+            (trip.status === "pending" && startDate <= today)
+          );
+        });
+        setActiveTripsCount(activeTrips.length);
+
+        // Fetch Rating
+        const ratingRes = await axios.get(`${API}/rating/driver/${user._id}`, {
           headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const ratings = Array.isArray(ratingRes.data.ratings)
+          ? ratingRes.data.ratings
+          : Array.isArray(ratingRes.data)
+          ? ratingRes.data
+          : [];
+
+        if (ratings.length > 0) {
+          const total = ratings.reduce((sum, r) => sum + (r.rating || 0), 0);
+          const avg = total / ratings.length;
+          setAverageRating(avg.toFixed(1));
+        } else {
+          setAverageRating("0.0");
         }
-      );
-      setTrips(res.data.trips);
+      } catch (err) {
+        console.error("Failed to fetch stats:", err);
+      }
     };
 
-    fetchMyPassengers();
-    fetchMyTrips();
-  }, []);
+    if (token && user._id) {
+      fetchStats();
+    }
+  }, [token, user]);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-7 ">
       <StatCard
         title="Total Passenger"
-        value={passengers.length}
+        value={passengersCount}
         color="green"
         icon={
-          <MdGroups2 className="text-[#19ACA0] w-10 h-10 bg-green-200 rounded-full shadow-sm" />
+          <div className="bg-green-200 w-13 h-13 flex items-center justify-center rounded-full shadow-sm">
+            <FaUserGroup className="w-8 h-8 text-[#19ACA0]" />
+          </div>
         }
       />
 
       <StatCard
         title="Total Trip"
-        value={trips.length}
+        value={activeTripsCount}
         color="yellow"
         icon={
-          <FaBus className="text-[#E4B83C] w-10 h-10 bg-yellow-200 rounded-full shadow-sm" />
+          <div className="bg-blue-200 w-13 h-13 flex items-center justify-center rounded-full shadow-sm">
+            <FaBus className="w-8 h-8 text-[#0751c7]" />
+          </div>
         }
       />
 
       <StatCard
         title="Total Rating"
-        value={user.rating}
+        value={averageRating}
         color="yellow"
         icon={
-          <MdStarRate className="text-[#E4B83C] w-10 h-10 bg-yellow-200 rounded-full shadow-sm" />
+          <div className="bg-yellow-200 w-13 h-13 flex items-center justify-center rounded-full shadow-sm">
+            <MdStarRate className="w-9 h-9 text-[#E4B83C]" />
+          </div>
         }
       />
     </div>
