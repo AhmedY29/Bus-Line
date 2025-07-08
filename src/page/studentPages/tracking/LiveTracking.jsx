@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import StudentTrackingMap from "./StudentTrackingMap";
 
 const LiveTracking = () => {
@@ -109,7 +108,7 @@ const LiveTracking = () => {
             tripId={"686b8d3be55633ed569c63e7"}
           />
           {/* Current Status */}
-          <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-4 mb-4 border border-blue-200">
+          {/* <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-4 mb-4 border border-blue-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold text-blue-900">Current Location</p>
@@ -125,14 +124,14 @@ const LiveTracking = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
 
       {/* Rest of the component remains the same */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 ">
         {/* Trip Timeline */}
-        <div className="lg:col-span-2">
+        {/* <div className="lg:col-span-2">
           <Card className="bus-card border-0">
             <CardHeader>
               <CardTitle className="text-xl font-bold flex items-center">
@@ -190,12 +189,12 @@ const LiveTracking = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Trip Info & Actions */}
         <div className="space-y-6">
           {/* Trip Information */}
-          <Card className="bus-card border-0">
+          {/* <Card className="bus-card border-0">
             <CardHeader>
               <CardTitle className="text-lg font-bold">
                 Trip Information
@@ -225,7 +224,7 @@ const LiveTracking = () => {
                 </span>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Driver Information */}
           <Card className="bus-card border-0">
@@ -283,7 +282,7 @@ const LiveTracking = () => {
       </div>
 
       {/* Live Updates */}
-      <Card className="border-2 border-green-200 bg-green-50">
+      {/* <Card className="border-2 border-green-200 bg-green-50">
         <CardContent className="p-4">
           <div className="flex items-center space-x-3">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -299,7 +298,7 @@ const LiveTracking = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };
