@@ -1,12 +1,4 @@
-import {
-  Camera,
-  Edit,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  User,
-} from "lucide-react";
+import { Camera, Edit, Calendar, User } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -24,33 +16,21 @@ import Swal from "sweetalert2";
 
 const DriverProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState({
-    firstName: "Mohammed",
-    lastName: "Ali",
-    email: "m.ali@gmail.com",
-    phoneNumber: "+966501234567",
-    address: "Riyadh, Saudi Arabia",
-    licenseNumber: "LIC123456789",
-    licenseImage: null,
-    vehicleRegistration: null,
-    carModel: "Toyota Corolla",
-    plateNumber: "ABC-1234",
-    insuranceExpiry: "2025-12-31",
-    bankName: "Al Rajhi Bank",
-    accountNumber: "SA12345678901234567890",
-    accountName: "Mohammed Ali",
-    profileImage: null,
-    joinDate: "September 2024",
-    totalTrips: 47,
-    activeBookings: 2,
-    status: "Active",
-  });
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed);
+    }
+  }, []);
 
   const handleEditClick = () => setIsEditing(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleProfileImageChange = (e) => {
@@ -162,14 +142,6 @@ const DriverProfile = () => {
               >
                 <Camera className="h-4 w-4" />
               </Button>
-              {isEditing && (
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfileImageChange}
-                  className="hidden"
-                />
-              )}
             </div>
 
             <div className="flex-1 text-center md:text-left">
@@ -196,8 +168,8 @@ const DriverProfile = () => {
                   </span>
                 </div>
                 <div className="flex items-center justify-center md:justify-start space-x-2">
-                  <span className="font-semibold">{user.activeBookings}</span>
-                  <span>Active Bookings</span>
+                  <span className="font-semibold">{user.rating || "N/A"}</span>
+                  <span>Rating</span>
                 </div>
               </div>
             </div>
@@ -222,27 +194,17 @@ const DriverProfile = () => {
               <User className="h-5 w-5 mr-2 text-blue-600" />
               Personal Information
             </CardTitle>
-            <CardDescription>
-              Your personal details and contact information
-            </CardDescription>
+            <CardDescription>Contact details</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {isEditing ? (
               <>
                 <input
-                  name="firstName"
-                  value={user.firstName}
+                  name="name"
+                  value={user.name}
                   onChange={handleChange}
                   className="w-full border px-3 py-1 rounded"
-                  placeholder="First Name"
-                />
-                <Separator />
-                <input
-                  name="lastName"
-                  value={user.lastName}
-                  onChange={handleChange}
-                  className="w-full border px-3 py-1 rounded"
-                  placeholder="Last Name"
+                  placeholder="Full Name"
                 />
                 <Separator />
                 <input
@@ -259,14 +221,6 @@ const DriverProfile = () => {
                   onChange={handleChange}
                   className="w-full border px-3 py-1 rounded"
                   placeholder="Phone"
-                />
-                <Separator />
-                <input
-                  name="address"
-                  value={user.address}
-                  onChange={handleChange}
-                  className="w-full border px-3 py-1 rounded"
-                  placeholder="Address"
                 />
               </>
             ) : (
@@ -292,10 +246,8 @@ const DriverProfile = () => {
 
         <Card className="border-0 shadow-md">
           <CardHeader>
-            <CardTitle>Vehicle & License Info</CardTitle>
-            <CardDescription>
-              Details about your vehicle and driver license
-            </CardDescription>
+            <CardTitle>License</CardTitle>
+            <CardDescription>License information and image</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {isEditing ? (
@@ -334,33 +286,57 @@ const DriverProfile = () => {
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>Bank Account</CardTitle>
-            <CardDescription>Payment details</CardDescription>
+            <CardDescription>Banking details</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {isEditing ? (
               <>
                 <input
-                  name="bankName"
-                  value={user.bankName}
-                  onChange={handleChange}
+                  name="bankAccount.bankName"
+                  value={user.bankAccount?.bankName || ""}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      bankAccount: {
+                        ...user.bankAccount,
+                        bankName: e.target.value,
+                      },
+                    })
+                  }
                   className="w-full border px-3 py-1 rounded"
                   placeholder="Bank Name"
                 />
                 <Separator />
                 <input
-                  name="accountNumber"
-                  value={user.accountNumber}
-                  onChange={handleChange}
+                  name="bankAccount.accountNumber"
+                  value={user.bankAccount?.accountNumber || ""}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      bankAccount: {
+                        ...user.bankAccount,
+                        accountNumber: e.target.value,
+                      },
+                    })
+                  }
                   className="w-full border px-3 py-1 rounded"
                   placeholder="Account Number"
                 />
                 <Separator />
                 <input
-                  name="accountName"
-                  value={user.accountName}
-                  onChange={handleChange}
+                  name="bankAccount.accountName"
+                  value={user.bankAccount?.accountName || ""}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      bankAccount: {
+                        ...user.bankAccount,
+                        accountName: e.target.value,
+                      },
+                    })
+                  }
                   className="w-full border px-3 py-1 rounded"
-                  placeholder="Account Holder Name"
+                  placeholder="Account Name"
                 />
               </>
             ) : (
