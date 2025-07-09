@@ -43,12 +43,12 @@ function Layout({ role }) {
     });
 
     socket.on("bus-nearby", (data) => {
-      toast.success(data.message || "🚍 الباص اقترب منك!");
+      toast.success(data?.message || "🚍 الباص اقترب منك!");
     });
 
     socket.on("new-message", (msg) => {
       toast(
-        `💬 رسالة جديدة من ${msg.sender?.name || "المستخدم"}: ${msg.content}`
+        `💬 رسالة جديدة من ${msg?.sender?.name || "المستخدم"}: ${msg?.content}`
       );
     });
 
@@ -68,7 +68,7 @@ function Layout({ role }) {
         }
       );
 
-      setNotifications(res.data.notifications);
+      setNotifications(res.data?.notifications);
     } catch (err) {
       console.error("خطأ في جلب الإشعارات", err);
     }
