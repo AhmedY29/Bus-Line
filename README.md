@@ -23,6 +23,10 @@
 - [المساهمة](#المساهمة)
 - [الفريق](#-الفريق)
 
+## Deployment
+
+🌐 **[Visit BusLine Live Application](https://bus-line.onrender.com/)**
+
 ## ✨ الميزات
 
 <div dir="rtl">
@@ -88,6 +92,8 @@
 
 ### النشر والاستضافة
 
+- **Frontend**: [BusLine Live App](https://bus-line.onrender.com/) - مستضاف على Render
+- **Backend**: [BusLine API](https://bus-line-backend.onrender.com/) - مستضاف على Render
 - **Render** - منصة سحابية لاستضافة تطبيقات الخادم وكامل المكدس
 
 ## 📸 لقطات الشاشة
