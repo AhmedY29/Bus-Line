@@ -98,7 +98,7 @@ const NewBooking = () => {
     return availableTrips.filter((trip) => {
       if (
         searchFilters.destinationId &&
-        String(trip.destinationId._id) !== String(searchFilters.destinationId)
+        String(trip.destinationId?._id) !== String(searchFilters.destinationId)
       )
         return false;
       if (
