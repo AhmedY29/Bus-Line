@@ -469,8 +469,8 @@ const StudentConversations = () => {
 
             {/* Messages Area */}
             <Card className="flex-1 rounded-none border-x border-gray-200 overflow-hidden">
-              <CardContent className="p-0 h-full flex flex-col">
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <CardContent className="p-0 h-80 flex overflow-y-auto flex-col scrollbar-hide">
+                <div className="flex-1  p-4 space-y-4">
                   {selectedConversation.messages.map((msg) => (
                     <div
                       key={msg.id}
