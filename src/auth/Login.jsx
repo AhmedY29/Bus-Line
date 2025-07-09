@@ -89,7 +89,7 @@ function Login() {
       <nav className="h-[10vh] bg-white flex justify-start items-center px-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex items-center gap-3 mr-2">
-            <img src="./public/logo.png" alt="Logo" className="h-10 w-10 " />
+            <img src="./public/logoPng.png" alt="Logo" className="h-10 w-10 " />
             <h1 className="text-xl font-bold">BusLine</h1>
           </div>
         </Link>

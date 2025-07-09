@@ -219,6 +219,7 @@ const NewBooking = () => {
                     <SelectValue placeholder="Destination" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value={""}>Chose Destination</SelectItem>
                     {destinations.map((dest) => (
                       <SelectItem key={dest._id} value={dest._id}>
                         {dest.title}
