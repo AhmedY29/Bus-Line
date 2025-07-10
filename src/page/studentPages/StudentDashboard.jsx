@@ -333,6 +333,7 @@ const StudentDashboard = () => {
                             <div className="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg">
                               <Clock className="w-4 h-4 text-gray-500" />
                               <span className="font-medium">
+                                {booking.tripId.arrivalTime},{" "}
                                 {booking.tripId.departureTime}
                               </span>
                             </div>
