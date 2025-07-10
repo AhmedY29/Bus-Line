@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "https://bus-line-backend.onrender.com/api";
- 
-  // this is mongoDB link :mmongodb+srv://BusLine1:BusLine1@bus-line.t1teci4.mongodb.net/Bus-Line?retryWrites=true&w=majority&appName=Bus-Line
+
+// this is mongoDB link :mmongodb+srv://BusLine1:BusLine1@bus-line.t1teci4.mongodb.net/Bus-Line?retryWrites=true&w=majority&appName=Bus-Line
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -22,7 +22,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     // 3. The user object is NOT needed here.
     return config;
   },
@@ -35,7 +35,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("user");
-      localStorage.removeItem("token"); 
+      localStorage.removeItem("token");
       window.location.href = "/login"; // Redirect to login
     }
     return Promise.reject(error);
@@ -43,4 +43,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-

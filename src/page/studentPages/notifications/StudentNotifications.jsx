@@ -22,85 +22,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 
 const StudentNotifications = () => {
-  // const [notifications, setNotifications] = useState([
-  //   {
-  //     id: 1,
-  //     title: "Bus Approaching",
-  //     message: "Your bus BUS-001 will arrive at your pickup point in 5 minutes",
-  //     type: "trip",
-  //     time: "2 minutes ago",
-  //     read: false,
-  //     icon: Bus,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Payment Successful",
-  //     message:
-  //       "Your payment of 30 SAR for trip to Cairo University has been processed",
-  //     type: "payment",
-  //     time: "1 hour ago",
-  //     read: false,
-  //     icon: CreditCard,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Trip Reminder",
-  //     message:
-  //       "Don't forget your trip to New Administrative Capital tomorrow at 9:00 AM",
-  //     type: "reminder",
-  //     time: "3 hours ago",
-  //     read: true,
-  //     icon: Clock,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Rate Your Trip",
-  //     message:
-  //       "How was your trip with Ahmed Mahmoud? Please rate your experience",
-  //     type: "rating",
-  //     time: "1 day ago",
-  //     read: true,
-  //     icon: Star,
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Trip Delayed",
-  //     message:
-  //       "Your bus BUS-003 is running 10 minutes late due to traffic conditions",
-  //     type: "trip",
-  //     time: "2 days ago",
-  //     read: true,
-  //     icon: Bus,
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Booking Confirmed",
-  //     message: "Your booking for trip to Downtown Cairo has been confirmed",
-  //     type: "booking",
-  //     time: "3 days ago",
-  //     read: true,
-  //     icon: Check,
-  //   },
-  // ]);
-
-  // const markAsRead = (id) => {
-  //   setNotifications(
-  //     notifications.map((notif) =>
-  //       notif.id === id ? { ...notif, read: true } : notif
-  //     )
-  //   );
-  // };
-
-  // const markAllAsRead = () => {
-  //   setNotifications(notifications.map((notif) => ({ ...notif, read: true })));
-  // };
-
-  // const deleteNotification = (id) => {
-  //   setNotifications(notifications.filter((notif) => notif.id !== id));
-  // };
-
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchNotifications = async () => {
     try {
@@ -113,15 +37,15 @@ const StudentNotifications = () => {
         }
       );
 
-      // تأكد أن الـ backend يرجّع time بصيغة صالحة
       const withTime = res.data.notifications.map((n) => ({
         ...n,
-        time: new Date(n.createdAt).toLocaleString(), // أو بصيغة relative
-        icon: getIcon(n.type), // 👇 أضفها تحت
+        time: new Date(n.createdAt).toLocaleString(),
+        icon: getIcon(n.type),
       }));
 
       setNotifications(withTime);
     } catch (err) {
+      setError(err.message);
       console.error("خطأ في جلب الإشعارات", err);
     } finally {
       setLoading(false);
@@ -162,6 +86,7 @@ const StudentNotifications = () => {
       // تحديث جميع الإشعارات محليًا
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
     } catch (err) {
+      setError(err.message);
       console.error("فشل في تحديث كل الإشعارات:", err);
     }
   };
@@ -177,9 +102,9 @@ const StudentNotifications = () => {
         }
       );
 
-      // تحديث الحالة
       setNotifications((prev) => prev.filter((n) => n._id !== id));
     } catch (err) {
+      setError(err.message);
       console.error("فشل في حذف الإشعار:", err);
     }
   };
@@ -242,6 +167,22 @@ const StudentNotifications = () => {
   const reminderNotifications = notifications.filter(
     (n) => n.type === "reminder" || n.type === "booking"
   );
+
+  const renderTabContent = (list) =>
+    list.length > 0 ? (
+      list.map((n) => (
+        <NotificationCard
+          key={n._id}
+          notification={n}
+          onMarkAsRead={markAsRead}
+          onDelete={deleteNotification}
+          getTypeColor={getTypeColor}
+          getTypeLabel={getTypeLabel}
+        />
+      ))
+    ) : (
+      <p className="text-center text-gray-400">No notifications found.</p>
+    );
   return (
     <div className="space-y-6 p-2">
       <div className="flex items-center justify-between">
@@ -345,7 +286,7 @@ const NotificationCard = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => onDelete(notification.id)}
+              onClick={() => onDelete(notification._id)}
               className="text-red-600 hover:text-red-700 hover:bg-red-50"
             >
               <X className="w-4 h-4" />

@@ -167,7 +167,7 @@ function UsersDashboard() {
     const confirmDelete = await new Promise((resolve) => {
       toast(
         (t) => (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 ">
             <div className="flex items-center">
               <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
               <h1 className="font-bold">Warning!</h1>

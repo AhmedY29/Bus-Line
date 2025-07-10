@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { IoSearchOutline } from "react-icons/io5";
+import toast from "react-hot-toast";
 
 const TripsList = () => {
   const API = "https://bus-line-backend.onrender.com/api";
 
   const [trips, setTrips] = useState([]);
   const [destinations, setDestinations] = useState([]);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [formData, setFormData] = useState({
     neighborhood: "",
     destinationId: "",
@@ -255,6 +257,10 @@ const TripsList = () => {
 
         <button
           onClick={() => {
+            if (user.status == "pending") {
+              toast.error("Your Account Under Review...");
+              return;
+            }
             setIsEditing(false);
             setEditingTripId(null);
             setShowModal(true);

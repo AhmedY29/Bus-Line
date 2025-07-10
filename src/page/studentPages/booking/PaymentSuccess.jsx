@@ -60,8 +60,20 @@ const PaymentSuccess = ({ booking, trip, passengers, onClose }) => {
             <div className="flex justify-between">
               <span className="text-gray-500">Date</span>
               <span className="font-semibold">
-                {new Date(trip.tripDateStart).toLocaleDateString()}
+                {new Date(trip.tripDateStart).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Arrival Time</span>
+              <span className="font-semibold">{trip.arrivalTime}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Departure Time</span>
+              <span className="font-semibold">{trip.departureTime}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Driver</span>

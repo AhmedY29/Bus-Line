@@ -23,119 +23,6 @@ import { useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const StudentConversations = () => {
-  // const [selectedConversation, setSelectedConversation] = useState(null);
-  // const [message, setMessage] = useState("");
-  // const messagesEndRef = useRef(null);
-
-  // const conversations = [
-  //   {
-  //     id: 1,
-  //     driverName: "Mohamed Ali",
-  //     lastMessage: "I'll be there in 5 minutes",
-  //     timestamp: "2 min ago",
-  //     unread: 2,
-  //     tripRoute: "Maadi → Downtown",
-  //     status: "active",
-  //     avatar: "MA",
-  //     messages: [
-  //       { id: 1, text: "Good morning! I'll be your driver today.", sender: "driver", time: "07:15 AM" },
-  //       { id: 2, text: "Good morning! Thank you.", sender: "student", time: "07:16 AM" },
-  //       { id: 3, text: "I'll be there in 5 minutes", sender: "driver", time: "08:20 AM" }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     driverName: "Ahmed Khaled",
-  //     lastMessage: "Have a safe trip!",
-  //     timestamp: "1 hour ago",
-  //     unread: 0,
-  //     tripRoute: "New Cairo → Heliopolis",
-  //     status: "completed",
-  //     avatar: "AK",
-  //     messages: [
-  //       { id: 1, text: "Trip completed successfully!", sender: "driver", time: "06:15 PM" },
-  //       { id: 2, text: "Thank you for the ride!", sender: "student", time: "06:16 PM" },
-  //       { id: 3, text: "Have a safe trip!", sender: "driver", time: "06:17 PM" }
-  //     ]
-  //   },
-  //   {
-  //     id: 3,
-  //     driverName: "Omar Hassan",
-  //     lastMessage: "Trip will be delayed by 10 minutes",
-  //     timestamp: "3 hours ago",
-  //     unread: 1,
-  //     tripRoute: "Zamalek → Maadi",
-  //     status: "upcoming",
-  //     avatar: "OH",
-  //     messages: [
-  //       { id: 1, text: "Hello! Your trip is scheduled for tomorrow.", sender: "driver", time: "02:15 PM" },
-  //       { id: 2, text: "Trip will be delayed by 10 minutes", sender: "driver", time: "02:30 PM" }
-  //     ]
-  //   },
-  //   {
-  //     id: 4,
-  //     driverName: "Mahmoud Saad",
-  //     lastMessage: "Thank you for choosing our service",
-  //     timestamp: "Yesterday",
-  //     unread: 0,
-  //     tripRoute: "6th October → Giza",
-  //     status: "completed",
-  //     avatar: "MS",
-  //     messages: [
-  //       { id: 1, text: "Thank you for choosing our service", sender: "driver", time: "Yesterday" },
-  //       { id: 2, text: "Hope you enjoyed the ride!", sender: "driver", time: "Yesterday" }
-  //     ]
-  //   }
-  // ];
-
-  // const getStatusColor = (status) => {
-  //   switch (status) {
-  //     case 'active':
-  //       return 'bg-green-100 text-green-700';
-  //     case 'upcoming':
-  //       return 'bg-blue-100 text-blue-700';
-  //     case 'completed':
-  //       return 'bg-gray-100 text-gray-700';
-  //     default:
-  //       return 'bg-gray-100 text-gray-700';
-  //   }
-  // };
-
-  // const scrollToBottom = () => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // useEffect(() => {
-  //   if (selectedConversation) {
-  //     scrollToBottom();
-  //   }
-  // }, [selectedConversation]);
-
-  // const handleSendMessage = () => {
-  //   if (message.trim() && selectedConversation) {
-  //     const newMessage = {
-  //       id: selectedConversation.messages.length + 1,
-  //       text: message,
-  //       sender: "student",
-  //       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  //     };
-
-  //     const updatedConversation = {
-  //       ...selectedConversation,
-  //       messages: [...selectedConversation.messages, newMessage]
-  //     };
-
-  //     setSelectedConversation(updatedConversation);
-  //     setMessage("");
-  //   }
-  // };
-
-  // const handleKeyPress = (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleSendMessage();
-  //   }
-  // };
-
   const [contacts, setContacts] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -201,7 +88,7 @@ const StudentConversations = () => {
       console.log("New message received:", message);
       setSelectedConversation((prev) => ({
         ...prev,
-        messages: [...prev.messages, message],
+        messages: [...prev?.messages, message],
       }));
       if (
         selectedConversation &&
@@ -229,7 +116,7 @@ const StudentConversations = () => {
     };
   }, [selectedConversation]);
 
-  console.log(contacts);
+  console.log(selectedConversation, "ss");
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -254,6 +141,32 @@ const StudentConversations = () => {
     }
   }, [selectedConversation]);
 
+  const handleSelectConversation = async (conversation) => {
+    try {
+      const res = await fetch(
+        `https://bus-line-backend.onrender.com/api/messages/${conversation.tripId}/${conversation.receiverId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      const messages = Array.isArray(data.messages) ? data.messages : [];
+
+      setSelectedConversation({
+        ...conversation,
+        messages: messages,
+      });
+
+      scrollToBottom();
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
   const handleSendMessage = () => {
     if (message.trim() && selectedConversation) {
       console.log("Sending message:", {
@@ -270,7 +183,7 @@ const StudentConversations = () => {
       const newMessage = {
         id: Date.now(), // رقم مؤقت
         content: message,
-        senderId: user._id,
+        sender: { _id: user?._id },
         createdAt: new Date(),
       };
 
@@ -353,7 +266,8 @@ const StudentConversations = () => {
                             ? "bg-blue-50 border-r-4 border-blue-600"
                             : ""
                         }`}
-                        onClick={() => setSelectedConversation(conversation)}
+                        onClick={() => handleSelectConversation(conversation)}
+                        // onClick={() => setSelectedConversation(conversation)}
                       >
                         <div className="relative">
                           <Avatar className="h-12 w-12">
@@ -415,131 +329,132 @@ const StudentConversations = () => {
         </div>
 
         {/* Chat Interface - Shows when conversation is selected */}
-        {selectedConversation && (
-          <div
-            className={`lg:col-span-2 ${
-              selectedConversation ? "block" : "hidden"
-            } flex flex-col h-full`}
-          >
-            {/* Chat Header */}
-            <Card className="bus-card border-0 rounded-b-none">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="lg:hidden"
-                      onClick={() => setSelectedConversation(null)}
-                    >
-                      <ArrowLeft className="w-5 h-5" />
-                    </Button>
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src="/placeholder.svg" alt="Driver" />
-                      <AvatarFallback className="bg-blue-100 text-blue-600">
-                        {selectedConversation.name[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <h2 className="text-lg font-semibold">
-                          {selectedConversation.name}
-                        </h2>
-                        {selectedConversation.status === "active" && (
-                          <div className="w-2 h-2 bg-green-500 rounded-full" />
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        {selectedConversation.role}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm">
-                      <Phone className="w-4 h-4 mr-2" />
-                      Call
-                    </Button>
-                    <Button variant="ghost" size="sm">
-                      <MoreVertical className="w-5 h-5" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Messages Area */}
-            <Card className="flex-1 rounded-none border-x border-gray-200 overflow-hidden">
-              <CardContent className="p-0 h-80 flex overflow-y-auto flex-col scrollbar-hide">
-                <div className="flex-1  p-4 space-y-4">
-                  {selectedConversation.messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`flex ${
-                        msg.senderId == user._id
-                          ? "justify-end"
-                          : "justify-start"
-                      }`}
-                    >
-                      <div
-                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                          msg.senderId == user._id
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-100 text-gray-900"
-                        }`}
+        {selectedConversation &&
+          Array.isArray(selectedConversation?.messages) && (
+            <div
+              className={`lg:col-span-2 ${
+                selectedConversation ? "block" : "hidden"
+              } flex flex-col h-full`}
+            >
+              {/* Chat Header */}
+              <Card className="bus-card border-0 rounded-b-none">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="lg:hidden"
+                        onClick={() => setSelectedConversation(null)}
                       >
-                        <p className="text-sm">{msg.content}</p>
-                        <p
-                          className={`text-xs mt-1 ${
-                            msg.senderId == user._id
-                              ? "text-blue-100"
-                              : "text-gray-500"
-                          }`}
-                        >
-                          {new Date(msg.createdAt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                        <ArrowLeft className="w-5 h-5" />
+                      </Button>
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src="/placeholder.svg" alt="Driver" />
+                        <AvatarFallback className="bg-blue-100 text-blue-600">
+                          {selectedConversation?.name?.charAt(0) || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <h2 className="text-lg font-semibold">
+                            {selectedConversation?.name}
+                          </h2>
+                          {selectedConversation?.status === "active" && (
+                            <div className="w-2 h-2 bg-green-500 rounded-full" />
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {selectedConversation?.role}
                         </p>
                       </div>
                     </div>
-                  ))}
-                  <div ref={messagesEndRef} />
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="flex items-center space-x-2">
+                      <Button variant="outline" size="sm">
+                        <Phone className="w-4 h-4 mr-2" />
+                        Call
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <MoreVertical className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Message Input */}
-            <Card className="bus-card border-0 rounded-t-none border-t-0">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-3">
-                  <Input
-                    type="text"
-                    placeholder="Type your message..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="flex-1"
-                  />
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={!message.trim()}
-                    className="gradient-button px-4"
-                  >
-                    <Send className="w-5 h-5" />
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
-                  <span>
-                    {selectedConversation.status === "active"
-                      ? "Driver is online"
-                      : "Driver is offline"}
-                  </span>
-                  <span>Messages are end-to-end encrypted</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+              {/* Messages Area */}
+              <Card className="flex-1 rounded-none border-x border-gray-200 overflow-hidden">
+                <CardContent className="p-0 h-80 flex overflow-y-auto flex-col scrollbar-hide">
+                  <div className="flex-1  p-4 space-y-4">
+                    {selectedConversation?.messages?.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className={`flex ${
+                          msg.sender._id == user._id
+                            ? "justify-end"
+                            : "justify-start"
+                        }`}
+                      >
+                        <div
+                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            msg.sender._id == user._id
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-100 text-gray-900"
+                          }`}
+                        >
+                          <p className="text-sm">{msg.content}</p>
+                          <p
+                            className={`text-xs mt-1 ${
+                              msg.sender._id == user._id
+                                ? "text-blue-100"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {new Date(msg.createdAt).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Message Input */}
+              <Card className="bus-card border-0 rounded-t-none border-t-0">
+                <CardContent className="p-4">
+                  <div className="flex items-center space-x-3">
+                    <Input
+                      type="text"
+                      placeholder="Type your message..."
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      className="flex-1"
+                    />
+                    <Button
+                      onClick={handleSendMessage}
+                      disabled={!message.trim()}
+                      className="gradient-button px-4"
+                    >
+                      <Send className="w-5 h-5" />
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
+                    <span>
+                      {selectedConversation.status === "active"
+                        ? "Driver is online"
+                        : "Driver is offline"}
+                    </span>
+                    <span>Messages are end-to-end encrypted</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
         {/* Empty State when no conversation is selected on large screens */}
         {!selectedConversation && (

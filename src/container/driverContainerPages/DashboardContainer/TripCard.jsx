@@ -101,7 +101,7 @@ const TripCard = () => {
                         {pendingBook.tripId?.neighborhood || "N/A"}
                       </td>
                       <td className="px-4 py-2">
-                        <Link to="requests">
+                        <Link to="/driver/requests">
                           <button className="bg-[#0165AD] hover:bg-blue-800 text-white cursor-pointer py-1 px-6 rounded text-sm w-full sm:w-auto">
                             Details
                           </button>

@@ -137,6 +137,7 @@ function Register() {
       <div className="bg-white flex justify-center items-center w-full h-[90vh]">
         <div className="lg:flex  justify-center items-center hidden w-1/2 h-full">
           <div className="flex flex-col gap-10  h-full justify-center ">
+            <video className="w-35" src="/bus.webm" autoPlay loop muted></video>
             <h1 className="text-6xl font-bold text-neutral-900">
               Register to <span className="  text-[#0165AD]">BusLine</span>
             </h1>
@@ -232,7 +233,14 @@ function Register() {
             >
               {isLoading ? "Loading..." : "Register"}
             </button>
-            <div className="flex w-full justify-center items-center py-4">
+            <div className="flex w-full flex-col gap-2 justify-center items-center py-4">
+              <p className="lg:hidden text-neutral-400 text-center">
+                If you already have an account <br />
+                You can{" "}
+                <Link to="/login" className="text-blue-500">
+                  Login here !
+                </Link>
+              </p>
               <p className="text-neutral-400 text-sm">Or continue with</p>
             </div>
             <div className="flex justify-center items-center gap-6">
