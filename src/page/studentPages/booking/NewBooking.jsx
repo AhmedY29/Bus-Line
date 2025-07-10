@@ -97,6 +97,7 @@ const NewBooking = () => {
   const getFilteredTrips = () => {
     return availableTrips.filter((trip) => {
       if (
+        searchFilters.destinationId !== "all" &&
         searchFilters.destinationId &&
         String(trip.destinationId?._id) !== String(searchFilters.destinationId)
       )
@@ -202,7 +203,7 @@ const NewBooking = () => {
         <>
           <Card className="border-0">
             <CardHeader>
-              <CardTitle>
+              <CardTitle className={"flex items-center gap-1"}>
                 <Search className="w-6 h-6 mr-2" />
                 Find Your Trip
               </CardTitle>
@@ -219,7 +220,7 @@ const NewBooking = () => {
                     <SelectValue placeholder="Destination" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={""}>Chose Destination</SelectItem>
+                    <SelectItem value={"all"}>All Destinations</SelectItem>
                     {destinations.map((dest) => (
                       <SelectItem key={dest._id} value={dest._id}>
                         {dest.title}
@@ -285,10 +286,11 @@ const NewBooking = () => {
                 <CardContent className="p-6">
                   <div className="flex flex-col lg:flex-row justify-between gap-6">
                     <div>
-                      <div className="flex items-center gap-3 mb-3">
-                        <Badge variant="outline">
-                          {trip.busNumber || "BUS-00X"}
-                        </Badge>
+                      <div
+                        title={`Driver Name: ${trip.driverId.name} `}
+                        className="flex items-center gap-3 mb-3"
+                      >
+                        <Badge variant="outline">{trip.driverId.name}</Badge>
                         <div className="flex items-center gap-1">
                           {renderStars(trip.driverId.rating)}
                           <span>
@@ -299,8 +301,22 @@ const NewBooking = () => {
                       <h3 className="font-bold text-lg">
                         {trip.neighborhood} → {trip.destinationId?.title}
                       </h3>
-                      <p className="text-gray-600">
-                        Driver: {trip.driverId.name}
+                      <p className="flex items-center gap-1 text-gray-600">
+                        <Clock className="h-4 w-4 text-gray-500" />
+                        <h1>
+                          {trip.arrivalTime}, {trip.departureTime}
+                        </h1>
+                      </p>
+                      <p className="flex items-center gap-1 text-gray-600">
+                        <Calendar className="h-4 w-4 text-gray-500" />
+                        {new Date(trip.tripDateStart).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
                       </p>
                     </div>
                     <div className="text-right space-y-2">
@@ -350,6 +366,24 @@ const NewBooking = () => {
                 <p>
                   <strong>Route:</strong> {selectedTrip.neighborhood} →{" "}
                   {selectedTrip.destinationId?.title}
+                </p>
+                <p>
+                  <strong>Arrival Time:</strong> {selectedTrip.arrivalTime}
+                </p>
+                <p>
+                  <strong>DepartureTime Time:</strong>{" "}
+                  {selectedTrip.departureTime}
+                </p>
+                <p>
+                  <strong>Start At:</strong>{" "}
+                  {new Date(selectedTrip.tripDateStart).toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    }
+                  )}
                 </p>
                 <p>
                   <strong>Passengers:</strong> {searchFilters.passengers}

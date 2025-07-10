@@ -87,6 +87,7 @@ function DriverSidebar() {
             return (
               <li key={index}>
                 <Link
+                  onClick={() => setIsMobileMenuOpen(false)}
                   to={`/driver/${item.label.toLowerCase()}`}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors  gap-2 pr-6 ${"text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`}
                 >
@@ -101,7 +102,7 @@ function DriverSidebar() {
             onClick={() => {
               toast(
                 (t) => (
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 ">
                     <div className="flex items-center">
                       <IoIosInformationCircleOutline className="inline-block mr-1 text-2xl text-red-500" />
                       <h1 className="font-bold">Warning!</h1>

@@ -23,6 +23,7 @@ const DriverForm = () => {
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
         {/* Left section */}
         <div className="md:w-1/2 p-8 hidden md:flex flex-col justify-center">
+          <video className="w-35" src="/bus.webm" autoPlay loop muted></video>
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
             Be part of our driving team and start earning today. <br /> Sign up
@@ -116,15 +117,67 @@ const DriverForm = () => {
               </div>
             </div>
             {/* Phone Number */}
-            <div>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={(e) => updateField("phoneNumber", e.target.value)}
-                placeholder="Enter Your Phone Number"
-                className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={(e) => updateField("phoneNumber", e.target.value)}
+                  placeholder="Enter Your Phone Number"
+                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500 focus:shadow-md focus:shadow-blue-50 text-blue-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                {/* License Image Upload */}
+                <button
+                  type="button"
+                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 text-blue-500 focus:outline-none focus:border-blue-500 cursor-pointer hover:bg-blue-100 hover:shadow-md hover:shadow-blue-50 transition-all flex items-center justify-center"
+                  onClick={() =>
+                    document.getElementById("licenseImageInput").click()
+                  }
+                >
+                  {formData.licenseImage ? (
+                    <span className="text-green-600 font-medium">
+                      ✓ License Image Uploaded
+                    </span>
+                  ) : (
+                    <span>Upload License Image</span>
+                  )}
+                </button>
+                <input
+                  id="licenseImageInput"
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        updateField("licenseImage", reader.result);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+                {formData.licenseImage && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <img
+                      src={formData.licenseImage}
+                      alt="License preview"
+                      className="h-16 w-16 object-cover rounded border border-gray-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => updateField("licenseImage", "")}
+                      className="text-red-500 hover:text-red-700 text-sm"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </form>
         </div>

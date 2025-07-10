@@ -27,6 +27,7 @@ import { Link } from "react-router";
 const LiveTracking = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [tripProgress, setTripProgress] = useState(65);
+  const [trip, setTrip] = useState({});
   const [tripId, setTripId] = useState("");
   const [bookings, setBookings] = useState([]);
 
@@ -56,19 +57,41 @@ const LiveTracking = () => {
         toast.error("Error in Getting Bookings");
       }
     };
+
     bookingData();
   }, []);
+
+  useEffect(() => {
+    const driverData = async () => {
+      try {
+        const res = await axios.get(
+          `https://bus-line-backend.onrender.com/api/trips/${tripId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setTrip(res.data.trip);
+      } catch (error) {
+        toast.error("Error in Trip Data");
+      }
+    };
+
+    driverData();
+  }, [tripId]);
 
   // Mock active trip data
   const activeTrip = {
     id: "BK001",
     busNumber: "BUS-001",
-    destination: "Cairo University",
-    departureTime: "07:30 AM",
-    estimatedArrival: "09:15 AM",
-    actualArrival: "09:22 AM",
-    driverName: "Ahmed Mahmoud",
-    driverPhone: "+20 1xx xxx xxxx",
+    destination: trip?.destinationId?.title,
+    departureTime: trip?.departureTime,
+    estimatedArrival: "N/A",
+    actualArrival: trip?.arrivalTime,
+    driverName: trip?.driverId?.name,
+    driverPhone: trip?.driverId?.phoneNumber || "N/A",
+    rating: trip?.driverId?.rating || "N/A",
     currentLocation: "Ring Road - Nasr City",
     nextStop: "Cairo University Main Gate",
     passengerCount: 28,
@@ -163,20 +186,25 @@ const LiveTracking = () => {
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="font-semibold text-blue-600">AM</span>
+                <span className="font-semibold text-blue-600">
+                  {activeTrip?.driverName?.charAt(0) || "U"}
+                </span>
               </div>
               <div>
                 <p className="font-semibold">{activeTrip.driverName}</p>
                 <div className="flex items-center space-x-1">
                   <span className="text-yellow-500">★</span>
-                  <span className="text-sm text-gray-600">4.8 rating</span>
+                  <span className="text-sm text-gray-600">
+                    {" "}
+                    {activeTrip.rating} rating
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-3">
               <Link to={"/student/chat"}>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full cursor-pointer">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Send Message
                 </Button>

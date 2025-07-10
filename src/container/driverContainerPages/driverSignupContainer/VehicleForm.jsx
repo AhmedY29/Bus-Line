@@ -14,6 +14,7 @@ const VehicleForm = () => {
       {/* Container */}
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
         <div className="md:w-1/2 p-8  hidden md:flex flex-col justify-center">
+          <video className="w-35" src="/bus.webm" autoPlay loop muted></video>
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
             Be part of our driving team and start earning today. <br /> Sign up
@@ -36,16 +37,23 @@ const VehicleForm = () => {
             {/* Vehicle Type */}
             <div>
               {/* <label className="block text-gray-700 font-medium mb-2">
-            Vehicle Type 
+              Periodic Inspection
             </label> */}
-              <input
-                type="text"
-                name="vehicleName"
-                value={formData.vehicleName}
-                onChange={(e) => updateField("vehicleName", e.target.value)}
-                placeholder="Vehicle Type "
+              <select
+                name="periodicInspection"
+                title="Is Vehicle periodic inspection approved ?"
+                value={formData.vehicleYearlyCheck}
+                onChange={(e) =>
+                  updateField("vehicleYearlyCheck", e.target.value)
+                }
                 className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
-              />
+              >
+                <option value="">
+                  Is Vehicle periodic inspection approved ?
+                </option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -121,19 +129,19 @@ const VehicleForm = () => {
                   type="button"
                   className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 text-blue-500 focus:outline-none focus:border-blue-500 cursor-pointer hover:bg-blue-100 hover:shadow-md hover:shadow-blue-50 transition-all flex items-center justify-center"
                   onClick={() =>
-                    document.getElementById("licenseImageInput").click()
+                    document.getElementById("vehicleImageInput").click()
                   }
                 >
-                  {formData.licenseImage ? (
+                  {formData.vehicleImage ? (
                     <span className="text-green-600 font-medium">
-                      ✓ License Image Uploaded
+                      ✓ Vehicle Image Uploaded
                     </span>
                   ) : (
-                    <span>Upload License Image</span>
+                    <span>Upload Vehicle Image</span>
                   )}
                 </button>
                 <input
-                  id="licenseImageInput"
+                  id="vehicleImageInput"
                   type="file"
                   accept="image/*"
                   hidden
@@ -142,22 +150,22 @@ const VehicleForm = () => {
                     if (file) {
                       const reader = new FileReader();
                       reader.onload = () => {
-                        updateField("licenseImage", reader.result);
+                        updateField("vehicleImage", reader.result);
                       };
                       reader.readAsDataURL(file);
                     }
                   }}
                 />
-                {formData.licenseImage && (
+                {formData.vehicleImage && (
                   <div className="mt-2 flex items-center gap-2">
                     <img
-                      src={formData.licenseImage}
+                      src={formData.vehicleImage}
                       alt="License preview"
                       className="h-16 w-16 object-cover rounded border border-gray-300"
                     />
                     <button
                       type="button"
-                      onClick={() => updateField("licenseImage", "")}
+                      onClick={() => updateField("vehicleImage", "")}
                       className="text-red-500 hover:text-red-700 text-sm"
                     >
                       Remove
@@ -167,24 +175,54 @@ const VehicleForm = () => {
               </div>
 
               <div>
-                {/* <label className="block text-gray-700 font-medium mb-2">
-              Periodic Inspection
-            </label> */}
-                <select
-                  name="periodicInspection"
-                  title="Is Vehicle periodic inspection approved ?"
-                  value={formData.vehicleYearlyCheck}
-                  onChange={(e) =>
-                    updateField("vehicleYearlyCheck", e.target.value)
+                {/* License Image Upload */}
+                <button
+                  type="button"
+                  className="w-full border-gray-300 px-4 py-2 bg-blue-50 p-4 rounded h-12 text-blue-500 focus:outline-none focus:border-blue-500 cursor-pointer hover:bg-blue-100 hover:shadow-md hover:shadow-blue-50 transition-all flex items-center justify-center"
+                  onClick={() =>
+                    document.getElementById("vehicleNameLicense").click()
                   }
-                  className="w-full  border-gray-300 px-4 py-2  bg-blue-50 p-4 rounded h-12 placeholder:text-blue-500  focus:shadow-md focus:shadow-blue-50  text-blue-500 focus:outline-none focus:border-blue-500"
                 >
-                  <option value="">
-                    Is Vehicle periodic inspection approved ?
-                  </option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
-                </select>
+                  {formData.vehicleName ? (
+                    <span className="text-green-600 font-medium">
+                      ✓ License Image Uploaded
+                    </span>
+                  ) : (
+                    <span>Upload Vehicle License</span>
+                  )}
+                </button>
+                <input
+                  id="vehicleNameLicense"
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        updateField("vehicleName", reader.result);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+                {formData.vehicleName && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <img
+                      src={formData.vehicleName}
+                      alt="License preview"
+                      className="h-16 w-16 object-cover rounded border border-gray-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => updateField("vehicleName", "")}
+                      className="text-red-500 hover:text-red-700 text-sm"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 

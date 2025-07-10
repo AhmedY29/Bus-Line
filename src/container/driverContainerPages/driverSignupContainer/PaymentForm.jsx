@@ -21,6 +21,7 @@ const PaymentForm = () => {
     <div className="flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-6xl overflow-hidden flex flex-col md:flex-row">
         <div className="md:w-1/2 p-8  hidden md:flex flex-col justify-center">
+          <video className="w-35" src="/bus.webm" autoPlay loop muted></video>
           <h1 className="text-3xl font-bold mb-4">Join as Driver</h1>
           <p className="text-xl mb-6">
             Be part of our driving team and start earning today. <br /> Sign up

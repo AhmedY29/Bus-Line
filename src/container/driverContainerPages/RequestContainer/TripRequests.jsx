@@ -168,6 +168,7 @@ const TripRequests = () => {
                 </td>
               </tr>
             ))}
+
             {currentRequests.length === 0 && (
               <tr>
                 <td colSpan="6" className="text-center py-4 text-gray-500">
@@ -179,8 +180,59 @@ const TripRequests = () => {
         </table>
       </div>
 
+      <div className="md:hidden space-y-4">
+        {currentRequests.map((req) => (
+          <div
+            key={req._id}
+            className="border rounded-lg shadow-sm p-4 bg-gray-50"
+          >
+            <div className="mb-2">
+              <span className="font-semibold">Destination:</span>{" "}
+              {req.tripId?.destinationId?.title || "-"}
+            </div>
+            <div className="mb-2">
+              <span className="font-semibold">Neighborhood:</span>{" "}
+              {req.tripId?.neighborhood || "-"}
+            </div>
+            <div className="mb-2">
+              <span className="font-semibold">Departure Time:</span>{" "}
+              {req.tripId?.departureTime || "-"}
+            </div>
+            <div className="mb-2">
+              <span className="font-semibold">Passenger:</span>{" "}
+              {req.userId?.name || "-"}
+            </div>
+            <div className="mb-2">
+              <span className="font-semibold">Payment:</span>{" "}
+              <span className="inline-block px-2 py-1 rounded bg-green-200 text-green-700 text-xs">
+                Paid
+              </span>
+            </div>
+            <div className="flex gap-2 mt-4">
+              <button
+                onClick={() => handleAccept(req._id)}
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => handleReject(req._id)}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+              >
+                Reject
+              </button>
+            </div>
+          </div>
+        ))}
+        {currentRequests.length === 0 && (
+          <h1 colSpan="6" className="text-center py-4 text-gray-500">
+            No requests found.
+          </h1>
+        )}
+      </div>
+
       {/* Pagination */}
-      <div className="mt-6 flex flex-wrap justify-between items-center gap-4">
+      <div className="mt-6 hidden md:flex flex-wrap justify-between items-center gap-4">
         <p className="text-sm text-gray-500">
           Showing {currentRequests.length} of {filteredRequests.length} entries
         </p>
