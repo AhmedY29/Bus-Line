@@ -43,7 +43,7 @@ function Login() {
       const role = user?.data?.user.role;
       if (role == "admin") {
         navigate("/admin");
-      } else if (role == "student") {
+      } else if (role == "student" || role == "parent") {
         navigate("/student");
       } else {
         navigate("/driver");
