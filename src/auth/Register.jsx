@@ -70,17 +70,15 @@ function Register() {
     console.log(formData);
     try {
       setIsLoading(true);
-      const user = await axios
-        .post(`https://bus-line-backend.onrender.com/api/auth/signup`, formData)
-        .then((res) => {
-          localStorage.setItem("token", res?.data?.token);
-          localStorage.setItem("user", JSON.stringify(res?.data?.user));
-        });
+      const user = await axios.post(
+        `https://bus-line-backend.onrender.com/api/auth/signup`,
+        formData
+      );
       if (user.data.error) {
         toast.error(user.data.error.message);
         return;
       }
-      console.log(user);
+      localStorage.setItem("user", JSON.stringify(user?.data?.user));
       localStorage.setItem("token", user.data.token);
 
       const role = user?.data?.user.role;
@@ -92,7 +90,8 @@ function Register() {
         navigate("/driver");
       }
     } catch (error) {
-      console.log("ERROR IN SIGN IN:", error.message);
+      toast.error(error.response.data.error.message);
+      console.log("ERROR IN SIGN IN:", error);
     } finally {
       setIsLoading(false);
     }
