@@ -50,7 +50,7 @@ function BookingCardNew({
         {/* Route */}
         <div className="flex items-center justify-between px-5">
           <span className="text-gray-900 font-semibold">{fromLocation}</span>
-          <FaChevronRight className="text-gray-900" />
+          <FaChevronRight className="text-gray-900 rtl:rotate-180" />
           <span className="text-gray-900 font-semibold">{toLocation}</span>
         </div>
 

@@ -47,9 +47,8 @@ function HomeReviews() {
               ))}
             </div>
             <p className="text-gray-600 mb-6 leading-relaxed text-justify">
-              Amazing experience! The booking process was so easy and the app
-              notifications kept me updated. The bus was spacious and I felt
-              safe throughout the journey.
+              تجربة رهيبة! الحجز كان سهل مرة والتنبيهات في التطبيق كانت تعطيني
+              آخر التحديثات. الباص واسع وحسّيت بالأمان طول الرحلة.
             </p>
             <div>
               <h4 className="font-semibold text-gray-900">Mohammed Ali</h4>
