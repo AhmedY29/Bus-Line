@@ -41,6 +41,7 @@ export default defineConfig({
       workbox: {
         // صفحة بديلة للأوفلاين
         navigateFallback: "/offline.html",
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 6 MiB
 
         // استراتيجيات كاش واقعية
         runtimeCaching: [
