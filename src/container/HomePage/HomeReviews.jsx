@@ -1,11 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 function HomeReviews() {
+  const { t } = useTranslation("landing");
   return (
     <div className="w-full bg-[#f4f7fa] pt-10 pb-15">
       <div className="max-w-7xl mx-auto px-4 md:px-8 ">
         <h1 className="text-lg md:text-2xl lg:text-3xl text-center text-gray-900 font-bold pb-10 ">
-          What Our Clients Say
+          {t("What Our Clients Say")}
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
