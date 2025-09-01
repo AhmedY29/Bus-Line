@@ -3,7 +3,15 @@ import { Link } from "react-router";
 import { scrollToSection } from "../../utils/scrollUtils";
 import { useTranslation } from "react-i18next";
 function HomeFooter() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const handleChangeLang = () => {
+    if (i18n.language == "ar") {
+      i18n.changeLanguage("en");
+    } else {
+      i18n.changeLanguage("ar");
+    }
+  };
   return (
     <footer className="bg-[#122031] text-white">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8 py-8 px-4">
@@ -53,12 +61,20 @@ function HomeFooter() {
               {t("Register")}
             </Link>
           </li>
+          <li>
+            <button
+              className="text-gray-300 hover:text-white transition-colors cursor-pointer"
+              onClick={handleChangeLang}
+            >
+              {i18n.language == "en" ? "عربي" : "English"}
+            </button>
+          </li>
         </ul>
       </div>
 
       {/*  Team Names */}
 
-      <div className="w-full pl-5">
+      <div className="w-full ps-5">
         <h3 className="lg:text-center text-lg font-semibold mb-2 ">
           {t("Our Team", { ns: "landing" })}
         </h3>
