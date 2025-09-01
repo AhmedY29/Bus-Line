@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router";
 import { scrollToSection } from "../../utils/scrollUtils";
+import { useTranslation } from "react-i18next";
 function HomeFooter() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-[#122031] text-white">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8 py-8 px-4">
@@ -9,33 +11,30 @@ function HomeFooter() {
         <div className="md:w-1/2">
           <div className="flex items-center gap-3 mb-4">
             <img src="logoPng.png" alt="Logo" className="h-10 w-10" />
-            <span className="text-xl font-bold">BusLine</span>
+            <span className="text-xl font-bold">{t("BusLine")}</span>
           </div>
           <p className="text-gray-300 leading-relaxed text-justify">
-            BusLine is a comprehensive transportation platform that connects
-            students, parents, and drivers. We provide safe, reliable, and
-            efficient school transportation services with real-time tracking and
-            easy booking solutions.
+            {t("landing:Footer-SubTitle")}
           </p>
         </div>
 
         {/* Navigation Links */}
         <ul className="flex flex-col justify-center space-y-2 md:w-1/5 ">
           <li className="text-white transition-colors text-xl font-semibold">
-            Get Started
+            {t("Get Started")}
           </li>
           <li
             className="text-gray-200 hover:text-white transition-colors cursor-pointer"
             onClick={() => scrollToSection("homeBook")}
           >
-            Book a Trip
+            {t("Book a Trip")}
           </li>
           <li>
             <Link
               to="/driver-register"
               className="text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
-              Join as a Driver
+              {t("Join as a Driver")}
             </Link>
           </li>
           <li>
@@ -43,7 +42,7 @@ function HomeFooter() {
               to="/login"
               className="text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
-              Login
+              {t("Login")}
             </Link>
           </li>
           <li>
@@ -51,7 +50,7 @@ function HomeFooter() {
               to="/register"
               className="text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
-              Register
+              {t("Register")}
             </Link>
           </li>
         </ul>
@@ -60,20 +59,38 @@ function HomeFooter() {
       {/*  Team Names */}
 
       <div className="w-full pl-5">
-        <h3 className="lg:text-center text-lg font-semibold mb-2 ">Our Team</h3>
+        <h3 className="lg:text-center text-lg font-semibold mb-2 ">
+          {t("Our Team", { ns: "landing" })}
+        </h3>
         <div className="flex flex-col lg:flex-row  flex-wrap justify-center gap-2 lg:gap-5 md:text-left">
-          <p className="text-gray-100 hover:text-white transition-colors">
-            Ahmed Alsaleh
-          </p>
-          <p className="text-gray-100 hover:text-white transition-colors">
-            Sulaiman Alfawzan
-          </p>
-          <p className="text-gray-100 hover:text-white transition-colors">
-            Thekra Aljagthmi
-          </p>
-          <p className="text-gray-100 hover:text-white transition-colors">
-            Sahar
-          </p>
+          <a
+            href="https://www.linkedin.com/in/ahmed-y-alsaleh/"
+            target="_blank"
+            className="text-gray-300 hover:text-white transition-colors cursor-pointer"
+          >
+            {t("Ahmed Alsaleh")}
+          </a>
+          <a
+            href="https://www.linkedin.com/in/sulaiman-alfawzan/"
+            target="_blank"
+            className="text-gray-300 hover:text-white transition-colors cursor-pointer"
+          >
+            {t("Sulaiman Alfawzan")}
+          </a>
+          <a
+            href="https://www.linkedin.com/in/thekra-aljagthmi/"
+            target="_blank"
+            className="text-gray-300 hover:text-white transition-colors cursor-pointer"
+          >
+            {t("Thekra Aljagthmi")}
+          </a>
+          <a
+            href="https://www.linkedin.com/in/sahar-mansour-/"
+            target="_blank"
+            className="text-gray-300 hover:text-white transition-colors cursor-pointer"
+          >
+            {t("Sahar Faris")}
+          </a>
         </div>
       </div>
 
@@ -81,7 +98,8 @@ function HomeFooter() {
       <div className="py-4 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} BusLine. All rights reserved.
+            {/* © {new Date().getFullYear()} BusLine. All rights reserved. */}
+            {t("copyRight", { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>

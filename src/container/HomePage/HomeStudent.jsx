@@ -2,12 +2,20 @@ import React from "react";
 import { FaUsers } from "react-icons/fa";
 import { LuBusFront } from "react-icons/lu";
 import { FaHandHoldingUsd } from "react-icons/fa";
+import { Trans, useTranslation } from "react-i18next";
 
 function HomeStudent() {
+  const { t } = useTranslation("landing");
   return (
     <div className="bg-[rgb(255,255,255)] flex flex-wrap justify-center gap-5 items-center w-full h-full py-5  md:py-15 lg:py-25">
-      <p className="w-full text-lg md:text-2xl lg:text-3xl text-center text-gray-900 font-bold pb-5">
-        Seamless and Comfortable Travel with <br /> Our Bus Booking System
+      <p className="w-full text-lg md:text-2xl lg:text-3xl rtl:lg:text-4xl rtl:md:text-2xl text-center text-gray-900 font-bold pb-5">
+        {/* Seamless and Comfortable Rides with <br /> Our Bus Booking System */}
+        <Trans
+          i18nKey="Feature-Title"
+          ns="landing"
+          components={{ br: <br /> }}
+        />
+        {/* {t("Feature-Title")} */}
       </p>
       {/* Feature Cards */}
       {/* Card 1 */}
@@ -16,10 +24,12 @@ function HomeStudent() {
           <FaUsers className="text-white text-3xl" />
         </div>
         <h1 className="text-gray-900 font-semibold text-base md:text-lg lg:text-xl text-center">
-          Quick and Easy Booking
+          {t("Quick and Easy Booking")}
         </h1>
         <p className="text-gray-600 text-xs md:text-sm lg:text-sm text-center">
-          With our simple interface, reserve your seat in less than a minute.
+          {t(
+            "With our simple interface, reserve your seat in less than a minute."
+          )}
         </p>
       </div>
       {/* Card 2 */}
@@ -28,10 +38,11 @@ function HomeStudent() {
           <LuBusFront className="text-white text-3xl" />
         </div>
         <h1 className="text-gray-900 font-semibold text-base md:text-lg lg:text-xl text-center">
-          Live Bus Tracking
+          {t("Live Bus Tracking", { ne: "landing" })}
         </h1>
         <p className="text-gray-600 text-xs md:text-sm lg:text-sm text-center">
-          Track your bus in real-time to ensure a smooth ride.{" "}
+          {/* Track your bus in real-time to ensure a smooth ride. */}
+          {t("LiveTracking-SubTitle")}
         </p>
       </div>
       {/* Card 3 */}
@@ -40,10 +51,10 @@ function HomeStudent() {
           <FaHandHoldingUsd className="text-white text-3xl" />
         </div>
         <h1 className="text-gray-900 font-semibold text-base md:text-lg lg:text-xl text-center">
-          Secure and Convenient Payments
+          {t("Secure and Convenient Payments")}
         </h1>
         <p className="text-gray-600 text-xs md:text-sm lg:text-sm text-center">
-          Multiple safe and easy payment options at your fingertips.
+          {t("Payment-SubTitle")}
         </p>
       </div>
     </div>

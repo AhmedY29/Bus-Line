@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FaChevronRight } from "react-icons/fa6";
 import { useNavigate } from "react-router";
 
@@ -15,6 +16,7 @@ function MobileBookingCard({
   arrivalTime = "09:00AM",
 }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <div className="md:hidden flex justify-center items-center w-full">
       <div className="flex flex-col items-center justify-center gap-4 bg-white p-2 rounded-xl shadow-lg w-4/5 h-60 hover:scale-105 transition-all duration-500 hover:shadow-xl">
@@ -31,11 +33,11 @@ function MobileBookingCard({
         <div className="flex flex-col w-full bg-white rounded-r-xl p-1 justify-between px-2 gap-3">
           {/* Driver Info */}
           <div className="flex justify-start items-center border-b-2 border-gray-200">
-            <span className="text-gray-900 font-medium pr-1.5">
+            <span className="text-gray-900 font-medium pe-1.5">
               {driverName}
             </span>
-            <div className="flex items-center gap-1 pl-1.5 border-l-2 border-gray-200">
-              <span className="text-gray-600 text-sm">Rating:</span>
+            <div className="flex items-center gap-1 ps-1.5 border-s-2 border-gray-200">
+              <span className="text-gray-600 text-sm">{t("Rating")}:</span>
               <span className="text-orange-500 font-medium">{rating}</span>
             </div>
           </div>
@@ -58,7 +60,7 @@ function MobileBookingCard({
           className="text-white w-1/2 font-bold py-2 px-4 rounded-lg text-sm cursor-pointer bg-[#0165AD] hover:bg-[#0165add2] transition-colors"
           onClick={() => navigate("/register")}
         >
-          Learn More
+          {t("Learn More")}
         </button>
       </div>
     </div>

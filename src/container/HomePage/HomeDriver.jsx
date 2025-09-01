@@ -7,15 +7,17 @@ import { BsBusFront } from "react-icons/bs";
 import { PiPlant } from "react-icons/pi";
 import { FaRegMap } from "react-icons/fa";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 function HomeDriver() {
+  const { t } = useTranslation("landing");
   return (
     <div className="bg-[rgb(255,255,255)] py-16 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-            Empowering Drivers to Serve Students
+          <h1 className="text-lg md:text-2xl lg:text-3xl rtl:lg:text-4xl rtl:md:text-2xl font-bold text-gray-900 mb-4">
+            {t("Empowering Drivers to Serve Students")}
           </h1>
         </div>
 
@@ -29,10 +31,10 @@ function HomeDriver() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Easy Registration
+                  {t("Easy Registration")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Simplified registration process for drivers.
+                  {t("Simplified registration process for drivers.")}
                 </p>
               </div>
             </div>
@@ -43,11 +45,12 @@ function HomeDriver() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Helping Students
+                  {t("Helping Students")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Ensuring drivers provide safe and reliable transport for
-                  students.
+                  {t(
+                    "Ensuring drivers provide safe and reliable transport for students."
+                  )}
                 </p>
               </div>
             </div>
@@ -58,11 +61,12 @@ function HomeDriver() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Centralized Management
+                  {t("Centralized Management")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Streamlined system for managing driver assignments and
-                  schedules.
+                  {t(
+                    "Streamlined system for managing driver assignments and schedules."
+                  )}
                 </p>
               </div>
             </div>
@@ -86,7 +90,7 @@ function HomeDriver() {
               {/* Driver Stats */}{" "}
               <div className=" w-full flex flex-col  justify-center p-4 gap-5 rounded-2xl">
                 <span className="text-neutral-900 text-sm md:text-base lg:text-base">
-                  14-29 June | 25 Drivers
+                  14-29 {t("June")} | 25 {t("Drivers")}
                 </span>
                 <div className="flex items-center gap-3 w-full">
                   <div className="flex items-center bg-neutral-100 rounded-full p-2">
@@ -101,9 +105,9 @@ function HomeDriver() {
                 </div>
 
                 <div className="flex items-center">
-                  <BsBusFront className="text-neutral-500 text-lg mr-2" />
+                  <BsBusFront className="text-neutral-500 text-lg me-2" />
                   <span className="text-neutral-900 text-sm md:text-base lg:text-base">
-                    24 Trips
+                    24 {t("Trips")}
                   </span>
                 </div>
               </div>

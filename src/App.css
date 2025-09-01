@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+
+/* html[dir="ltr"] * {
+  font-family: 'Lato', sans-serif;
+} */
+
+html[dir="rtl"] * {
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+}
+
 
 @custom-variant dark (&:is(.dark *));
 
