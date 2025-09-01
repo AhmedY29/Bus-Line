@@ -31,46 +31,6 @@ export default function DriverProfile() {
   useEffect(() => {
     const fetchDriverData = async () => {
       try {
-        const data = {
-          name: "John Doe",
-          email: "john.doe@example.com",
-          location: "San Francisco, CA",
-          joinDate: "March 2023",
-          car: "Tesla Model 3",
-          rating: 4.8,
-          totalTrips: 120,
-          reviews: [
-            {
-              reviewerName: "Alice B.",
-              reviewText: "Lorem ipsum dolor sit amet...",
-              reviewRate: 4.6,
-              reviewerImage: "https://bundui-images.netlify.app/avatars/09.png",
-            },
-            {
-              reviewerName: "Charlie D.",
-              reviewText: "On time, friendly service.",
-              reviewRate: 4.6,
-              reviewerImage: "https://bundui-images.netlify.app/avatars/10.png",
-            },
-          ],
-          Trips: [
-            {
-              id: 1,
-              startLocation: "San Francisco",
-              endLocation: "Palo Alto",
-              date: "2023-08-01",
-              distance: "20 miles",
-            },
-            {
-              id: 2,
-              startLocation: "San Francisco",
-              endLocation: "Mountain View",
-              date: "2023-08-02",
-              distance: "25 miles",
-            },
-          ],
-        };
-
         const rating = await axios.get(
           `https://bus-line-backend.onrender.com/api/rating/driver/${driverId}`
         );
@@ -85,16 +45,13 @@ export default function DriverProfile() {
 
         console.log(rating, "ratings");
         console.log(trips, "trips");
-        // Simulate a delay like an API call
-        setTimeout(() => {
-          setRatings(rating.data.ratings);
-          setDriver(
-            rating.data.ratings[0]?.driverId || trips.data.trips[0]?.driverId
-          );
-          console.log(driver, "d");
-          setTrips(trips.data.trips);
-          //   setDriver(data);
-        }, 1000);
+
+        setRatings(rating.data.ratings);
+        setDriver(
+          rating.data.ratings[0]?.driverId || trips.data.trips[0]?.driverId
+        );
+        console.log(driver, "d");
+        setTrips(trips.data.trips);
       } catch (error) {
         toast.error("Error In Get Driver Details");
         console.log(
@@ -120,9 +77,6 @@ export default function DriverProfile() {
 
   if (!driver) {
     return (
-      //   <div className="text-center">
-      //     <p>Loading...</p>
-      //   </div>
       <div className="p-6">
         <Button variant="icon" onClick={() => navigate(-1)}>
           <ArrowLeft />
